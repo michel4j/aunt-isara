@@ -1,0 +1,88 @@
+#!/bin/sh
+#
+# chkconfig: 345 98 02
+# description:  EPICS IOC
+
+
+# -------------- Environment Parameters (MODIFY) for each instance -----------------------#
+
+ioc_path=/path/to/ioc/installation                  # location where IOC Code is installed
+procserv_path=/path/to/procserv                     # location where procserv is installed
+epics_env=/path/to/epics/environment/epics.sh       # EPICS environment setup script
+
+# -------------- Device Parameters (MODIFY) for each instance ----------------------------#
+device='IOC0000-000'                                # Device Name
+portno=18001                                        # ProcServ Port Number
+network="10.0.0.0/24"                               # ProcServ Subnet
+appdir=/path/to/ioc/instance/${device}              # IOC Directory
+                                                    
+# Define additional command line arguments here and add them to the start function after 
+# the --device '$device" text
+
+
+# --------------------- Update Only once for each IOC Type ------------------------------#
+iocname=`hostname`
+cmdfile=${ioc_path}/bin/runIOC.py
+proccmd=${procserv_path}/procServ
+pidfile="/var/run/${device}.pid"
+logfile="/var/log/${device}.log"
+
+# Prepare environment and  Source function library.
+. /etc/rc.d/init.d/functions
+. ${epics_env}
+
+# Sanity checks.
+[ -x $proccmd ] || exit 0
+[ -x $cmdfile ] || exit 0
+
+
+start() {
+    echo -n $"Starting procServ: "
+    #--allow --network $network
+    daemon $proccmd -c $appdir --noautorestart --logfile="$logfile" --pidfile="$pidfile"              --allow $portno $cmdfile --device "$device" 
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/$device
+}
+
+stop() {
+    echo -n $"Stopping procServ: "
+
+    killproc -p $pidfile
+    RETVAL=$?
+    echo
+    if [ $RETVAL -eq 0 ]; then
+        rm -f /var/lock/subsys/$device
+        rm -f /var/run/$pidfile
+    fi
+}
+
+# See how we were called.
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status -p $pidfile $device
+        RETVAL=$?
+        ;;
+    restart)
+        stop
+	    sleep 3
+        start
+        ;;
+    condrestart)
+        if [ -f /var/lock/subsys/$device ]; then
+            stop
+	        sleep 3
+            start
+        fi
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|condrestart}"
+        ;;
+esac
+exit $RETVAL
