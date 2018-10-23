@@ -1,0 +1,5433 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 245
+y 93
+w 754
+h 626
+font "lucida-medium-r-18.0"
+ctlFont "lucida-medium-r-18.0"
+btnFont "lucida-medium-r-18.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 0
+ctlBgColor1 index 0
+ctlBgColor2 index 14
+topShadowColor index 0
+botShadowColor index 14
+gridSize 5
+endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 570
+y 377
+w 173
+h 165
+lineColor index 5
+fillColor index 1
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 570
+y 145
+w 174
+h 138
+lineColor index 5
+fillColor index 1
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 11
+y 142
+w 222
+h 129
+lineColor index 5
+fillColor index 0
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 12
+y 555
+w 731
+h 26
+controlPv "$(device):LOG"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 53
+bgColor index 9
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 243
+y 184
+w 95
+h 30
+fgColor index 14
+onColor index 75
+offColor index 75
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:abort"
+indicatorPv "$(device):CMD:abort"
+onLabel "Abort"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 12
+y 39
+w 730
+h 0
+lineColor index 5
+fillColor index 0
+numPoints 2
+xPoints {
+  0 12
+  1 742
+}
+yPoints {
+  0 39
+  1 39
+}
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 135
+y 45
+w 112
+h 41
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 135
+y 45
+w 112
+h 41
+lineColor index 14
+fill
+fillColor index 9
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 137
+y 47
+w 103
+h 14
+controlPv "$(device):STATUS.DESC"
+format "string"
+font "lucida-medium-r-10.0"
+fgColor index 5
+bgColor index 0
+useDisplayBg
+nullColor index 0
+smartRefresh
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 136
+y 60
+w 109
+h 25
+controlPv "$(device):STATUS"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 164
+bgColor index 9
+useDisplayBg
+limitsFromDb
+nullColor index 0
+colorPv "$(device):STATUS"
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 11
+y 95
+w 112
+h 41
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 11
+y 95
+w 112
+h 41
+lineColor index 14
+fill
+fillColor index 9
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 13
+y 97
+w 103
+h 14
+controlPv "$(device):STATE:tool.DESC"
+format "string"
+font "lucida-medium-r-10.0"
+fgColor index 5
+bgColor index 0
+useDisplayBg
+nullColor index 0
+smartRefresh
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 12
+y 110
+w 109
+h 25
+controlPv "$(device):STATE:tool"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 36
+bgColor index 9
+useDisplayBg
+limitsFromDb
+nullColor index 0
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 383
+y 45
+w 112
+h 41
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 383
+y 45
+w 112
+h 41
+lineColor index 14
+fill
+fillColor index 9
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 385
+y 47
+w 103
+h 14
+controlPv "$(device):STATE:mode.DESC"
+format "string"
+font "lucida-medium-r-10.0"
+fgColor index 5
+bgColor index 0
+useDisplayBg
+nullColor index 0
+smartRefresh
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 384
+y 60
+w 109
+h 25
+controlPv "$(device):STATE:mode"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 104
+bgColor index 9
+useDisplayBg
+limitsFromDb
+nullColor index 0
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 135
+y 95
+w 112
+h 41
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 135
+y 95
+w 112
+h 41
+lineColor index 14
+fill
+fillColor index 9
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 137
+y 97
+w 103
+h 14
+controlPv "$(device):STATE:path.DESC"
+format "string"
+font "lucida-medium-r-10.0"
+fgColor index 5
+bgColor index 0
+useDisplayBg
+nullColor index 0
+smartRefresh
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 136
+y 110
+w 109
+h 25
+controlPv "$(device):STATE:path"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 36
+bgColor index 9
+useDisplayBg
+limitsFromDb
+nullColor index 0
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 259
+y 95
+w 112
+h 41
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 259
+y 95
+w 112
+h 41
+lineColor index 14
+fill
+fillColor index 9
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 261
+y 97
+w 103
+h 14
+controlPv "$(device):STATE:pos.DESC"
+format "string"
+font "lucida-medium-r-10.0"
+fgColor index 5
+bgColor index 0
+useDisplayBg
+nullColor index 0
+smartRefresh
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 260
+y 110
+w 109
+h 25
+controlPv "$(device):STATE:pos"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 36
+bgColor index 9
+useDisplayBg
+limitsFromDb
+nullColor index 0
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 259
+y 45
+w 112
+h 41
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 259
+y 45
+w 112
+h 41
+lineColor index 14
+fill
+fillColor index 9
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 261
+y 47
+w 103
+h 14
+controlPv "$(device):STATE:power.DESC"
+format "string"
+font "lucida-medium-r-10.0"
+fgColor index 5
+bgColor index 0
+useDisplayBg
+nullColor index 0
+smartRefresh
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 260
+y 60
+w 109
+h 25
+controlPv "$(device):STATE:power"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 91
+bgColor index 9
+useDisplayBg
+limitsFromDb
+nullColor index 0
+colorPv "$(device):STATE:power"
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 15
+y 8
+w 238
+h 25
+font "utopia-bold-r-24.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "ISARA Automounter"
+}
+autoSize
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 607
+y 6
+w 135
+h 24
+fgColor index 14
+bgColor index 76
+selectColor index 54
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 14
+controlPv "$(device):ENABLED"
+indicatorPv "$(device):ENABLED"
+font "lucida-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 11
+y 45
+w 112
+h 41
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 11
+y 45
+w 112
+h 41
+lineColor index 14
+fill
+fillColor index 9
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 13
+y 47
+w 103
+h 14
+controlPv "$(device):CONNECTED.DESC"
+format "string"
+font "lucida-medium-r-10.0"
+fgColor index 5
+bgColor index 0
+useDisplayBg
+nullColor index 0
+smartRefresh
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 12
+y 60
+w 109
+h 25
+controlPv "$(device):CONNECTED"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 101
+bgColor index 9
+useDisplayBg
+limitsFromDb
+nullColor index 0
+colorPv "$(device):CONNECTED"
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 631
+y 45
+w 112
+h 41
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 631
+y 45
+w 112
+h 41
+lineColor index 14
+fill
+fillColor index 9
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 633
+y 47
+w 103
+h 14
+controlPv "$(device):ENABLED.DESC"
+format "string"
+font "lucida-medium-r-10.0"
+fgColor index 5
+bgColor index 0
+useDisplayBg
+nullColor index 0
+smartRefresh
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 632
+y 60
+w 109
+h 25
+controlPv "$(device):ENABLED"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 83
+bgColor index 9
+useDisplayBg
+limitsFromDb
+nullColor index 0
+colorPv "$(device):ENABLED"
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 631
+y 95
+w 112
+h 41
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 631
+y 95
+w 112
+h 41
+lineColor index 14
+fill
+fillColor index 9
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 633
+y 97
+w 103
+h 14
+controlPv "$(device):STATE:speed.DESC"
+format "string"
+font "lucida-medium-r-10.0"
+fgColor index 5
+bgColor index 0
+useDisplayBg
+nullColor index 0
+smartRefresh
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 632
+y 110
+w 109
+h 25
+controlPv "$(device):STATE:speed"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 36
+bgColor index 9
+useDisplayBg
+limitsFromDb
+nullColor index 0
+colorPv "$(device):STATE:speed"
+smartRefresh
+fastUpdate
+useHexPrefix
+showUnits
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 383
+y 95
+w 112
+h 41
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 383
+y 95
+w 112
+h 41
+lineColor index 14
+fill
+fillColor index 9
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 385
+y 97
+w 103
+h 14
+controlPv "$(device):STATE:onDiff.DESC"
+format "string"
+font "lucida-medium-r-10.0"
+fgColor index 5
+bgColor index 0
+useDisplayBg
+nullColor index 0
+smartRefresh
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 384
+y 110
+w 109
+h 25
+controlPv "$(device):STATE:onDiff"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 36
+bgColor index 9
+useDisplayBg
+limitsFromDb
+nullColor index 0
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 243
+y 145
+w 156
+h 30
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 243
+y 145
+w 155
+h 29
+lineColor index 9
+fillColor index 0
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 318
+y 145
+w 81
+h 30
+fgColor index 14
+onColor index 50
+offColor index 50
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:mount"
+indicatorPv "$(device):CMD:mount"
+onLabel "Mount"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 244
+y 147
+w 71
+h 26
+controlPv "$(device):PAR:nextPort"
+format "string"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+nullColor index 0
+smartRefresh
+useKp
+changeValOnLoseFocus
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 404
+y 145
+w 157
+h 30
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 404
+y 145
+w 156
+h 29
+lineColor index 9
+fillColor index 0
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 479
+y 145
+w 82
+h 30
+fgColor index 14
+onColor index 55
+offColor index 55
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:dismount"
+indicatorPv "$(device):CMD:dismount"
+onLabel "Dismount"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 406
+y 147
+w 73
+h 26
+controlPv "$(device):STATE:onDiff"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 57
+bgColor index 55
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 465
+y 342
+w 95
+h 30
+fgColor index 14
+onColor index 1
+offColor index 1
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:pause"
+indicatorPv "$(device):CMD:pause"
+onLabel "Pause"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 465
+y 307
+w 95
+h 30
+fgColor index 14
+onColor index 50
+offColor index 50
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:safe"
+indicatorPv "$(device):CMD:safe"
+onLabel "Safe"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 354
+y 307
+w 95
+h 30
+fgColor index 14
+onColor index 61
+offColor index 61
+inconsistentColor index 57
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:back"
+indicatorPv "$(device):CMD:back"
+onLabel "Back"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 465
+y 184
+w 95
+h 30
+fgColor index 14
+onColor index 51
+offColor index 51
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:clear"
+indicatorPv "$(device):CMD:clear"
+onLabel "Clear"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 467
+y 440
+w 91
+h 28
+fgColor index 14
+onColor index 69
+offColor index 69
+inconsistentColor index 57
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:toolCal"
+indicatorPv "$(device):CMD:toolCal"
+onLabel "Calibrate"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 822
+y -25
+w 74
+h 12
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Text description"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 822
+y -25
+w 74
+h 12
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Text description"
+}
+autoSize
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 354
+y 342
+w 95
+h 30
+fgColor index 14
+onColor index 63
+offColor index 63
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:soak"
+indicatorPv "$(device):CMD:soak"
+onLabel "Soak"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 671
+y 586
+w 72
+h 26
+fgColor index 35
+onColor index 20
+offColor index 20
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:panic"
+indicatorPv "$(device):CMD:panic"
+onLabel "Panic"
+buttonType "push"
+3d
+font "lucida-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 354
+y 184
+w 95
+h 30
+fgColor index 14
+onColor index 74
+offColor index 74
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:reset"
+indicatorPv "$(device):CMD:reset"
+onLabel "Reset"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 243
+y 307
+w 95
+h 30
+fgColor index 14
+onColor index 59
+offColor index 59
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:home"
+indicatorPv "$(device):CMD:home"
+onLabel "Home"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 243
+y 396
+w 95
+h 30
+fgColor index 14
+onColor index 55
+offColor index 55
+inconsistentColor index 57
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:setToolSmpl"
+indicatorPv "$(device):CMD:setToolSmpl"
+onLabel "Set Tool"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 465
+y 396
+w 95
+h 30
+fgColor index 14
+onColor index 55
+offColor index 55
+inconsistentColor index 57
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:setTool2Smpl"
+indicatorPv "$(device):CMD:setTool2Smpl"
+onLabel "Set Tool 2"
+buttonType "push"
+3d
+invisible
+font "lucida-medium-r-10.0"
+objType "controls"
+visPv "$(device):STATE:tool"
+visMin "5"
+visMax "6"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 354
+y 396
+w 95
+h 30
+fgColor index 14
+onColor index 55
+offColor index 55
+inconsistentColor index 57
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:setDiffSmpl"
+indicatorPv "$(device):CMD:setDiffSmpl"
+onLabel "Set Sample"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 524
+y 6
+w 72
+h 25
+fgColor index 14
+onColor index 40
+offColor index 40
+inconsistentColor index 2
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:power"
+onLabel "Power"
+offLabel "Power"
+labelType "literal"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 22
+y 291
+w 200
+h 123
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 22
+y 291
+w 200
+h 15
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 60
+y 291
+w 162
+h 15
+controlPv "$(device):CMD:running.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 22
+y 291
+w 15
+h 15
+fgColor index 14
+onColor index 52
+offColor index 52
+inconsistentColor index 10
+topShadowColor index 1
+botShadowColor index 10
+controlPv "$(device):CMD:running"
+labelType "literal"
+buttonType "push"
+font "lucida-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 41
+y 291
+w 15
+h 15
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:running"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 22
+y 309
+w 200
+h 15
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 60
+y 309
+w 162
+h 15
+controlPv "$(device):CMD:approach.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 22
+y 309
+w 15
+h 15
+fgColor index 14
+onColor index 52
+offColor index 52
+inconsistentColor index 10
+topShadowColor index 1
+botShadowColor index 10
+controlPv "$(device):CMD:approach"
+labelType "literal"
+buttonType "push"
+font "lucida-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 41
+y 309
+w 15
+h 15
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:approach"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 22
+y 327
+w 200
+h 15
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 60
+y 327
+w 162
+h 15
+controlPv "$(device):CMD:autofill.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 22
+y 327
+w 15
+h 15
+fgColor index 14
+onColor index 52
+offColor index 52
+inconsistentColor index 10
+topShadowColor index 1
+botShadowColor index 10
+controlPv "$(device):CMD:autofill"
+labelType "literal"
+buttonType "push"
+font "lucida-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 41
+y 327
+w 15
+h 15
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:autofill"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 22
+y 345
+w 200
+h 15
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 60
+y 345
+w 162
+h 15
+controlPv "$(device):CMD:speed.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 22
+y 345
+w 15
+h 15
+fgColor index 14
+onColor index 52
+offColor index 52
+inconsistentColor index 10
+topShadowColor index 1
+botShadowColor index 10
+controlPv "$(device):CMD:speed"
+labelType "literal"
+buttonType "push"
+font "lucida-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 41
+y 345
+w 15
+h 15
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:remSpeed"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 22
+y 381
+w 200
+h 15
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 60
+y 381
+w 162
+h 15
+controlPv "$(device):CMD:heater.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 22
+y 381
+w 15
+h 15
+fgColor index 14
+onColor index 52
+offColor index 52
+inconsistentColor index 10
+topShadowColor index 1
+botShadowColor index 10
+controlPv "$(device):CMD:heater"
+labelType "literal"
+buttonType "push"
+font "lucida-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 41
+y 381
+w 15
+h 15
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:heater"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 22
+y 399
+w 200
+h 15
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 60
+y 399
+w 162
+h 15
+controlPv "$(device):CMD:magnet.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 22
+y 399
+w 15
+h 15
+fgColor index 14
+onColor index 52
+offColor index 52
+inconsistentColor index 10
+topShadowColor index 1
+botShadowColor index 10
+controlPv "$(device):CMD:magnet"
+labelType "literal"
+buttonType "push"
+font "lucida-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 41
+y 399
+w 15
+h 15
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:magnet"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 22
+y 362
+w 176
+h 17
+
+beginGroup
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 60
+y 362
+w 138
+h 17
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Speed Adjustment"
+}
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 22
+y 362
+w 35
+h 17
+
+beginGroup
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 40
+y 362
+w 17
+h 17
+fgColor index 14
+onColor index 40
+offColor index 40
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 14
+controlPv "$(device):CMD:faster"
+onLabel "^"
+offLabel "^"
+labelType "literal"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 22
+y 362
+w 17
+h 17
+fgColor index 14
+onColor index 40
+offColor index 40
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 14
+controlPv "$(device):CMD:slower"
+onLabel "V"
+offLabel "V"
+labelType "literal"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 171
+w 181
+h 15
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 59
+y 171
+w 162
+h 15
+controlPv "$(device):INP:colSensor.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 171
+w 15
+h 15
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):INP:colSensor"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 228
+w 181
+h 15
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 59
+y 228
+w 162
+h 15
+controlPv "$(device):INP:cryojet.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 228
+w 15
+h 15
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):INP:cryojet"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 152
+w 181
+h 15
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 59
+y 152
+w 162
+h 15
+controlPv "$(device):INP:emerg.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 152
+w 15
+h 15
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):INP:emerg"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 190
+w 181
+h 15
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 59
+y 190
+w 162
+h 15
+controlPv "$(device):INP:smplOnGonio.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 190
+w 15
+h 15
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):INP:smplOnGonio"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 246
+w 181
+h 15
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 59
+y 246
+w 162
+h 15
+controlPv "$(device):INP:gonioRdy.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 246
+w 15
+h 15
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):INP:gonioRdy"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 21
+y 152
+w 15
+h 109
+lineColor index 5
+fill
+fillColor index 5
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 209
+w 181
+h 15
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 59
+y 209
+w 162
+h 15
+controlPv "$(device):INP:heartbeat.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 40
+y 209
+w 15
+h 15
+lineColor index 14
+fill
+fillColor index 102
+alarmPv "$(device):INP:heartbeat"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 507
+y 45
+w 112
+h 41
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 507
+y 45
+w 112
+h 41
+lineColor index 14
+fill
+fillColor index 9
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 509
+y 47
+w 103
+h 14
+controlPv "$(device):INP:cryoLevel.DESC"
+format "string"
+font "lucida-medium-r-10.0"
+fgColor index 5
+bgColor index 0
+useDisplayBg
+nullColor index 0
+smartRefresh
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 508
+y 60
+w 109
+h 25
+controlPv "$(device):INP:cryoLevel"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 153
+bgColor index 9
+useDisplayBg
+limitsFromDb
+nullColor index 0
+colorPv "$(device):INP:cryoLevel"
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 507
+y 95
+w 112
+h 41
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 507
+y 95
+w 112
+h 41
+lineColor index 14
+fill
+fillColor index 9
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 509
+y 97
+w 103
+h 14
+controlPv "$(device):STATE:autofill.DESC"
+format "string"
+font "lucida-medium-r-10.0"
+fgColor index 5
+bgColor index 0
+useDisplayBg
+nullColor index 0
+smartRefresh
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 508
+y 110
+w 109
+h 25
+controlPv "$(device):STATE:autofill"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 83
+bgColor index 9
+useDisplayBg
+limitsFromDb
+nullColor index 0
+colorPv "$(device):STATE:autofill"
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 11
+y 281
+w 222
+h 144
+lineColor index 5
+fillColor index 0
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 18
+y 450
+w 101
+h 20
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 18
+y 450
+w 46
+h 20
+controlPv "$(device):STATE:posX"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 35
+bgColor index 10
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 68
+y 454
+w 51
+h 12
+controlPv "$(device):STATE:posX.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 18
+y 474
+w 101
+h 20
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 68
+y 478
+w 51
+h 12
+controlPv "$(device):STATE:posY.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 18
+y 474
+w 46
+h 20
+controlPv "$(device):STATE:posY"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 35
+bgColor index 10
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 18
+y 498
+w 101
+h 20
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 68
+y 502
+w 51
+h 12
+controlPv "$(device):STATE:posZ.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 18
+y 498
+w 46
+h 20
+controlPv "$(device):STATE:posZ"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 35
+bgColor index 10
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 124
+y 449
+w 101
+h 20
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 174
+y 453
+w 51
+h 12
+controlPv "$(device):STATE:posRX.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 124
+y 449
+w 46
+h 20
+controlPv "$(device):STATE:posRX"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 35
+bgColor index 10
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 124
+y 473
+w 101
+h 20
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 174
+y 477
+w 51
+h 12
+controlPv "$(device):STATE:posRY.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 124
+y 473
+w 46
+h 20
+controlPv "$(device):STATE:posRY"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 35
+bgColor index 10
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 124
+y 497
+w 101
+h 20
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 174
+y 501
+w 51
+h 12
+controlPv "$(device):STATE:posRZ.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 124
+y 497
+w 46
+h 20
+controlPv "$(device):STATE:posRZ"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 35
+bgColor index 10
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 11
+y 439
+w 222
+h 103
+lineColor index 5
+fillColor index 0
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 12
+y 585
+w 655
+h 26
+controlPv "$(device):WARNING"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 78
+bgColor index 9
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 241
+y 439
+w 214
+h 104
+lineColor index 5
+fillColor index 0
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 349
+y 496
+w 96
+h 34
+fgColor index 14
+onColor index 1
+offColor index 1
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:savePos"
+indicatorPv "$(device):CMD:savePos"
+onLabel "Save Position"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 247
+y 493
+w 96
+h 12
+controlPv "$(device):PAR:posTol.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 247
+y 506
+w 96
+h 23
+controlPv "$(device):PAR:posTol"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+limitsFromDb
+nullColor index 0
+useKp
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 247
+y 450
+w 96
+h 12
+controlPv "$(device):PAR:posName.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 247
+y 464
+w 96
+h 23
+controlPv "$(device):PAR:posName"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 350
+y 451
+w 96
+h 11
+controlPv "$(device):PAR:posForce.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 349
+y 463
+w 96
+h 24
+fgColor index 14
+bgColor index 56
+selectColor index 55
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 14
+controlPv "$(device):PAR:posForce"
+indicatorPv "$(device):PAR:posForce"
+font "lucida-medium-r-8.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 17
+y 434
+w 79
+h 11
+font "lucida-bold-r-10.0"
+fgColor index 14
+bgColor index 3
+value {
+  "Arm Positions"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 250
+y 434
+w 94
+h 11
+font "lucida-bold-r-10.0"
+fgColor index 14
+bgColor index 3
+value {
+  "Named Positions"
+}
+autoSize
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 581
+y 209
+w 146
+h 19
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 654
+y 209
+w 73
+h 19
+controlPv "$(device):PAR:smpl.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 581
+y 209
+w 69
+h 19
+controlPv "$(device):PAR:smpl"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+limitsFromDb
+nullColor index 0
+useKp
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 581
+y 185
+w 146
+h 19
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 654
+y 185
+w 73
+h 19
+controlPv "$(device):PAR:puck.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 581
+y 185
+w 69
+h 19
+controlPv "$(device):PAR:puck"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+limitsFromDb
+nullColor index 0
+useKp
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 581
+y 160
+w 146
+h 20
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 654
+y 161
+w 73
+h 19
+controlPv "$(device):PAR:tool.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 581
+y 160
+w 69
+h 19
+controlPv "$(device):PAR:tool"
+format "gfloat"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+limitsFromDb
+nullColor index 0
+useKp
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 581
+y 232
+w 146
+h 20
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 654
+y 233
+w 73
+h 19
+controlPv "$(device):PAR:barcode.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 581
+y 232
+w 69
+h 19
+controlPv "$(device):PAR:barcode"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+limitsFromDb
+nullColor index 0
+useKp
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 581
+y 256
+w 146
+h 20
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 654
+y 257
+w 73
+h 19
+controlPv "$(device):PAR:plate.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 581
+y 256
+w 69
+h 19
+controlPv "$(device):PAR:plate"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+limitsFromDb
+nullColor index 0
+useKp
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+visPv "$(device):STATE:tool"
+visMin "3"
+visMax "4"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 243
+y 342
+w 95
+h 30
+fgColor index 14
+onColor index 55
+offColor index 55
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 57
+controlPv "$(device):CMD:dry"
+indicatorPv "$(device):CMD:dry"
+onLabel "Dry"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 465
+y 272
+w 95
+h 30
+fgColor index 14
+onColor index 51
+offColor index 51
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:getPut"
+indicatorPv "$(device):CMD:getPut"
+onLabel "Get Put"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 354
+y 272
+w 95
+h 30
+fgColor index 14
+onColor index 51
+offColor index 51
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:put"
+indicatorPv "$(device):CMD:put"
+onLabel "Put"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 243
+y 272
+w 95
+h 30
+fgColor index 14
+onColor index 51
+offColor index 51
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:get"
+indicatorPv "$(device):CMD:get"
+onLabel "Get"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 568
+y 391
+w 176
+h 9
+controlPv "$(device):STATE:pucks"
+font "lucida-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 575
+y 373
+w 86
+h 11
+font "lucida-bold-r-10.0"
+fgColor index 14
+bgColor index 3
+value {
+  "Puck Detection"
+}
+autoSize
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 581
+y 407
+w 151
+h 126
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 594
+y 407
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 594
+y 407
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 600
+y 413
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "1A"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 619
+y 407
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 619
+y 407
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B1"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 625
+y 413
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "2A"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 644
+y 407
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 644
+y 407
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B2"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 650
+y 413
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "3A"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 670
+y 407
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 670
+y 407
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B3"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 676
+y 413
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "4A"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 695
+y 407
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 695
+y 407
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B4"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 701
+y 413
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "5A"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 582
+y 428
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 582
+y 428
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B5"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 588
+y 434
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "1B"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 607
+y 428
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 607
+y 428
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B6"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 613
+y 434
+w 13
+h 12
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 613
+y 434
+w 13
+h 12
+
+beginGroup
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 613
+y 434
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "2B"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 632
+y 428
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 632
+y 428
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B7"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 638
+y 434
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "3B"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 658
+y 428
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 658
+y 428
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B8"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 664
+y 434
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "4B"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 683
+y 428
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 683
+y 428
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B9"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 689
+y 434
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "5B"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 708
+y 428
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 708
+y 428
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.BA"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 714
+y 434
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "6B"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 593
+y 447
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 593
+y 447
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.BB"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 599
+y 453
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "1C"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 618
+y 447
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 618
+y 447
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.BC"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 624
+y 453
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "2C"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 643
+y 447
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 643
+y 447
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.BD"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 649
+y 453
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "3C"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 669
+y 447
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 669
+y 447
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.BE"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 675
+y 453
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "4C"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 694
+y 447
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 694
+y 447
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.BF"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 700
+y 453
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "5C"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 581
+y 468
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 581
+y 468
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 587
+y 474
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "1D"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 606
+y 468
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 606
+y 468
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B1"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 612
+y 474
+w 13
+h 12
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 612
+y 474
+w 13
+h 12
+
+beginGroup
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 612
+y 474
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "2D"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 631
+y 468
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 631
+y 468
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B2"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 637
+y 474
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "3D"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 657
+y 468
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 657
+y 468
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B3"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 663
+y 474
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "4D"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 682
+y 468
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 682
+y 468
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B4"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 688
+y 474
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "5D"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 707
+y 468
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 707
+y 468
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B5"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 713
+y 474
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "6D"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 593
+y 488
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 593
+y 488
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B6"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 599
+y 494
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "1E"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 618
+y 488
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 618
+y 488
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B7"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 624
+y 494
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "2E"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 643
+y 488
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 643
+y 488
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B8"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 649
+y 494
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "3E"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 669
+y 488
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 669
+y 488
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B9"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 675
+y 494
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "4E"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 694
+y 488
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 694
+y 488
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.BA"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 700
+y 494
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "5E"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 631
+y 509
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 631
+y 509
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.BB"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 637
+y 515
+w 10
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "1F"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 657
+y 509
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 657
+y 509
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.BC"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 663
+y 515
+w 10
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "2F"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 580
+y 141
+w 64
+h 11
+font "lucida-bold-r-10.0"
+fgColor index 14
+bgColor index 3
+value {
+  "Parameters"
+}
+autoSize
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 467
+y 511
+w 91
+h 28
+fgColor index 14
+onColor index 69
+offColor index 69
+inconsistentColor index 57
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:teachPuck"
+indicatorPv "$(device):CMD:teachPuck"
+onLabel "Teach Puck"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 467
+y 476
+w 91
+h 28
+fgColor index 14
+onColor index 69
+offColor index 69
+inconsistentColor index 57
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:teachGonio"
+indicatorPv "$(device):CMD:teachGonio"
+onLabel "Teach Gonio"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
