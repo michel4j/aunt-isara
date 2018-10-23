@@ -12,6 +12,7 @@ class MessageType(Enum):
 
 
 class CommandProtocol(LineReceiver):
+    delimiter = '\r'
     protocol_name = 'Command Link'
     message_type = MessageType.RESPONSE
 
@@ -30,7 +31,7 @@ class CommandProtocol(LineReceiver):
 
     def send_message(self, message):
         if self.transport:
-            self.sendLine('{}\r\n'.format(message))
+            self.sendLine('{}'.format(message))
 
     def receive_message(self, message):
         self.factory.receive_message(message, self.message_type)
@@ -58,13 +59,11 @@ class CommandFactory(protocol.ReconnectingClientFactory):
         return self.client
 
     def clientConnectionLost(self, connector, reason):
-        self.ready = False
-        self.on_disconnect()
+        self.disconnect()
         protocol.ReconnectingClientFactory.clientConnectionLost(self, connector, reason)
 
     def clientConnectionFailed(self, connector, reason):
-        self.ready = False
-        self.on_disconnect()
+        self.disconnect()
         protocol.ReconnectingClientFactory.clientConnectionFailed(self, connector, reason)
 
     def send_message(self, message):
@@ -76,7 +75,8 @@ class CommandFactory(protocol.ReconnectingClientFactory):
     def receive_message(self, message, message_type):
         self.application.receive_message(message, message_type)
 
-    def on_disconnect(self):
+    def disconnect(self):
+        self.ready = False
         self.application.disconnect(self.protocol.message_type)
 
 
