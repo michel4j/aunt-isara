@@ -14,7 +14,7 @@ from enum import Enum
 from softdev import epics, models, log
 from twisted.internet import reactor
 
-from . import isara
+from . import isara, msgs
 
 PUCK_LIST = [
     '1A', '2A', '3A', '4A', '5A',
@@ -84,9 +84,8 @@ class AuntISARA(models.Model):
     enabled = models.Enum('ENABLED', choices=EnableType, default=1, desc="Robot Control")
     status = models.Enum('STATUS', choices=StatusType, desc="Robot Status")
     log = models.String('LOG', desc="Sample Operation Message", max_length=1024)
-    log_alarm = models.Enum('LOG:ALARM', choices=('INFO', 'WARNING', 'ERROR'), desc="Log Level")
-    warning = models.String('WARNING', max_length=40, desc='Warning message')
-
+    warning = models.String('WARNING', max_length=1024, desc='Warning message')
+    help = models.String('HELP', max_length=1024, desc='Help')
 
     # Inputs and Outputs
     input0_fbk = models.BinaryInput('STATE:INP0', desc='Digital Inputs 00-15')
@@ -109,6 +108,7 @@ class AuntISARA(models.Model):
 
     # Status
     mode_fbk = models.Enum('STATE:mode', choices=ModeType, desc='Control Mode')
+    error_fbk = models.Integer('STATE:error', desc='Error Code')
     position_fbk = models.String('STATE:pos', max_length=40, desc='Position')
     default_fbk = models.Enum('STATE:default', choices=OffOn, desc='Default Status')
     tool_fbk = models.Enum('STATE:tool', choices=ToolType, desc='Tool Status')
@@ -122,7 +122,6 @@ class AuntISARA(models.Model):
     sample_diff_fbk = models.Integer('STATE:diffSmpl', min_val=0, max_val=NUM_PUCK_SAMPLES, desc='On Diff Sample')
     plate_fbk = models.Integer('STATE:plate', min_val=0, max_val=NUM_PLATES, desc='Plate Status')
     barcode_fbk = models.String('STATE:barcode', max_length=40, desc='Barcode Status')
-
     power_fbk = models.Enum('STATE:power', choices=OffOn, desc='Robot Power')
     running_fbk = models.Enum('STATE:running', choices=OffOn, desc='Path Running')
     autofill_fbk = models.Enum('STATE:autofill', choices=OffOn, desc='Auto-Fill')
@@ -156,7 +155,7 @@ class AuntISARA(models.Model):
     plate_param = models.Integer('PAR:plate', min_val=0, max_val=NUM_PLATES, desc='Plate')
     type_param = models.Enum('PAR:puckType', choices=PuckType, default=PuckType.UNIPUCK.value, desc='Puck Type')
     pos_name = models.String('PAR:posName', max_length=40, default='', desc='Position Name')
-    pos_force = models.Enum('PAR:posForce', choices=OffOn, default=0, desc='Force Position')
+    pos_force = models.Enum('PAR:posForce', choices=OffOn, default=0, desc='Overwrite Position')
     pos_tolerance = models.Float('PAR:posTol', default=0.1, prec=2, desc='Position Tolerance')
 
     # General Commands
@@ -171,7 +170,6 @@ class AuntISARA(models.Model):
     tool_cmd = models.Enum('CMD:tool', choices=('Close Tool', 'Open Tool'), desc='Tool')
     faster_cmd = models.Toggle('CMD:faster', desc='Speed Up')
     slower_cmd = models.Toggle('CMD:slower', desc='Speed Down')
-
     magnet_enable = models.Toggle('CMD:magnet', desc='Magnet')
     heater_enable = models.Toggle('CMD:heater', desc='Heater')
     speed_enable = models.Toggle('CMD:speed', desc='Remote Speed')
@@ -203,6 +201,7 @@ class AuntISARA(models.Model):
     reset_params = models.Toggle('CMD:resetParams', desc='Reset Parameters')
     reset_motion = models.Toggle('CMD:resetMotion', desc='Reset Motion')
     save_pos_cmd = models.Toggle('CMD:savePos', desc='Save Position')
+    acknowledge_cmd = models.Toggle('CMD:ackErrors', desc='Acknowledge')
 
     # Simplified commands
     dismount_cmd = models.Toggle('CMD:dismount', desc='Dismount')
@@ -374,7 +373,7 @@ class AuntISARAApp(object):
         epics.threads_init()
         self.recv_on = True
         cmd_index = 0
-        commands = ['state', 'di', 'di2', 'do', 'position']
+        commands = ['state', 'di', 'di2', 'do', 'position', 'message']
         while self.recv_on:
             self.status_received = None
             cmd = commands[cmd_index]
@@ -478,13 +477,13 @@ class AuntISARAApp(object):
     def calc_position(self):
         cur = numpy.array([
             self.ioc.xpos_fbk.get(), self.ioc.ypos_fbk.get(), self.ioc.zpos_fbk.get(),
-            self.ioc.rxpos_fbk.get(), self.ioc.rypos_fbk.get(), self.ioc.rzpos_fbk.get()
+            #self.ioc.rxpos_fbk.get(), self.ioc.rypos_fbk.get(), self.ioc.rzpos_fbk.get()
         ])
         found = False
         for name, info in self.positions.items():
             pos = numpy.array([
                 info['x'], info['y'], info['z'],
-                info['rx'], info['ry'], info['rz'],
+                #info['rx'], info['ry'], info['rz'],
             ])
             dist = numpy.linalg.norm(cur-pos)
             if dist <= info['tol']:
@@ -497,15 +496,15 @@ class AuntISARAApp(object):
 
     def require_position(self, *allowed):
         if not self.positions.keys():
-            self.ioc.warning.put(
-                'No positions have been defined. Please save positions named ` {} `'.format(' | '.join(allowed))
-            )
+            self.ioc.warning.put('No positions have been defined')
+            self.ioc.help.put('Please save position named ` {} `'.format(' | '.join(allowed)))
             return False
 
         if self.ioc.position_fbk.get() in allowed:
             return True
         else:
-            self.ioc.warning.put('Command allowed only from ` {} ` positions'.format(' | '.join(allowed)))
+            self.ioc.warning.put('Command allowed only from ` {} ` position'.format(' | '.join(allowed)))
+            self.ioc.help.put('Please move the robot into the correct position and the re-issue the command')
 
     def require_tool(self, *tools):
         if self.ioc.tool_fbk.get() in [t.value for t in tools]:
@@ -529,12 +528,15 @@ class AuntISARAApp(object):
                         logger.warning('Unable to parse state: {}'.format(message))
                 if self.ioc.mode_fbk.get() == 1:
                     if self.ioc.running_fbk.get():
-                        self.ioc.status.put(StatusType.BUSY.value)
+                        if self.ioc.error_fbk.get() == 0:
+                            self.ioc.status.put(StatusType.BUSY.value)
+                        else:
+                            self.ioc.status.put(StatusType.ERROR.value)
                     else:
                         self.ioc.status.put(StatusType.IDLE.value)
                 else:
                     self.ioc.status.put(StatusType.MANUAL.value)
-                
+
             elif details['context'] == 'position':
                 for i, value in enumerate(details['msg'].split(',')):
                     try:
@@ -559,6 +561,20 @@ class AuntISARAApp(object):
                 self.parse_outputs(bitstring)
             elif details['context'] == 'message':
                 self.ioc.log.put(details['msg'])
+        else:
+            # must be messages
+            self.status_received = 'message'
+            if message.strip():
+                warning, help, bit = msgs.parse_error(message.strip())
+                bitarray = list(bin(self.ioc.error_fbk.get())[2:].rjust(32, '0'))
+                if bit is not None:
+                    bitarray[bit] = '1'
+                    self.ioc.error_fbk.put(int(''.join(bitarray), 2))
+                if warning:
+                    self.ioc.warning.put(warning)
+                if help:
+                    self.ioc.help.put(help)
+
 
     # callbacks
     def do_mount_cmd(self, pv, value, ioc):
@@ -755,7 +771,7 @@ class AuntISARAApp(object):
             self.send_command('pick', *args)
 
     def do_calib_cmd(self, pv, value, ioc):
-        if value and self.require_tool(ToolType.LASER) and self.require_position('HOME'):
+        if value and self.require_position('HOME'):
             self.send_command('toolcal', ioc.tool_param.get())
 
     def do_teach_gonio_cmd(self, pv, value, ioc):
@@ -818,3 +834,9 @@ class AuntISARAApp(object):
                 self.save_positions()
             ioc.pos_force.put(0)
             ioc.pos_name.put('')
+
+    def do_acknowledge_cmd(self, pv, value, ioc):
+        if value:
+            ioc.error_fbk.put(0)
+            ioc.warning.put('')
+            ioc.help.put('')

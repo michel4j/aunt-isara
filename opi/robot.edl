@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 245
-y 93
+x 821
+y 131
 w 754
 h 626
 font "lucida-medium-r-18.0"
@@ -31,7 +31,7 @@ release 0
 x 570
 y 377
 w 173
-h 165
+h 161
 lineColor index 5
 fillColor index 1
 endObjectProperties
@@ -70,10 +70,10 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 12
-y 555
-w 731
-h 26
+x 11
+y 544
+w 222
+h 23
 controlPv "$(device):LOG"
 font "lucida-medium-r-10.0"
 fontAlign "center"
@@ -1140,7 +1140,7 @@ major 4
 minor 1
 release 0
 x 465
-y 342
+y 352
 w 95
 h 30
 fgColor index 14
@@ -1165,7 +1165,7 @@ major 4
 minor 1
 release 0
 x 465
-y 307
+y 317
 w 95
 h 30
 fgColor index 14
@@ -1190,7 +1190,7 @@ major 4
 minor 1
 release 0
 x 354
-y 307
+y 317
 w 95
 h 30
 fgColor index 14
@@ -1305,7 +1305,7 @@ major 4
 minor 1
 release 0
 x 354
-y 342
+y 352
 w 95
 h 30
 fgColor index 14
@@ -1329,9 +1329,9 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 671
-y 586
-w 72
+x 244
+y 222
+w 94
 h 26
 fgColor index 35
 onColor index 20
@@ -1380,7 +1380,7 @@ major 4
 minor 1
 release 0
 x 243
-y 307
+y 317
 w 95
 h 30
 fgColor index 14
@@ -3005,7 +3005,7 @@ release 0
 x 11
 y 439
 w 222
-h 103
+h 100
 lineColor index 5
 fillColor index 0
 endObjectProperties
@@ -3016,14 +3016,13 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 12
-y 585
-w 655
-h 26
+x 242
+y 544
+w 452
+h 24
 controlPv "$(device):WARNING"
-font "lucida-bold-r-10.0"
-fontAlign "center"
-fgColor index 78
+font "lucida-medium-r-10.0"
+fgColor index 40
 bgColor index 9
 limitsFromDb
 nullColor index 0
@@ -3041,7 +3040,7 @@ release 0
 x 241
 y 439
 w 214
-h 104
+h 100
 lineColor index 5
 fillColor index 0
 endObjectProperties
@@ -3575,7 +3574,7 @@ major 4
 minor 1
 release 0
 x 243
-y 342
+y 352
 w 95
 h 30
 fgColor index 14
@@ -3600,7 +3599,7 @@ major 4
 minor 1
 release 0
 x 465
-y 272
+y 282
 w 95
 h 30
 fgColor index 14
@@ -3625,7 +3624,7 @@ major 4
 minor 1
 release 0
 x 354
-y 272
+y 282
 w 95
 h 30
 fgColor index 14
@@ -3650,7 +3649,7 @@ major 4
 minor 1
 release 0
 x 243
-y 272
+y 282
 w 95
 h 30
 fgColor index 14
@@ -5425,6 +5424,50 @@ botShadowColor index 10
 controlPv "$(device):CMD:teachGonio"
 indicatorPv "$(device):CMD:teachGonio"
 onLabel "Teach Gonio"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Multi-line Text Update)
+object multiLineTextUpdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 11
+y 573
+w 732
+h 36
+controlPv "$(device):HELP"
+fgColour index 30
+bgColour index 9
+fill
+font "lucida-medium-r-10.0"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 698
+y 543
+w 45
+h 26
+fgColor index 14
+onColor index 76
+offColor index 76
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:ackErrors"
+indicatorPv "$(device):CMD:ackErrors"
+onLabel "ACK"
+offLabel "ACK"
+labelType "literal"
 buttonType "push"
 3d
 font "lucida-medium-r-10.0"
