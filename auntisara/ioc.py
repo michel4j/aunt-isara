@@ -79,10 +79,14 @@ class EnableType(Enum):
     DISABLED, ENABLED = range(2)
 
 
+class ErrorType(Enum):
+    OK, WAITING, WARNING, ERROR = range(4)
+
 class AuntISARA(models.Model):
     connected = models.Enum('CONNECTED', choices=ActiveType, default=0, desc="Robot Connection")
     enabled = models.Enum('ENABLED', choices=EnableType, default=1, desc="Robot Control")
     status = models.Enum('STATUS', choices=StatusType, desc="Robot Status")
+    health = models.Enum('HEALTH', choices=ErrorType, desc="Robot Health")
     log = models.String('LOG', desc="Sample Operation Message", max_length=1024)
     warning = models.String('WARNING', max_length=1024, desc='Warning message')
     help = models.String('HELP', max_length=1024, desc='Help')
@@ -526,12 +530,14 @@ class AuntISARAApp(object):
                         record.put(converter(value))
                     except ValueError:
                         logger.warning('Unable to parse state: {}'.format(message))
-                if self.ioc.mode_fbk.get() == 1:
+                if self.ioc.error_fbk.get() != 0:
+                    if self.ioc.health.get() == ErrorType.WAITING.value:
+                        self.ioc.status.put(StatusType.WAITING.value)
+                    else:
+                        self.ioc.status.put(StatusType.ERROR.value)
+                elif self.ioc.mode_fbk.get() == 1:
                     if self.ioc.running_fbk.get():
-                        if self.ioc.error_fbk.get() == 0:
-                            self.ioc.status.put(StatusType.BUSY.value)
-                        else:
-                            self.ioc.status.put(StatusType.ERROR.value)
+                        self.ioc.status.put(StatusType.BUSY.value)
                     else:
                         self.ioc.status.put(StatusType.IDLE.value)
                 else:
@@ -570,10 +576,16 @@ class AuntISARAApp(object):
                 if bit is not None:
                     bitarray[bit] = '1'
                     self.ioc.error_fbk.put(int(''.join(bitarray), 2))
+                    if bit == 15:
+                        self.ioc.health.put(ErrorType.WAITING.value)
+                    else:
+                        self.ioc.health.put(ErrorType.ERROR.value)
                 if warning:
                     self.ioc.warning.put(warning)
                 if help:
                     self.ioc.help.put(help)
+            else:
+                self.ioc.health.put(ErrorType.OK.value)
 
 
     # callbacks
@@ -632,6 +644,9 @@ class AuntISARAApp(object):
     def do_reset_cmd(self, pv, value, ioc):
         if value:
             self.send_command('reset')
+            self.ioc.error_fbk.put(0)
+            self.ioc.help.put('')
+            self.ioc.warning.put('')
 
     def do_restart_cmd(self, pv, value, ioc):
         if value:

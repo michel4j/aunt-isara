@@ -1,5 +1,6 @@
 import re
 
+
 MESSAGES = {
     0: {
         "error": "doors opened",
@@ -103,42 +104,6 @@ MESSAGES = {
         "description": "Maximum time for filling up was exceeded",
         "help": "Check LN2 main supply, check level sensor, and contact IRELEC support"
     },
-    20: {
-        "error": "Path .* doesn't exist",
-        "description": "Requested trajectory does not exist",
-        "help": "Make sure the command is well written"
-    },
-    21: {
-        "error": "BackUp is running",
-        "description": "BackUp is running",
-        "help": ""
-    },
-    22: {
-        "error": "BackUp error",
-        "description": "BackUp error",
-        "help": "Re-insert USB Key properly"
-    },
-    23: {
-        "error": "BackUp completed",
-        "description": "BackUp completed",
-        "help": ""
-    },
-    24: {
-        "error": "Restore is running",
-        "description": "Restore is running",
-        "help": ""
-    },
-    25: {
-        "error": "Restore error",
-        "description": "Restore error",
-        "help": "Re-insert USB Key with valid backup file"
-    },
-    26: {
-        "error": "Restore completed",
-        "description": "Restore completed",
-        "help": ""
-    },
-
 }
 
 
