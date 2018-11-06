@@ -149,6 +149,7 @@ class AuntISARA(models.Model):
     rypos_fbk = models.Float('STATE:posRY', prec=2, desc='RY-Pos')
     rzpos_fbk = models.Float('STATE:posRZ', prec=2, desc='RZ-Pos')
     mounted_fbk = models.String('STATE:onDiff', max_length=40, desc='Mounted')
+    tooled_fbk = models.String('STATE:onTool', max_length=40, desc='Tooled')
 
     # Params
     next_param = models.String('PAR:nextPort', max_length=40, default='', desc='Port')
@@ -855,3 +856,7 @@ class AuntISARAApp(object):
             ioc.error_fbk.put(0)
             ioc.warning.put('')
             ioc.help.put('')
+
+    def do_sample_tool_fbk(self, pv, value, ioc):
+        port = pin2port(ioc.puck_tool_fbk.get(), value)
+        ioc.tooled_fbk.put(port)

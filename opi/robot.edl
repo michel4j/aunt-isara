@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 821
-y 131
+y 168
 w 754
 h 626
 font "lucida-medium-r-18.0"
@@ -222,7 +222,7 @@ major 4
 minor 0
 release 0
 x 11
-y 95
+y 96
 w 112
 h 41
 
@@ -235,7 +235,7 @@ major 4
 minor 0
 release 0
 x 11
-y 95
+y 96
 w 112
 h 41
 lineColor index 14
@@ -250,7 +250,7 @@ major 4
 minor 7
 release 0
 x 13
-y 97
+y 98
 w 103
 h 14
 controlPv "$(device):STATE:tool.DESC"
@@ -272,7 +272,7 @@ major 4
 minor 7
 release 0
 x 12
-y 110
+y 111
 w 109
 h 25
 controlPv "$(device):STATE:tool"
@@ -380,7 +380,7 @@ major 4
 minor 0
 release 0
 x 135
-y 95
+y 96
 w 112
 h 41
 
@@ -393,7 +393,7 @@ major 4
 minor 0
 release 0
 x 135
-y 95
+y 96
 w 112
 h 41
 lineColor index 14
@@ -408,7 +408,7 @@ major 4
 minor 7
 release 0
 x 137
-y 97
+y 98
 w 103
 h 14
 controlPv "$(device):STATE:path.DESC"
@@ -430,7 +430,7 @@ major 4
 minor 7
 release 0
 x 136
-y 110
+y 111
 w 109
 h 25
 controlPv "$(device):STATE:path"
@@ -459,7 +459,7 @@ major 4
 minor 0
 release 0
 x 259
-y 95
+y 96
 w 112
 h 41
 
@@ -472,7 +472,7 @@ major 4
 minor 0
 release 0
 x 259
-y 95
+y 96
 w 112
 h 41
 lineColor index 14
@@ -487,7 +487,7 @@ major 4
 minor 7
 release 0
 x 261
-y 97
+y 98
 w 103
 h 14
 controlPv "$(device):STATE:pos.DESC"
@@ -509,7 +509,7 @@ major 4
 minor 7
 release 0
 x 260
-y 110
+y 111
 w 109
 h 25
 controlPv "$(device):STATE:pos"
@@ -820,7 +820,7 @@ major 4
 minor 0
 release 0
 x 631
-y 95
+y 96
 w 112
 h 41
 
@@ -833,7 +833,7 @@ major 4
 minor 0
 release 0
 x 631
-y 95
+y 96
 w 112
 h 41
 lineColor index 14
@@ -848,7 +848,7 @@ major 4
 minor 7
 release 0
 x 633
-y 97
+y 98
 w 103
 h 14
 controlPv "$(device):STATE:speed.DESC"
@@ -870,7 +870,7 @@ major 4
 minor 7
 release 0
 x 632
-y 110
+y 111
 w 109
 h 25
 controlPv "$(device):STATE:speed"
@@ -901,7 +901,7 @@ major 4
 minor 0
 release 0
 x 383
-y 95
+y 96
 w 112
 h 41
 
@@ -914,7 +914,7 @@ major 4
 minor 0
 release 0
 x 383
-y 95
+y 96
 w 112
 h 41
 lineColor index 14
@@ -929,7 +929,7 @@ major 4
 minor 7
 release 0
 x 385
-y 97
+y 98
 w 103
 h 14
 controlPv "$(device):STATE:onDiff.DESC"
@@ -951,7 +951,7 @@ major 4
 minor 7
 release 0
 x 384
-y 110
+y 111
 w 109
 h 25
 controlPv "$(device):STATE:onDiff"
@@ -2519,86 +2519,6 @@ useDisplayBg
 limitsFromDb
 nullColor index 0
 colorPv "$(device):INP:cryoLevel"
-smartRefresh
-fastUpdate
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 507
-y 95
-w 112
-h 41
-
-beginGroup
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 507
-y 95
-w 112
-h 41
-lineColor index 14
-fill
-fillColor index 9
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 509
-y 97
-w 103
-h 14
-controlPv "$(device):STATE:autofill.DESC"
-format "string"
-font "lucida-medium-r-10.0"
-fgColor index 5
-bgColor index 0
-useDisplayBg
-nullColor index 0
-smartRefresh
-newPos
-objType "monitors"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 508
-y 110
-w 109
-h 25
-controlPv "$(device):STATE:autofill"
-font "lucida-bold-r-10.0"
-fontAlign "center"
-fgColor index 83
-bgColor index 9
-useDisplayBg
-limitsFromDb
-nullColor index 0
-colorPv "$(device):STATE:autofill"
 smartRefresh
 fastUpdate
 useHexPrefix
@@ -5472,5 +5392,84 @@ buttonType "push"
 3d
 font "lucida-medium-r-10.0"
 objType "controls"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 507
+y 96
+w 112
+h 41
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 507
+y 96
+w 112
+h 41
+lineColor index 14
+fill
+fillColor index 9
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 509
+y 98
+w 103
+h 14
+controlPv "$(device):STATE:onTool.DESC"
+format "string"
+font "lucida-medium-r-10.0"
+fgColor index 5
+bgColor index 0
+useDisplayBg
+nullColor index 0
+smartRefresh
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 508
+y 111
+w 109
+h 25
+controlPv "$(device):STATE:onTool"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 36
+bgColor index 9
+useDisplayBg
+limitsFromDb
+nullColor index 0
+smartRefresh
+fastUpdate
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
 endObjectProperties
 
