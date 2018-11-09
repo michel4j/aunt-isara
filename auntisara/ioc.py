@@ -44,7 +44,7 @@ class PuckType(Enum):
 
 
 class StatusType(Enum):
-    IDLE, WAITING, BUSY, MANUAL, ERROR = range(5)
+    IDLE, WAITING, BUSY, STANDBY, FAULT = range(5)
 
 
 class OffOn(Enum):
@@ -128,6 +128,7 @@ class AuntISARA(models.Model):
     barcode_fbk = models.String('STATE:barcode', max_length=40, desc='Barcode Status')
     power_fbk = models.Enum('STATE:power', choices=OffOn, desc='Robot Power')
     running_fbk = models.Enum('STATE:running', choices=OffOn, desc='Path Running')
+    trajectory_fbk = models.Enum('STATE:traj', choices=OffOn, desc='Traj Running')
     autofill_fbk = models.Enum('STATE:autofill', choices=OffOn, desc='Auto-Fill')
     approach_fbk = models.Enum('STATE:approach', choices=OffOn, desc='Approaching')
     magnet_fbk = models.Enum('STATE:magnet', choices=OffOn, desc='Magnet')
@@ -148,8 +149,8 @@ class AuntISARA(models.Model):
     rxpos_fbk = models.Float('STATE:posRX', prec=2, desc='RX-Pos')
     rypos_fbk = models.Float('STATE:posRY', prec=2, desc='RY-Pos')
     rzpos_fbk = models.Float('STATE:posRZ', prec=2, desc='RZ-Pos')
-    mounted_fbk = models.String('STATE:onDiff', max_length=40, desc='Mounted')
-    tooled_fbk = models.String('STATE:onTool', max_length=40, desc='Tooled')
+    mounted_fbk = models.String('STATE:onDiff', max_length=40, desc='On Gonio')
+    tooled_fbk = models.String('STATE:onTool', max_length=40, desc='On Tool')
 
     # Params
     next_param = models.String('PAR:nextPort', max_length=40, default='', desc='Port')
@@ -206,7 +207,6 @@ class AuntISARA(models.Model):
     reset_params = models.Toggle('CMD:resetParams', desc='Reset Parameters')
     reset_motion = models.Toggle('CMD:resetMotion', desc='Reset Motion')
     save_pos_cmd = models.Toggle('CMD:savePos', desc='Save Position')
-    acknowledge_cmd = models.Toggle('CMD:ackErrors', desc='Acknowledge')
 
     # Simplified commands
     dismount_cmd = models.Toggle('CMD:dismount', desc='Dismount')
@@ -237,7 +237,7 @@ def port2args(port):
 def pin2port(puck, sample):
     # converts puck=1, sample=16 to '1A16'
     if all((puck, sample)):
-        return '{}{}'.format(PUCK_LIST[puck], sample)
+        return '{}{}'.format(PUCK_LIST[puck-1], sample)
     else:
         return ''
 
@@ -311,13 +311,16 @@ class AuntISARAApp(object):
             1: self.ioc.emergency_ok,
             2: self.ioc.collision_ok,
             8: self.ioc.gonio_ready,
-            9: self.ioc.sample_detected,
             47: self.ioc.cryojet_fbk,
             31: self.ioc.heartbeat,
+        }
+        self.rev_input_map = {
+            9: self.ioc.sample_detected,
         }
         self.output_map = {
             1: self.ioc.tool_open_fbk,
             4: self.ioc.approach_fbk,
+            5: self.ioc.trajectory_fbk,
             6: self.ioc.magnet_fbk,
             8: self.ioc.software_fbk,
             12: self.ioc.heater_fbk
@@ -358,7 +361,7 @@ class AuntISARAApp(object):
             try:
                 self.command_client.send_message(command)
             except Exception as e:
-                logger.error(e)
+                logger.error('{}: {}'.format(command, e))
             time.sleep(0)
 
     def receiver(self):
@@ -371,7 +374,7 @@ class AuntISARAApp(object):
             try:
                 self.process_message(message, message_type)
             except Exception as e:
-                logger.error(e)
+                logger.error('{}: {}'.format(message, e))
             time.sleep(0)
 
     def status_monitor(self):
@@ -453,8 +456,9 @@ class AuntISARAApp(object):
             pv.put(int(bits, 2))
         for i, bit in enumerate(bitstring):
             if i in self.input_map:
-                pv = self.input_map[i]
-                pv.put(int(bit))
+                self.input_map[i].put(int(bit))
+            if i in self.rev_input_map:
+                self.rev_input_map[i].put((int(bit) + 1) % 2)
 
         # setup LN2 status & alarms
         hihi, hi, lo, lolo = map(int, bitstring[3:7])
@@ -531,18 +535,20 @@ class AuntISARAApp(object):
                         record.put(converter(value))
                     except ValueError:
                         logger.warning('Unable to parse state: {}'.format(message))
-                if self.ioc.error_fbk.get() != 0:
+
+                # determine robot state
+                #IDLE, WAITING, BUSY, STANDBY, FAULT
+                if self.ioc.running_fbk.get():
                     if self.ioc.health.get() == ErrorType.WAITING.value:
                         self.ioc.status.put(StatusType.WAITING.value)
-                    else:
-                        self.ioc.status.put(StatusType.ERROR.value)
-                elif self.ioc.mode_fbk.get() == 1:
-                    if self.ioc.running_fbk.get():
+                    elif self.ioc.error_fbk.get() != 0:
+                        self.ioc.status.put(StatusType.FAULT.value)
+                    elif self.ioc.trajectory_fbk.get():
                         self.ioc.status.put(StatusType.BUSY.value)
                     else:
-                        self.ioc.status.put(StatusType.IDLE.value)
+                        self.ioc.status.put(StatusType.STANDBY.value)
                 else:
-                    self.ioc.status.put(StatusType.MANUAL.value)
+                    self.ioc.status.put(StatusType.IDLE.value)
 
             elif details['context'] == 'position':
                 for i, value in enumerate(details['msg'].split(',')):
@@ -581,10 +587,8 @@ class AuntISARAApp(object):
                         self.ioc.health.put(ErrorType.WAITING.value)
                     else:
                         self.ioc.health.put(ErrorType.ERROR.value)
-                if warning:
-                    self.ioc.warning.put(warning)
-                if help:
-                    self.ioc.help.put(help)
+                self.ioc.warning.put(warning)
+                self.ioc.help.put(help)
             else:
                 self.ioc.health.put(ErrorType.OK.value)
 
@@ -827,6 +831,7 @@ class AuntISARAApp(object):
     def do_sample_diff_fbk(self, pv, value, ioc):
         port = pin2port(ioc.puck_diff_fbk.get(), value)
         ioc.mounted_fbk.put(port)
+        ioc.next_param.put('')
 
     def do_plate_fbk(self, pv, value, ioc):
         if value:
@@ -850,12 +855,6 @@ class AuntISARAApp(object):
                 self.save_positions()
             ioc.pos_force.put(0)
             ioc.pos_name.put('')
-
-    def do_acknowledge_cmd(self, pv, value, ioc):
-        if value:
-            ioc.error_fbk.put(0)
-            ioc.warning.put('')
-            ioc.help.put('')
 
     def do_sample_tool_fbk(self, pv, value, ioc):
         port = pin2port(ioc.puck_tool_fbk.get(), value)

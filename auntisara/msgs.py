@@ -104,6 +104,11 @@ MESSAGES = {
         "description": "Maximum time for filling up was exceeded",
         "help": "Check LN2 main supply, check level sensor, and contact IRELEC support"
     },
+    20: {
+        "error": "collision at the gonio",
+        "description": "Collision at gonio",
+        "help": "Abort task and safely return robot home"
+    }
 }
 
 
