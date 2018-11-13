@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 47
-y 80
+x 0
+y 64
 w 754
 h 626
 font "lucida-medium-r-18.0"
@@ -28,10 +28,39 @@ beginObjectProperties
 major 4
 minor 0
 release 0
+x 240
+y 191
+w 321
+h 146
+lineColor index 5
+fillColor index 1
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 240
+y 344
+w 321
+h 81
+lineColor index 5
+fill
+fillColor index 70
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
 x 11
 y 142
 w 222
-h 142
+h 282
 lineColor index 5
 fillColor index 0
 endObjectProperties
@@ -59,7 +88,7 @@ release 0
 x 570
 y 145
 w 174
-h 138
+h 218
 lineColor index 5
 fillColor index 1
 endObjectProperties
@@ -92,10 +121,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 244
+x 248
 y 198
-w 69
-h 21
+w 67
+h 22
 fgColor index 14
 onColor index 75
 offColor index 75
@@ -1063,7 +1092,7 @@ minor 0
 release 0
 x 404
 y 145
-w 157
+w 158
 h 30
 
 beginGroup
@@ -1076,7 +1105,7 @@ minor 0
 release 0
 x 404
 y 145
-w 156
+w 157
 h 29
 lineColor index 9
 fillColor index 0
@@ -1090,7 +1119,7 @@ minor 1
 release 0
 x 479
 y 145
-w 82
+w 83
 h 30
 fgColor index 14
 onColor index 55
@@ -1139,10 +1168,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 408
-y 315
-w 69
-h 21
+x 248
+y 305
+w 67
+h 22
 fgColor index 14
 onColor index 1
 offColor index 1
@@ -1164,10 +1193,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 244
-y 227
-w 69
-h 21
+x 248
+y 225
+w 67
+h 22
 fgColor index 14
 onColor index 50
 offColor index 50
@@ -1189,10 +1218,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 326
-y 227
-w 69
-h 21
+x 322
+y 225
+w 67
+h 22
 fgColor index 14
 onColor index 61
 offColor index 61
@@ -1214,10 +1243,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 491
+x 484
 y 198
-w 69
-h 21
+w 67
+h 22
 fgColor index 123
 onColor index 45
 offColor index 45
@@ -1239,10 +1268,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 467
-y 465
-w 91
-h 21
+x 606
+y 247
+w 100
+h 25
 fgColor index 14
 onColor index 69
 offColor index 69
@@ -1304,10 +1333,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 326
-y 315
-w 69
-h 21
+x 406
+y 277
+w 67
+h 22
 fgColor index 14
 onColor index 63
 offColor index 63
@@ -1329,10 +1358,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 491
-y 226
-w 69
-h 21
+x 484
+y 225
+w 67
+h 22
 fgColor index 35
 onColor index 20
 offColor index 20
@@ -1354,10 +1383,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 326
+x 322
 y 198
-w 69
-h 21
+w 67
+h 22
 fgColor index 14
 onColor index 40
 offColor index 40
@@ -1379,10 +1408,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 244
-y 287
-w 69
-h 21
+x 248
+y 277
+w 67
+h 22
 fgColor index 14
 onColor index 59
 offColor index 59
@@ -1404,10 +1433,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 244
-y 393
-w 69
-h 21
+x 406
+y 305
+w 67
+h 22
 fgColor index 14
 onColor index 55
 offColor index 55
@@ -1429,10 +1458,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 326
-y 393
-w 69
-h 21
+x 485
+y 305
+w 67
+h 22
 fgColor index 14
 onColor index 55
 offColor index 55
@@ -1458,10 +1487,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 244
-y 364
-w 69
-h 21
+x 485
+y 277
+w 67
+h 22
 fgColor index 14
 onColor index 55
 offColor index 55
@@ -2349,7 +2378,7 @@ minor 0
 release 0
 x 241
 y 439
-w 214
+w 321
 h 100
 lineColor index 5
 fillColor index 0
@@ -2559,137 +2588,9 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 581
-y 209
-w 146
-h 19
-
-beginGroup
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 654
-y 209
-w 73
-h 19
-controlPv "$(device):PAR:smpl.DESC"
-font "lucida-medium-r-10.0"
-fgColor index 12
-bgColor index 0
-useDisplayBg
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 581
-y 209
-w 69
-h 19
-controlPv "$(device):PAR:smpl"
-font "lucida-bold-r-10.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-editable
-limitsFromDb
-nullColor index 0
-useKp
-useHexPrefix
-useAlarmBorder
-newPos
-objType "controls"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 581
-y 185
-w 146
-h 19
-
-beginGroup
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 654
-y 185
-w 73
-h 19
-controlPv "$(device):PAR:puck.DESC"
-font "lucida-medium-r-10.0"
-fgColor index 12
-bgColor index 0
-useDisplayBg
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 581
-y 185
-w 69
-h 19
-controlPv "$(device):PAR:puck"
-font "lucida-bold-r-10.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-editable
-limitsFromDb
-nullColor index 0
-useKp
-useHexPrefix
-useAlarmBorder
-newPos
-objType "controls"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 581
-y 160
-w 146
+x 368
+y 350
+w 107
 h 20
 
 beginGroup
@@ -2700,74 +2601,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 654
-y 161
-w 73
-h 19
-controlPv "$(device):PAR:tool.DESC"
-font "lucida-medium-r-10.0"
-fgColor index 12
-bgColor index 0
-useDisplayBg
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 581
-y 160
-w 69
-h 19
-controlPv "$(device):PAR:tool"
-format "gfloat"
-font "lucida-bold-r-10.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-editable
-limitsFromDb
-nullColor index 0
-useKp
-useHexPrefix
-useAlarmBorder
-newPos
-objType "controls"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 581
-y 232
-w 146
-h 20
-
-beginGroup
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 654
-y 233
-w 73
+x 422
+y 351
+w 54
 h 19
 controlPv "$(device):PAR:barcode.DESC"
 font "lucida-medium-r-10.0"
@@ -2787,9 +2623,9 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 581
-y 232
-w 69
+x 368
+y 350
+w 51
 h 19
 controlPv "$(device):PAR:barcode"
 font "lucida-bold-r-10.0"
@@ -2810,83 +2646,16 @@ endGroup
 
 endObjectProperties
 
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 581
-y 256
-w 146
-h 20
-
-beginGroup
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 654
-y 257
-w 73
-h 19
-controlPv "$(device):PAR:plate.DESC"
-font "lucida-medium-r-10.0"
-fgColor index 12
-bgColor index 0
-useDisplayBg
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 581
-y 256
-w 69
-h 19
-controlPv "$(device):PAR:plate"
-font "lucida-bold-r-10.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-editable
-limitsFromDb
-nullColor index 0
-useKp
-useHexPrefix
-useAlarmBorder
-newPos
-objType "controls"
-endObjectProperties
-
-endGroup
-
-visPv "$(device):STATE:tool"
-visMin "3"
-visMax "4"
-endObjectProperties
-
 # (Button)
 object activeButtonClass
 beginObjectProperties
 major 4
 minor 1
 release 0
-x 244
-y 315
-w 69
-h 21
+x 327
+y 277
+w 67
+h 22
 fgColor index 14
 onColor index 55
 offColor index 55
@@ -2908,8 +2677,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 490
-y 287
+x 479
+y 398
 w 69
 h 21
 fgColor index 14
@@ -2933,8 +2702,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 408
-y 287
+x 479
+y 374
 w 69
 h 21
 fgColor index 14
@@ -2958,8 +2727,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 326
-y 287
+x 479
+y 350
 w 69
 h 21
 fgColor index 14
@@ -4679,13 +4448,13 @@ minor 1
 release 1
 x 580
 y 141
-w 64
+w 100
 h 11
 font "lucida-bold-r-10.0"
 fgColor index 14
 bgColor index 3
 value {
-  "Parameters"
+  "Tools/Calibration"
 }
 autoSize
 endObjectProperties
@@ -4696,10 +4465,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 467
-y 518
-w 91
-h 21
+x 606
+y 312
+w 100
+h 25
 fgColor index 14
 onColor index 69
 offColor index 69
@@ -4721,10 +4490,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 467
-y 492
-w 91
-h 21
+x 606
+y 279
+w 100
+h 25
 fgColor index 14
 onColor index 69
 offColor index 69
@@ -4842,10 +4611,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 490
-y 315
-w 69
-h 21
+x 327
+y 305
+w 67
+h 22
 fgColor index 14
 onColor index 1
 offColor index 1
@@ -5527,10 +5296,10 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 467
-y 439
-w 91
-h 21
+x 606
+y 214
+w 100
+h 25
 fgColor index 14
 onColor index 69
 offColor index 69
@@ -5544,5 +5313,272 @@ buttonType "push"
 3d
 font "lucida-medium-r-10.0"
 objType "controls"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 251
+y 351
+w 107
+h 19
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 305
+y 351
+w 54
+h 19
+controlPv "$(device):PAR:puck.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 251
+y 351
+w 51
+h 19
+controlPv "$(device):PAR:puck"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+limitsFromDb
+nullColor index 0
+useKp
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 251
+y 375
+w 107
+h 19
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 305
+y 375
+w 54
+h 19
+controlPv "$(device):PAR:smpl.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 251
+y 375
+w 51
+h 19
+controlPv "$(device):PAR:smpl"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+limitsFromDb
+nullColor index 0
+useKp
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 251
+y 398
+w 107
+h 20
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 305
+y 399
+w 54
+h 19
+controlPv "$(device):PAR:plate.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 251
+y 398
+w 51
+h 19
+controlPv "$(device):PAR:plate"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+limitsFromDb
+nullColor index 0
+useKp
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+visPv "$(device):STATE:tool"
+visMin "3"
+visMax "4"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 607
+y 164
+w 73
+h 19
+controlPv "$(device):PAR:tool.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 9
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 607
+y 184
+w 100
+h 21
+controlPv "$(device):PAR:tool"
+format "gfloat"
+font "lucida-bold-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+limitsFromDb
+nullColor index 0
+useKp
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 466
+y 462
+w 86
+h 50
+font "helvetica-medium-r-8.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Required Positions:"
+  "SOAK"
+  "HOME "
+  "HOME A"
+  "HOME B .. one per tool"
+}
+autoSize
 endObjectProperties
 
