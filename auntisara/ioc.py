@@ -818,8 +818,7 @@ class AuntISARAApp(object):
             self.send_command('teach_gonio', ToolType.LASER.value)
 
     def do_teach_puck_cmd(self, pv, value, ioc):
-        allowed = (ToolType.LASER)
-        if value and self.require_tool(*allowed) and self.require_position('HOME'):
+        if value and self.require_tool(ToolType.LASER) and self.require_position('HOME'):
             if ioc.puck_param.get():
                 self.send_command('teach_puck', ToolType.LASER.value, ioc.puck_param.get())
             else:
