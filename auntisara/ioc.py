@@ -719,7 +719,7 @@ class AuntISARAApp(object):
             self.send_command('home', ioc.too_fbk.get())
 
     def do_change_tool_cmd(self, pv, value, ioc):
-        if value and self.require_position('HOME'):
+        if value and self.require_position('HOME') and ioc.tool_param.get() != ioc.tool_fbk.get():
             self.send_command('home', ioc.tool_param.get())
 
     def do_safe_cmd(self, pv, value, ioc):
