@@ -820,7 +820,10 @@ class AuntISARAApp(object):
     def do_teach_puck_cmd(self, pv, value, ioc):
         allowed = (ToolType.LASER)
         if value and self.require_tool(*allowed) and self.require_position('HOME'):
-            self.send_command('teach_puck', ToolType.LASER.value)
+            if ioc.puck_param.get():
+                self.send_command('teach_puck', ToolType.LASER.value, ioc.puck_param.get())
+            else:
+                self.warn('Please select a puck number')
 
     def do_set_diff_cmd(self, pv, value, ioc):
         if value:
