@@ -834,7 +834,7 @@ class AuntISARAApp(object):
 
     def do_set_tool_cmd(self, pv, value, ioc):
         if value:
-            current = ioc.sample_param.get()
+            current = ioc.next_param.get()
             if current.strip():
                 params = port2args(current)
                 self.send_command('settool', params['puck'], params['sample'], ioc.type_param.get())
@@ -843,7 +843,7 @@ class AuntISARAApp(object):
 
     def do_set_tool2_cmd(self, pv, value, ioc):
         if value and self.require_tool(ToolType.DOUBLE):
-            current = ioc.sample_param.get()
+            current = ioc.next_param.get()
             if current.strip():
                 params = port2args(current)
                 self.send_command('settool2', params['puck'], params['sample'], ioc.type_param.get())
