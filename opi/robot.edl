@@ -434,7 +434,7 @@ y 111
 w 109
 h 25
 controlPv "$(device):STATE:path"
-font "lucida-bold-r-10.0"
+font "lucida-medium-r-10.0"
 fontAlign "center"
 fgColor index 36
 bgColor index 9

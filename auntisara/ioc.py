@@ -722,7 +722,7 @@ class AuntISARAApp(object):
 
     def do_home_cmd(self, pv, value, ioc):
         if value and self.require_position('SOAK', 'HOME'):
-            self.send_command('home', ioc.too_fbk.get())
+            self.send_command('home', ioc.tool_fbk.get())
 
     def do_change_tool_cmd(self, pv, value, ioc):
         if value and self.require_position('HOME'):
