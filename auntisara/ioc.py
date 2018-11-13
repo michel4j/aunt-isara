@@ -608,7 +608,7 @@ class AuntISARAApp(object):
             current = ioc.mounted_fbk.get().strip()
             command = 'put' if not current else 'getput'
             params = port2args(port)
-            if all(params.values()):
+            if params and all(params.values()):
                 if params['mode'] == 'puck':
                     ioc.tool_param.put(params['tool'])
                     ioc.puck_param.put(params['puck'])
@@ -617,25 +617,24 @@ class AuntISARAApp(object):
                     ioc.tool_param.put(params['tool'])
                     ioc.plate_param.put(params['plate'])
                 else:
+                    self.warn('Invalid Port')
                     return
-            if command == 'put':
-                self.ioc.put_cmd.put(1)
-            elif command == 'getput':
-                self.ioc.getput_cmd.put(1)
+                if command == 'put':
+                    self.ioc.put_cmd.put(1)
+                elif command == 'getput':
+                    self.ioc.getput_cmd.put(1)
+            else:
+                self.warn('Invalid Port')
 
     def do_dismount_cmd(self, pv, value, ioc):
         if value and self.require_position('SOAK'):
             current = ioc.mounted_fbk.get().strip()
             params = port2args(current)
-            if all(params.values()):
-                if params['mode'] == 'puck':
-                    command = 'get'
-                elif params['mode'] == 'plate':
-                    command = 'getplate'
-                else:
-                    return
+            if params and all(params.values()):
                 ioc.tool_param.put(params['tool'])
-            self.ioc.get_cmd.put(1)
+                self.ioc.get_cmd.put(1)
+            else:
+                self.warn('Invalid Port')
 
     def do_power_cmd(self, pv, value, ioc):
         if value:
@@ -825,15 +824,31 @@ class AuntISARAApp(object):
 
     def do_set_diff_cmd(self, pv, value, ioc):
         if value:
-            self.send_command('setdiffr', ioc.puck_param.get(), ioc.sample_param.get(), ioc.type_param.get())
+            current = ioc.sample_param.get()
+            if current.strip():
+                params = port2args(current)
+                self.send_command('setdiffr', params['puck'], params['sample'], ioc.type_param.get())
+            else:
+                self.warn('No Sample specified')
+
 
     def do_set_tool_cmd(self, pv, value, ioc):
         if value:
-            self.send_command('settool', ioc.puck_param.get(), ioc.sample_param.get(), ioc.type_param.get())
+            current = ioc.sample_param.get()
+            if current.strip():
+                params = port2args(current)
+                self.send_command('settool', params['puck'], params['sample'], ioc.type_param.get())
+            else:
+                self.warn('No Sample specified')
 
     def do_set_tool2_cmd(self, pv, value, ioc):
         if value and self.require_tool(ToolType.DOUBLE):
-            self.send_command('settool2', ioc.puck_param.get(), ioc.sample_param.get(), ioc.type_param.get())
+            current = ioc.sample_param.get()
+            if current.strip():
+                params = port2args(current)
+                self.send_command('settool2', params['puck'], params['sample'], ioc.type_param.get())
+            else:
+                self.warn('No Sample specified')
 
     def do_clear_cmd(self, pv, value, ioc):
         if value:
