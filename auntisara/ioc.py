@@ -617,14 +617,14 @@ class AuntISARAApp(object):
                     ioc.tool_param.put(params['tool'])
                     ioc.plate_param.put(params['plate'])
                 else:
-                    self.warn('Invalid Port')
+                    self.warn('Invalid Port for mounting')
                     return
                 if command == 'put':
                     self.ioc.put_cmd.put(1)
                 elif command == 'getput':
                     self.ioc.getput_cmd.put(1)
             else:
-                self.warn('Invalid Port')
+                self.warn('Invalid Port for mounting')
 
     def do_dismount_cmd(self, pv, value, ioc):
         if value and self.require_position('SOAK'):
@@ -634,7 +634,7 @@ class AuntISARAApp(object):
                 ioc.tool_param.put(params['tool'])
                 self.ioc.get_cmd.put(1)
             else:
-                self.warn('Invalid Port')
+                self.warn('Invalid port or sample not mounted')
 
     def do_power_cmd(self, pv, value, ioc):
         if value:
