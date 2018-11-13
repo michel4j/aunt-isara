@@ -512,7 +512,7 @@ class AuntISARAApp(object):
 
         current = self.ioc.position_fbk.get()
         for pos in allowed:
-            if re.match('^' + pos + '(?:\s\w*)?$', current):
+            if re.match('^' + pos + '(?:_\w*)?$', current):
                 return True
         self.ioc.warning.put('Command allowed only from ` {} ` position'.format(' | '.join(allowed)))
         self.ioc.help.put('Please move the robot into the correct position and the re-issue the command')
