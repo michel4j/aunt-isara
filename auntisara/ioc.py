@@ -372,6 +372,7 @@ class AuntISARAApp(object):
         while self.recv_on:
             message, message_type = self.inbox.get()
             if message_type == isara.MessageType.RESPONSE:
+                self.ioc.warning.put('')  # clear warning if command is successful
                 logger.debug('> {}'.format(message))
             try:
                 self.process_message(message, message_type)
@@ -507,7 +508,7 @@ class AuntISARAApp(object):
 
     def require_position(self, *allowed):
         if not self.positions.keys():
-            self.ioc.warning.put('No positions have been defined')
+            self.warn('No positions have been defined')
             self.ioc.help.put('Please save position named ` {} `'.format(' | '.join(allowed)))
             return False
 
@@ -515,14 +516,17 @@ class AuntISARAApp(object):
         for pos in allowed:
             if re.match('^' + pos + '(?:_\w*)?$', current):
                 return True
-        self.ioc.warning.put('Command allowed only from ` {} ` position'.format(' | '.join(allowed)))
+        self.warn('Command allowed only from ` {} ` position'.format(' | '.join(allowed)))
         self.ioc.help.put('Please move the robot into the correct position and the re-issue the command')
 
     def require_tool(self, *tools):
         if self.ioc.tool_fbk.get() in [t.value for t in tools]:
             return True
         else:
-            self.ioc.warning.put('Invalid tool for command!')
+            self.warn('Invalid tool for command!')
+
+    def warn(self, msg):
+        self.ioc.warning.put('{} {}'.format(datetime.now().strftime('%b/%d %H:%M:%S'), msg))
 
     def parse_status(self, message):
         patt = re.compile('^(?P<context>\w+)\((?P<msg>.*?)\)?$')
@@ -590,7 +594,8 @@ class AuntISARAApp(object):
                         self.ioc.health.put(ErrorType.WAITING.value)
                     else:
                         self.ioc.health.put(ErrorType.ERROR.value)
-                self.ioc.warning.put(warning)
+                if warning:
+                    self.warn(warning)
                 self.ioc.help.put(help)
             else:
                 self.ioc.health.put(ErrorType.OK.value)
@@ -720,8 +725,11 @@ class AuntISARAApp(object):
             self.send_command('home', ioc.too_fbk.get())
 
     def do_change_tool_cmd(self, pv, value, ioc):
-        if value and self.require_position('HOME') and ioc.tool_param.get() != ioc.tool_fbk.get():
-            self.send_command('home', ioc.tool_param.get())
+        if value and self.require_position('HOME'):
+            if ioc.tool_param.get() != ioc.tool_fbk.get():
+                self.send_command('home', ioc.tool_param.get())
+            else:
+                self.warn('Requested tool already present, command ignored')
 
     def do_safe_cmd(self, pv, value, ioc):
         if value:
@@ -779,7 +787,10 @@ class AuntISARAApp(object):
 
     def do_back_cmd(self, pv, value, ioc):
         if value and self.require_position('HOME'):
-            self.send_command('back', ioc.tool_fbk.get())
+            if ioc.tooled_fbk.get():
+                self.send_command('back', ioc.tool_fbk.get())
+            else:
+                self.warn('No sample on tool, command ignored')
 
     def do_soak_cmd(self, pv, value, ioc):
         allowed = (ToolType.DOUBLE, ToolType.UNIPUCK, ToolType.ROTATING)
@@ -804,12 +815,11 @@ class AuntISARAApp(object):
             self.send_command('toolcal', ioc.tool_fbk.get())
 
     def do_teach_gonio_cmd(self, pv, value, ioc):
-        allowed = (ToolType.UNIPUCK, ToolType.DOUBLE, ToolType.ROTATING, ToolType.NONE, ToolType.LASER)
-        if value and self.require_position('HOME') and self.require_tool(*allowed):
+        if value and self.require_position('HOME') and self.require_tool(ToolType.LASER):
             self.send_command('teach_gonio', ToolType.LASER.value)
 
     def do_teach_puck_cmd(self, pv, value, ioc):
-        allowed = (ToolType.UNIPUCK, ToolType.DOUBLE, ToolType.ROTATING, ToolType.NONE, ToolType.LASER)
+        allowed = (ToolType.LASER)
         if value and self.require_tool(*allowed) and self.require_position('HOME'):
             self.send_command('teach_puck', ToolType.LASER.value)
 
