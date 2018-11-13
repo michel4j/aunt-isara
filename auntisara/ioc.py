@@ -194,6 +194,7 @@ class AuntISARA(models.Model):
     soak_cmd = models.Toggle('CMD:soak', desc='Soak')
     dry_cmd = models.Toggle('CMD:dry', desc='Dry')
     pick_cmd = models.Toggle('CMD:pick', desc='Pick')
+    change_tool_cmd = models.Toggle('CMD:chgTool', desc='Change Tool')
 
     calib_cmd = models.Toggle('CMD:toolCal', desc='Tool Calib')
     teach_gonio_cmd = models.Toggle('CMD:teachGonio', desc='Teach Gonio')
@@ -701,12 +702,12 @@ class AuntISARAApp(object):
     def do_approach_enable(self, pv, value, ioc):
         if value:
             cmd = 'cryoOFF' if ioc.approach_fbk.get() else 'cryoON'
-            self.send_command(cmd, ioc.tool_param.get())
+            self.send_command(cmd, ioc.tool_fbk.get())
 
     def do_running_enable(self, pv, value, ioc):
         if value:
             cmd = 'trajOFF' if ioc.running_fbk.get() else 'trajON'
-            self.send_command(cmd, ioc.tool_param.get())
+            self.send_command(cmd, ioc.tool_fbk.get())
 
     def do_autofill_enable(self, pv, value, ioc):
         if value:
@@ -715,11 +716,15 @@ class AuntISARAApp(object):
 
     def do_home_cmd(self, pv, value, ioc):
         if value and self.require_position('SOAK', 'HOME'):
+            self.send_command('home', ioc.too_fbk.get())
+
+    def do_change_tool_cmd(self, pv, value, ioc):
+        if value and self.require_position('HOME'):
             self.send_command('home', ioc.tool_param.get())
 
     def do_safe_cmd(self, pv, value, ioc):
         if value:
-            self.send_command('safe', ioc.tool_param.get())
+            self.send_command('safe', ioc.tool_fbk.get())
 
     def do_put_cmd(self, pv, value, ioc):
         allowed_tools = (ToolType.UNIPUCK, ToolType.ROTATING, ToolType.DOUBLE, ToolType.PLATE)
@@ -766,42 +771,43 @@ class AuntISARAApp(object):
     def do_barcode_cmd(self, pv, value, ioc):
         if value and self.require_position('SOAK'):
             args = self.make_args(
-                tool=ioc.tool_param.get(), puck=ioc.puck_param.get(), sample=ioc.sample_param.get(),
+                tool=ioc.tool_fbk.get(), puck=ioc.puck_param.get(), sample=ioc.sample_param.get(),
                 puck_type=ioc.type_param.get()
             )
             self.send_command('barcode', *args)
 
     def do_back_cmd(self, pv, value, ioc):
         if value and self.require_position('HOME'):
-            self.send_command('back', ioc.tool_param.get())
+            self.send_command('back', ioc.tool_fbk.get())
 
     def do_soak_cmd(self, pv, value, ioc):
-        if value and self.require_position('HOME'):
-            self.send_command('soak', ioc.tool_param.get())
+        allowed = (ToolType.DOUBLE, ToolType.UNIPUCK, ToolType.ROTATING)
+        if value and self.require_position('HOME') and self.require_tool(*allowed):
+            self.send_command('soak', ioc.tool_fbk.get())
 
     def do_dry_cmd(self, pv, value, ioc):
-        if value and self.require_position('SOAK'):
-            self.send_command('dry', ioc.tool_param.get())
+        allowed = (ToolType.DOUBLE, ToolType.UNIPUCK, ToolType.ROTATING)
+        if value and self.require_position('SOAK') and self.require_tool(*allowed):
+            self.send_command('dry', ioc.tool_fbk.get())
 
     def do_pick_cmd(self, pv, value, ioc):
         if value and self.require_tool(ToolType.DOUBLE):
             args = self.make_args(
-                tool=ioc.tool_param.get(), puck=ioc.puck_param.get(), sample=ioc.sample_param.get(),
+                tool=ToolType.DOUBLE.value, puck=ioc.puck_param.get(), sample=ioc.sample_param.get(),
                 puck_type=ioc.type_param.get()
             )
             self.send_command('pick', *args)
 
     def do_calib_cmd(self, pv, value, ioc):
         if value and self.require_position('HOME'):
-            self.send_command('toolcal', ioc.tool_param.get())
+            self.send_command('toolcal', ioc.tool_fbk.get())
 
     def do_teach_gonio_cmd(self, pv, value, ioc):
-        if value and self.require_position('HOME'):
+        if value and self.require_position('HOME') and self.require_tool(ToolType.LASER):
             self.send_command('teach_gonio', ToolType.LASER)
 
     def do_teach_puck_cmd(self, pv, value, ioc):
         if value and self.require_tool(ToolType.LASER) and self.require_position('HOME'):
-            ioc.tool_param.put(ToolType.LASER.value)
             self.send_command('teach_puck', ToolType.LASER)
 
     def do_set_diff_cmd(self, pv, value, ioc):

@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 298
-y 92
+x 47
+y 80
 w 754
 h 626
 font "lucida-medium-r-18.0"
@@ -1240,9 +1240,9 @@ major 4
 minor 1
 release 0
 x 467
-y 440
+y 465
 w 91
-h 28
+h 21
 fgColor index 14
 onColor index 69
 offColor index 69
@@ -4697,9 +4697,9 @@ major 4
 minor 1
 release 0
 x 467
-y 511
+y 518
 w 91
-h 28
+h 21
 fgColor index 14
 onColor index 69
 offColor index 69
@@ -4722,9 +4722,9 @@ major 4
 minor 1
 release 0
 x 467
-y 476
+y 492
 w 91
-h 28
+h 21
 fgColor index 14
 onColor index 69
 offColor index 69
@@ -5519,5 +5519,30 @@ endObjectProperties
 
 endGroup
 
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 467
+y 439
+w 91
+h 21
+fgColor index 14
+onColor index 69
+offColor index 69
+inconsistentColor index 57
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:chgTool"
+indicatorPv "$(device):CMD:chgTool"
+onLabel "Change Tool"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
 endObjectProperties
 
