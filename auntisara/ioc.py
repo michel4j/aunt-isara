@@ -714,7 +714,7 @@ class AuntISARAApp(object):
             self.send_command(cmd)
 
     def do_home_cmd(self, pv, value, ioc):
-        if value and self.require_position('SOAK'):
+        if value and self.require_position('SOAK', 'HOME'):
             self.send_command('home', ioc.tool_param.get())
 
     def do_safe_cmd(self, pv, value, ioc):
@@ -796,8 +796,7 @@ class AuntISARAApp(object):
             self.send_command('toolcal', ioc.tool_param.get())
 
     def do_teach_gonio_cmd(self, pv, value, ioc):
-        if value and self.require_tool(ToolType.LASER) and self.require_position('HOME'):
-            ioc.tool_param.put(ToolType.LASER.value)
+        if value and self.require_position('HOME'):
             self.send_command('teach_gonio', ToolType.LASER)
 
     def do_teach_puck_cmd(self, pv, value, ioc):
