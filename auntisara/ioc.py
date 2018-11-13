@@ -509,11 +509,12 @@ class AuntISARAApp(object):
             self.ioc.help.put('Please save position named ` {} `'.format(' | '.join(allowed)))
             return False
 
-        if self.ioc.position_fbk.get() in allowed:
-            return True
-        else:
-            self.ioc.warning.put('Command allowed only from ` {} ` position'.format(' | '.join(allowed)))
-            self.ioc.help.put('Please move the robot into the correct position and the re-issue the command')
+        current = self.ioc.position_fbk.get()
+        for pos in allowed:
+            if re.match('^' + pos + '(?:\s\w*)?$', current):
+                return True
+        self.ioc.warning.put('Command allowed only from ` {} ` position'.format(' | '.join(allowed)))
+        self.ioc.help.put('Please move the robot into the correct position and the re-issue the command')
 
     def require_tool(self, *tools):
         if self.ioc.tool_fbk.get() in [t.value for t in tools]:

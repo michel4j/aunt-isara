@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 137
-y 87
+x 298
+y 92
 w 754
 h 626
 font "lucida-medium-r-18.0"
@@ -1792,7 +1792,7 @@ release 0
 x 21
 y 152
 w 15
-h 109
+h 127
 lineColor index 5
 fill
 fillColor index 5
