@@ -36,7 +36,7 @@ logger = log.get_module_logger(__name__)
 
 
 class ToolType(Enum):
-    FLANGE, UNIPUCK, ROTATING, PLATE, LASER, DOUBLE = range(6)
+    NONE, UNIPUCK, ROTATING, PLATE, LASER, DOUBLE = range(6)
 
 
 class PuckType(Enum):
@@ -262,6 +262,7 @@ def name_to_tool(text):
     return {
         'simple': ToolType.UNIPUCK.value,
         'laser': ToolType.LASER.value,
+        'flange': ToolType.NONE.value,
     }.get(text.lower(), 1)
 
 
