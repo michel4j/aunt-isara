@@ -803,12 +803,14 @@ class AuntISARAApp(object):
             self.send_command('toolcal', ioc.tool_fbk.get())
 
     def do_teach_gonio_cmd(self, pv, value, ioc):
-        if value and self.require_position('HOME') and self.require_tool(ToolType.LASER):
-            self.send_command('teach_gonio', ToolType.LASER)
+        allowed = (ToolType.UNIPUCK, ToolType.DOUBLE, ToolType.ROTATING)
+        if value and self.require_position('HOME') and self.require_tool(*allowed):
+            self.send_command('teach_gonio', ToolType.LASER.value)
 
     def do_teach_puck_cmd(self, pv, value, ioc):
-        if value and self.require_tool(ToolType.LASER) and self.require_position('HOME'):
-            self.send_command('teach_puck', ToolType.LASER)
+        allowed = (ToolType.UNIPUCK, ToolType.DOUBLE, ToolType.ROTATING)
+        if value and self.require_tool(*allowed) and self.require_position('HOME'):
+            self.send_command('teach_puck', ToolType.LASER.value)
 
     def do_set_diff_cmd(self, pv, value, ioc):
         if value:
