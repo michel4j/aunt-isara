@@ -75,14 +75,14 @@ MESSAGES = {
         "help": "Modify the trajectory or adjust the limit"
     },
     14: {
-        "error": "Robot foot collision",
-        "description": "Collision with the foot of the robot arm",
-        "help": "Modify the trajectory"
+        "error": "WAIT for RdTrsf condition",
+        "description": "Waiting for endstation to be ready ...",
+        "help": "Verify that endstation is goning to mount mode"
     },
     15: {
-        "error": "WAIT for .* condition",
-        "description": "Waiting for required condition to go to the next point",
-        "help": "Inspect the sample environment and generated input signals"
+        "error": "WAIT for SplOn condition",
+        "description": "Waiting for sample on gonio ...",
+        "help": "Verify that sample on gonio detection is working properly"
     },
     16: {
         "error": "low level alarm",

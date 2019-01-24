@@ -21,7 +21,7 @@ parser.add_argument('-d', '--device', type=str, help='Device Name', required=Tru
 parser.add_argument('--address', type=str, help='Controller address', required=True)
 parser.add_argument('--commands', type=int, help='Command Port', required=True)
 parser.add_argument('--status', type=int, help='Status Port', required=True)
-# Example of how to start your APP. Modify as needed
+
 
 if __name__== '__main__':
     args = parser.parse_args()
