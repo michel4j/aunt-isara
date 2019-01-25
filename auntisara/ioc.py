@@ -897,5 +897,5 @@ class AuntISARAApp(object):
         ioc.tooled_fbk.put(port)
     
     def do_status(self, pv, value, ioc):
-        if value == 1 and ioc.error_fbk.get():
+        if value == 0 and ioc.error_fbk.get():
             ioc.reset_cmd.put(1)
