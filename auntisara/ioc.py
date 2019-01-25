@@ -895,3 +895,7 @@ class AuntISARAApp(object):
     def do_sample_tool_fbk(self, pv, value, ioc):
         port = pin2port(ioc.puck_tool_fbk.get(), value)
         ioc.tooled_fbk.put(port)
+    
+    def do_status(self, pv, value, ioc):
+        if value == 1 and ioc.error_fbk.get():
+            ioc.reset_cmd.put(1)
