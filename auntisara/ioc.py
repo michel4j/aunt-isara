@@ -826,7 +826,7 @@ class AuntISARAApp(object):
 
     def do_set_diff_cmd(self, pv, value, ioc):
         if value:
-            current = ioc.sample_param.get()
+            current = ioc.next_param.get()
             if current.strip():
                 params = port2args(current)
                 self.send_command('setdiffr', params['puck'], params['sample'], ioc.type_param.get())
