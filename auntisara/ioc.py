@@ -590,7 +590,7 @@ class AuntISARAApp(object):
                 if bit is not None:
                     bitarray[bit] = '1'
                     self.ioc.error_fbk.put(int(''.join(bitarray), 2))
-                    if bit == 15:
+                    if bit = 14:
                         self.ioc.health.put(ErrorType.WAITING.value)
                     else:
                         self.ioc.health.put(ErrorType.ERROR.value)
