@@ -505,8 +505,6 @@ class AuntISARAApp(object):
                 continue
         if not found:
             self.ioc.position_fbk.put('UNKNOWN')
-        elif 'DRY' in name:
-            self.ioc.status.put(StatusType.STANDBY.value)
 
     def require_position(self, *allowed):
         if not self.positions.keys():
@@ -553,7 +551,11 @@ class AuntISARAApp(object):
                     elif self.ioc.error_fbk.get() != 0:
                         self.ioc.status.put(StatusType.FAULT.value)
                     elif self.ioc.trajectory_fbk.get():
-                        self.ioc.status.put(StatusType.BUSY.value)
+                        position = self.ioc.position_fbk.get()
+                        if 'DRY' in position:
+                            self.ioc.status.put(StatusType.STANDBY.value)
+                        else:
+                            self.ioc.status.put(StatusType.BUSY.value)
                     else:
                         self.ioc.status.put(StatusType.STANDBY.value)
                 else:
