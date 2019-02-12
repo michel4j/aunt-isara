@@ -5129,7 +5129,7 @@ x 60
 y 399
 w 162
 h 15
-controlPv "$(device):CMD:magnet.DESC"
+controlPv "$(device):CMD:tool.DESC"
 font "lucida-medium-r-10.0"
 fgColor index 14
 bgColor index 0
@@ -5158,7 +5158,7 @@ offColor index 52
 inconsistentColor index 10
 topShadowColor index 1
 botShadowColor index 10
-controlPv "$(device):CMD:magnet"
+controlPv "$(device):CMD:tool"
 labelType "literal"
 buttonType "push"
 font "lucida-bold-r-10.0"
@@ -5178,7 +5178,7 @@ h 15
 lineColor index 14
 fill
 fillColor index 92
-alarmPv "$(device):STATE:magnet"
+alarmPv "$(device):CMD:tool"
 endObjectProperties
 
 endGroup

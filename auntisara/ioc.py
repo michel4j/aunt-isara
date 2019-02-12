@@ -276,6 +276,7 @@ class AuntISARAApp(object):
         self.recv_on = False
         self.user_enabled = False
         self.ready = False
+        self.standby_active = False
         self.command_client = isara.CommandFactory(self)
         self.status_client = isara.StatusFactory(self)
         self.pending_clients = {self.command_client.protocol.message_type, self.status_client.protocol.message_type}
@@ -434,6 +435,7 @@ class AuntISARAApp(object):
         return (tool, puck, sample) + (0,) * 4 + (puck_type, 0, 0) + (x_off, y_off, z_off)
 
     def send_command(self, command, *args):
+        self.standby_active = False
         if self.ready_for_commands():
             if args:
                 cmd = '{}({})'.format(command, ','.join([str(arg) for arg in args]))
@@ -492,6 +494,7 @@ class AuntISARAApp(object):
             #self.ioc.rxpos_fbk.get(), self.ioc.rypos_fbk.get(), self.ioc.rzpos_fbk.get()
         ])
         found = False
+        name = ""
         for name, info in self.positions.items():
             pos = numpy.array([
                 info['x'], info['y'], info['z'],
@@ -502,6 +505,10 @@ class AuntISARAApp(object):
                 found = True
                 if self.ioc.position_fbk.get() != name:
                     self.ioc.position_fbk.put(name)
+                    # Set the standby flag whenever the robot goes to the DRY position
+                    # flag stays active until the next command is sent
+                    if 'DRY' in name:
+                        self.standby_active = True
                 continue
         if not found:
             self.ioc.position_fbk.put('UNKNOWN')
@@ -551,8 +558,7 @@ class AuntISARAApp(object):
                     elif self.ioc.error_fbk.get() != 0:
                         self.ioc.status.put(StatusType.FAULT.value)
                     elif self.ioc.trajectory_fbk.get():
-                        position = self.ioc.position_fbk.get()
-                        if 'DRY' in position:
+                        if self.standby_active:
                             self.ioc.status.put(StatusType.STANDBY.value)
                         else:
                             self.ioc.status.put(StatusType.BUSY.value)
@@ -603,7 +609,6 @@ class AuntISARAApp(object):
                 self.ioc.help.put(help)
             else:
                 self.ioc.health.put(ErrorType.OK.value)
-
 
     # callbacks
     def do_mount_cmd(self, pv, value, ioc):
