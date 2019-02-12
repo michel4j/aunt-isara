@@ -800,7 +800,7 @@ class AuntISARAApp(object):
 
     def do_dry_cmd(self, pv, value, ioc):
         allowed = (ToolType.DOUBLE, ToolType.UNIPUCK, ToolType.ROTATING)
-        if value and self.require_position('SOAK') and self.require_tool(*allowed):
+        if value and self.require_position('SOAK', 'HOME') and self.require_tool(*allowed):
             self.send_command('dry', ioc.tool_fbk.get())
 
     def do_pick_cmd(self, pv, value, ioc):
