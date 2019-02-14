@@ -43,9 +43,7 @@ class PuckType(Enum):
     ACTOR, UNIPUCK = range(2)
 
 
-class StatusType(Enum):
-    IDLE, WAITING, BUSY, STANDBY, FAULT = range(5)
-
+StatusType  = msgs.StatusType
 
 class OffOn(Enum):
     OFF, ON = range(2)
@@ -536,8 +534,11 @@ class AuntISARAApp(object):
         self.ioc.warning.put('{} {}'.format(datetime.now().strftime('%b/%d %H:%M:%S'), msg))
 
     def parse_status(self, message):
+
         patt = re.compile('^(?P<context>\w+)\((?P<msg>.*?)\)?$')
         m = patt.match(message)
+        next_status = None
+        cur_status = self.ioc.status.get()
         if m:
             details = m.groupdict()
             self.status_received = details['context']
@@ -551,21 +552,16 @@ class AuntISARAApp(object):
                         logger.warning('Unable to parse state: {}'.format(message))
 
                 # determine robot state
-                #IDLE, WAITING, BUSY, STANDBY, FAULT
                 if self.ioc.running_fbk.get():
-                    if self.ioc.health.get() == ErrorType.WAITING.value:
-                        self.ioc.status.put(StatusType.WAITING.value)
-                    elif self.ioc.error_fbk.get() != 0:
-                        self.ioc.status.put(StatusType.FAULT.value)
-                    elif self.ioc.trajectory_fbk.get():
+                    if self.ioc.trajectory_fbk.get():
                         if self.standby_active:
-                            self.ioc.status.put(StatusType.STANDBY.value)
+                            next_status = StatusType.STANDBY.value
                         else:
-                            self.ioc.status.put(StatusType.BUSY.value)
+                            next_status = StatusType.BUSY.value
                     else:
-                        self.ioc.status.put(StatusType.STANDBY.value)
+                        next_status = StatusType.STANDBY.value
                 else:
-                    self.ioc.status.put(StatusType.IDLE.value)
+                    next_status = StatusType.IDLE.value
 
             elif details['context'] == 'position':
                 for i, value in enumerate(details['msg'].split(',')):
@@ -595,7 +591,9 @@ class AuntISARAApp(object):
             # must be messages
             self.status_received = 'message'
             if message.strip():
-                warning, help, bit = msgs.parse_error(message.strip())
+                warning, help, state, bit = msgs.parse_error(message.strip())
+                #if next_status == StatusType.STANDBY.value:
+                #    next_status = next_status if state is None else state.value
                 bitarray = list(bin(self.ioc.error_fbk.get())[2:].rjust(32, '0'))
                 if bit is not None:
                     bitarray[bit] = '1'
@@ -609,6 +607,8 @@ class AuntISARAApp(object):
                 self.ioc.help.put(help)
             else:
                 self.ioc.health.put(ErrorType.OK.value)
+        if next_status is not None:
+            self.ioc.status.put(next_status)
 
     # callbacks
     def do_mount_cmd(self, pv, value, ioc):
