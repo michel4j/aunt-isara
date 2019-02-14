@@ -597,16 +597,14 @@ class AuntISARAApp(object):
                 bitarray = list(bin(self.ioc.error_fbk.get())[2:].rjust(32, '0'))
                 if bit is not None:
                     bitarray[bit] = '1'
-                    self.ioc.error_fbk.put(int(''.join(bitarray), 2))
-                    if bit == 14:
-                        self.ioc.health.put(ErrorType.WAITING.value)
-                    else:
-                        self.ioc.health.put(ErrorType.ERROR.value)
-                if warning:
-                    self.warn(warning)
-                self.ioc.help.put(help)
+                    new_value = int(''.join(bitarray), 2)
+                    if new_value != self.ioc.error_fbk.get():
+                        self.ioc.error_fbk.put(new_value)
+                        if state is not None and state != StatusType.WAITING.value:
+                            self.ioc.health.put(ErrorType.ERROR.value)
             else:
                 self.ioc.health.put(ErrorType.OK.value)
+                self.ioc.error_fbk.put(0)
         if next_status is not None:
             self.ioc.status.put(next_status)
 
@@ -908,3 +906,15 @@ class AuntISARAApp(object):
     def do_status(self, pv, value, ioc):
         if value == 0 and ioc.error_fbk.get():
             ioc.reset_cmd.put(1)
+
+    def do_error_fbk(self, pv, value, ioc):
+        bitarray = list(bin(value)[2:].rjust(32, '0'))
+        errors = filter(None, [msgs.MESSAGES.get(i) for i, bit in enumerate(bitarray) if bit == '1'])
+        texts = [(err.get('description', ''), err.get('help')) for err in errors ]
+        warnings, help = zip(*texts)
+        warning_text = '; '.join(warnings)
+        help_text = '; '.join(help)
+        if warning_text:
+            self.warn(warning_text)
+        if help_text:
+            ioc.help.put(help)
