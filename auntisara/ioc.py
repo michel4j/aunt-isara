@@ -277,7 +277,6 @@ class AuntISARAApp(object):
         self.ready = False
         self.standby_active = False
         self.dewar_pucks = set()
-        self.current_puck = None
         self.command_client = isara.CommandFactory(self)
         self.status_client = isara.StatusFactory(self)
         self.pending_clients = {self.command_client.protocol.message_type, self.status_client.protocol.message_type}
@@ -611,10 +610,6 @@ class AuntISARAApp(object):
         if next_status is not None:
             self.ioc.status.put(next_status)
 
-            # reset currrent_puck when we return to idle or standby
-            if next_status in [StatusType.STANDBY.value, StatusType.IDLE.value]:
-                self.current_puck = None
-
     # callbacks
     def do_mount_cmd(self, pv, value, ioc):
         if value and self.require_position('SOAK'):
@@ -627,7 +622,6 @@ class AuntISARAApp(object):
                     ioc.tool_param.put(params['tool'])
                     ioc.puck_param.put(params['puck'])
                     ioc.sample_param.put(params['sample'])
-                    self.current_puck = PUCK_LIST[params['puck'] - 1]
                 elif params['mode'] == 'plate':
                     ioc.tool_param.put(params['tool'])
                     ioc.plate_param.put(params['plate'])
@@ -900,7 +894,8 @@ class AuntISARAApp(object):
             logger.info('Pucks changed: added={}, removed={}'.format(list(added), list(removed)))
 
             # If currently mounting a puck and it is removed abort
-            if ioc.status.get() in [StatusType.BUSY.value] and self.current_puck in removed:
+            on_tool = ioc.tooled_fbk.get().strip()
+            if on_tool and on_tool[:2] in removed and ioc.status.get() in [StatusType.BUSY.value]:
                 msg = 'Target puck removed while mounting. Aborting! Manual recovery required.'
                 logger.error(msg)
                 self.warn(msg)
