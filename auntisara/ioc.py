@@ -80,6 +80,7 @@ class EnableType(Enum):
 class ErrorType(Enum):
     OK, WAITING, WARNING, ERROR = range(4)
 
+
 class AuntISARA(models.Model):
     connected = models.Enum('CONNECTED', choices=ActiveType, default=0, desc="Robot Connection")
     enabled = models.Enum('ENABLED', choices=EnableType, default=1, desc="Robot Control")
@@ -275,6 +276,8 @@ class AuntISARAApp(object):
         self.user_enabled = False
         self.ready = False
         self.standby_active = False
+        self.dewar_pucks = set()
+        self.current_puck = None
         self.command_client = isara.CommandFactory(self)
         self.status_client = isara.StatusFactory(self)
         self.pending_clients = {self.command_client.protocol.message_type, self.status_client.protocol.message_type}
@@ -608,6 +611,10 @@ class AuntISARAApp(object):
         if next_status is not None:
             self.ioc.status.put(next_status)
 
+            # reset currrent_puck when we return to idle or standby
+            if next_status in [StatusType.STANDBY.value, StatusType.IDLE.value]:
+                self.current_puck = None
+
     # callbacks
     def do_mount_cmd(self, pv, value, ioc):
         if value and self.require_position('SOAK'):
@@ -620,12 +627,14 @@ class AuntISARAApp(object):
                     ioc.tool_param.put(params['tool'])
                     ioc.puck_param.put(params['puck'])
                     ioc.sample_param.put(params['sample'])
+                    self.current_puck = PUCK_LIST[params['puck'] - 1]
                 elif params['mode'] == 'plate':
                     ioc.tool_param.put(params['tool'])
                     ioc.plate_param.put(params['plate'])
                 else:
                     self.warn('Invalid Port for mounting')
                     return
+
                 if command == 'put':
                     self.ioc.put_cmd.put(1)
                 elif command == 'getput':
@@ -840,7 +849,6 @@ class AuntISARAApp(object):
             else:
                 self.warn('No Sample specified')
 
-
     def do_set_tool_cmd(self, pv, value, ioc):
         if value:
             current = ioc.next_param.get()
@@ -881,6 +889,23 @@ class AuntISARAApp(object):
             port = plate2port(value)
             ioc.tooled_fbk.put(port)
 
+    def do_pucks_fbk(self, pv, value, ioc):
+        if len(value) != NUM_PUCKS:
+            logger.error('Puck Detection does not contain {} values!'.format(NUM_PUCKS))
+        else:
+            pucks_detected = {v[1] for v in zip(value, PUCK_LIST) if v[0] == '1'}
+            added = pucks_detected - self.dewar_pucks
+            removed = self.dewar_pucks - pucks_detected
+            self.dewar_pucks = pucks_detected
+            logger.info('Pucks changed: added={}, removed={}'.format(list(added), list(removed)))
+
+            # If currently mounting a puck and it is removed abort
+            if ioc.status.get() in [StatusType.BUSY.value] and self.current_puck in removed:
+                msg = 'Target puck removed while mounting. Aborting! Manual recovery required.'
+                logger.error(msg)
+                self.warn(msg)
+                self.send_command('abort')
+
     def do_save_pos_cmd(self, pv, value, ioc):
         if value and ioc.pos_name.get().strip():
             pos_name = ioc.pos_name.get().strip().replace(' ', '_')
@@ -910,11 +935,12 @@ class AuntISARAApp(object):
     def do_error_fbk(self, pv, value, ioc):
         bitarray = list(bin(value)[2:].rjust(32, '0'))
         errors = filter(None, [msgs.MESSAGES.get(i) for i, bit in enumerate(bitarray) if bit == '1'])
-        texts = [(err.get('description', ''), err.get('help')) for err in errors ]
-        warnings, help = zip(*texts)
-        warning_text = '; '.join(warnings)
-        help_text = '; '.join(help)
-        if warning_text:
-            self.warn(warning_text)
-        if help_text:
-            ioc.help.put(help)
+        if errors:
+            texts = [(err.get('description', ''), err.get('help')) for err in errors ]
+            warnings, help = zip(*texts)
+            warning_text = '; '.join(warnings)
+            help_text = '; '.join(help)
+            if warning_text:
+                self.warn(warning_text)
+            if help_text:
+                ioc.help.put(help)
