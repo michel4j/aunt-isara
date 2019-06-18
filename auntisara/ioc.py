@@ -328,6 +328,10 @@ class AuntISARAApp(object):
             8: self.ioc.software_fbk,
             12: self.ioc.heater_fbk
         }
+
+        self.mounting = False
+        self.aborted = False
+
         self.positions_name = positions
         self.positions = self.load_positions()
         self.status_received = None
@@ -536,7 +540,6 @@ class AuntISARAApp(object):
         self.ioc.warning.put('{} {}'.format(datetime.now().strftime('%b/%d %H:%M:%S'), msg))
 
     def parse_status(self, message):
-
         patt = re.compile('^(?P<context>\w+)\((?P<msg>.*?)\)?$')
         m = patt.match(message)
         next_status = None
@@ -594,8 +597,6 @@ class AuntISARAApp(object):
             self.status_received = 'message'
             if message.strip():
                 warning, help, state, bit = msgs.parse_error(message.strip())
-                #if next_status == StatusType.STANDBY.value:
-                #    next_status = next_status if state is None else state.value
                 bitarray = list(bin(self.ioc.error_fbk.get())[2:].rjust(32, '0'))
                 if bit is not None:
                     bitarray[bit] = '1'
@@ -610,9 +611,51 @@ class AuntISARAApp(object):
         if next_status is not None:
             self.ioc.status.put(next_status)
 
+    # def mount_operation(self, cmd, args):
+    #     epics.threads_init()
+    #     allowed_tools = (ToolType.UNIPUCK, ToolType.ROTATING, ToolType.DOUBLE, ToolType.PLATE)
+    #     puck_tools = (ToolType.UNIPUCK.value, ToolType.ROTATING.value, ToolType.DOUBLE.value)
+    #     if not self.mounting:
+    #         self.mounting = True
+    #         self.aborted = False
+    #
+    #         port = self.ioc.next_param.get().strip()
+    #         current = self.ioc.mounted_fbk.get().strip()
+    #         params = port2args(port)
+    #
+    #         if not (params and all(params.values())):
+    #             self.warn('Invalid Port for mounting: {}'.format(port))
+    #             self.mounting = False
+    #             return
+    #
+    #         if params.get('tool') in puck_tools:
+    #             if self.ioc.barcode_param.get():
+    #                 command = 'put_bcrd' if not current else 'getput_bcrd'
+    #             else:
+    #                 command = 'put' if not current else 'getput'
+    #         else:
+    #             command = 'putplate' if not current else 'getputplate'
+    #
+    #         current_tool = self.ioc.tool_fbk.get()
+    #         if self.require_position('SOAK') and self.require_tool(*allowed_tools):
+    #             if params['tool'] == current_tool and current_tool in puck_tools:
+    #                 args = self.make_args(
+    #                     tool=params['tool'], puck=params['puck'], sample=params['sample'],
+    #                     puck_type=params['tool']
+    #                 )
+    #             else:
+    #                 args = (
+    #                     ToolType.PLATE.value, 0, 0, 0, 0, ioc.plate_param.get()
+    #                 )
+    #             self.send_command(command, *args)
+    #
+    #         self.mounting = False
+
     # callbacks
     def do_mount_cmd(self, pv, value, ioc):
-        if value and self.require_position('SOAK'):
+        if value and self.require_position('SOAK') and not self.mounting:
+            self.standby_active = False
+            self.mounting = True
             port = ioc.next_param.get().strip()
             current = ioc.mounted_fbk.get().strip()
             command = 'put' if not current else 'getput'
@@ -626,7 +669,8 @@ class AuntISARAApp(object):
                     ioc.tool_param.put(params['tool'])
                     ioc.plate_param.put(params['plate'])
                 else:
-                    self.warn('Invalid Port for mounting')
+                    self.warn('Invalid Port parameters for mounting: {}'.format(params))
+                    self.mounting = False
                     return
 
                 if command == 'put':
@@ -634,10 +678,13 @@ class AuntISARAApp(object):
                 elif command == 'getput':
                     self.ioc.getput_cmd.put(1)
             else:
-                self.warn('Invalid Port for mounting')
+                self.warn('Invalid Port for mounting: {}'.format(port))
+                self.mounting = False
 
     def do_dismount_cmd(self, pv, value, ioc):
-        if value and self.require_position('SOAK'):
+        if value and self.require_position('SOAK') and not self.mounting:
+            self.mounting = True
+            self.standby_active = False
             current = ioc.mounted_fbk.get().strip()
             params = port2args(current)
             if params and all(params.values()):
@@ -645,6 +692,7 @@ class AuntISARAApp(object):
                 self.ioc.get_cmd.put(1)
             else:
                 self.warn('Invalid port or sample not mounted')
+                self.mounting = False
 
     def do_power_cmd(self, pv, value, ioc):
         if value:
@@ -658,6 +706,7 @@ class AuntISARAApp(object):
     def do_abort_cmd(self, pv, value, ioc):
         if value:
             self.send_command('abort')
+            self.aborted = True
 
     def do_pause_cmd(self, pv, value, ioc):
         if value:
@@ -924,8 +973,10 @@ class AuntISARAApp(object):
         ioc.tooled_fbk.put(port)
     
     def do_status(self, pv, value, ioc):
-        if value == 0 and ioc.error_fbk.get():
-            ioc.reset_cmd.put(1)
+        if value == 0:
+            if ioc.error_fbk.get():
+                ioc.reset_cmd.put(1)
+            self.mounting = False
 
     def do_error_fbk(self, pv, value, ioc):
         bitarray = list(bin(value)[2:].rjust(32, '0'))
