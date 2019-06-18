@@ -605,8 +605,8 @@ class AuntISARAApp(object):
                         self.ioc.error_fbk.put(new_value)
                         if state is not None and state != StatusType.WAITING:
                             self.ioc.health.put(ErrorType.ERROR.value)
-                        if state == StatusType.FAULT:
-                            next_status = StatusType.FAULT.value
+                    if state == StatusType.FAULT:
+                        next_status = StatusType.FAULT.value
             else:
                 self.ioc.health.put(ErrorType.OK.value)
                 self.ioc.error_fbk.put(0)
