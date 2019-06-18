@@ -603,12 +603,14 @@ class AuntISARAApp(object):
                     new_value = int(''.join(bitarray), 2)
                     if new_value != self.ioc.error_fbk.get():
                         self.ioc.error_fbk.put(new_value)
-                        if state is not None and state != StatusType.WAITING.value:
+                        if state is not None and state != StatusType.WAITING:
                             self.ioc.health.put(ErrorType.ERROR.value)
+                        if state == StatusType.FAULT:
+                            next_status = StatusType.FAULT.value
             else:
                 self.ioc.health.put(ErrorType.OK.value)
                 self.ioc.error_fbk.put(0)
-        if next_status is not None:
+        if next_status is not None and next_status != cur_status:
             self.ioc.status.put(next_status)
 
     # def mount_operation(self, cmd, args):
