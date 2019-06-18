@@ -93,7 +93,7 @@ MESSAGES = {
     14: {
         "error": "WAIT for RdTrsf condition",
         "description": "Waiting for endstation to be ready ...",
-        "help": "Verify that endstation is goning to mount mode",
+        "help": "Verify that endstation is going to mount mode",
         "state": StatusType.WAITING,
     },
     15: {
