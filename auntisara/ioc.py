@@ -331,6 +331,7 @@ class AuntISARAApp(object):
 
         self.mounting = False
         self.aborted = False
+        self.fault_active = False
 
         self.positions_name = positions
         self.positions = self.load_positions()
@@ -557,15 +558,13 @@ class AuntISARAApp(object):
                         logger.warning('Unable to parse state: {}'.format(message))
 
                 # determine robot state
-                if self.ioc.running_fbk.get():
-                    if self.ioc.trajectory_fbk.get():
-                        if self.standby_active:
-                            next_status = StatusType.STANDBY.value
-                        else:
-                            next_status = StatusType.BUSY.value
-                    else:
-                        next_status = StatusType.STANDBY.value
-                else:
+                if self.fault_active:
+                    next_status = StatusType.FAULT.value
+                elif self.ioc.running_fbk.get() and self.standby_active:
+                    next_status = StatusType.STANDBY.value
+                elif self.ioc.running_fbk.get() and self.ioc.trajectory_fbk.get():
+                    next_status = StatusType.BUSY.value
+                elif not self.ioc.running_fbk.get():
                     next_status = StatusType.IDLE.value
 
             elif details['context'] == 'position':
@@ -603,13 +602,14 @@ class AuntISARAApp(object):
                     new_value = int(''.join(bitarray), 2)
                     if new_value != self.ioc.error_fbk.get():
                         self.ioc.error_fbk.put(new_value)
-                        if state is not None and state != StatusType.WAITING:
-                            self.ioc.health.put(ErrorType.ERROR.value)
                     if state == StatusType.FAULT:
-                        next_status = StatusType.FAULT.value
+                        self.ioc.health.put(ErrorType.ERROR.value)
+                        self.fault_active = True
             else:
                 self.ioc.health.put(ErrorType.OK.value)
                 self.ioc.error_fbk.put(0)
+                self.fault_active = False
+
         if next_status is not None and next_status != cur_status:
             self.ioc.status.put(next_status)
 
