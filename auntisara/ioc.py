@@ -981,14 +981,17 @@ class AuntISARAApp(object):
             self.mounting = False
 
     def do_error_fbk(self, pv, value, ioc):
-        bitarray = list(bin(value)[2:].rjust(32, '0'))
-        errors = filter(None, [msgs.MESSAGES.get(i) for i, bit in enumerate(bitarray) if bit == '1'])
-        if errors:
-            texts = [(err.get('description', ''), err.get('help')) for err in errors ]
-            warnings, help = zip(*texts)
-            warning_text = '; '.join(warnings)
-            help_text = '; '.join(help)
-            if warning_text:
-                self.warn(warning_text)
-            if help_text:
-                ioc.help.put(help)
+        if value:
+            bitarray = list(bin(value)[2:].rjust(32, '0'))
+            errors = filter(None, [msgs.MESSAGES.get(i) for i, bit in enumerate(bitarray) if bit == '1'])
+            if errors:
+                texts = [(err.get('description', ''), err.get('help')) for err in errors ]
+                warnings, help = zip(*texts)
+                warning_text = '; '.join(warnings)
+                help_text = '; '.join(help)
+                if warning_text:
+                    self.warn(warning_text)
+                if help_text:
+                    ioc.help.put(help)
+        else:
+            ioc.help.put('')

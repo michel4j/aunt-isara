@@ -122,12 +122,11 @@ MESSAGES = {
         "error": "FillingUp Timeout",
         "description": "Maximum time for filling up was exceeded",
         "help": "Check LN2 main supply, check level sensor, and contact IRELEC support",
-        "state": StatusType.FAULT,
     },
     20: {
         "error": "collision at the gonio",
         "description": "Collision at gonio",
-        "help": "Abort task and safely return robot home",
+        "help": "Abort task and safely return robot home. If pin is in gripper, return it to puck using 'back' command.",
         "state":StatusType.FAULT,
     }
 }
