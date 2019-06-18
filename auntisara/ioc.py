@@ -605,6 +605,8 @@ class AuntISARAApp(object):
                     if state == StatusType.FAULT:
                         self.ioc.health.put(ErrorType.ERROR.value)
                         self.fault_active = True
+                else:
+                    self.ioc.error_fbk.put(0)
             else:
                 self.ioc.health.put(ErrorType.OK.value)
                 self.ioc.error_fbk.put(0)
