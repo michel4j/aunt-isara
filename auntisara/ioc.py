@@ -711,6 +711,7 @@ class AuntISARAApp(object):
         if value:
             self.send_command('abort')
             self.aborted = True
+            self.mounting = False
 
     def do_pause_cmd(self, pv, value, ioc):
         if value:
@@ -722,6 +723,7 @@ class AuntISARAApp(object):
             self.ioc.error_fbk.put(0)
             self.ioc.help.put('')
             self.ioc.warning.put('')
+            self.mounting = False
 
     def do_restart_cmd(self, pv, value, ioc):
         if value:
