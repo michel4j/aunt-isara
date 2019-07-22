@@ -110,18 +110,18 @@ MESSAGES = {
     17: {
         "error": "high level alarm",
         "description": "LN2 level in the Dewar is too high",
-        "help": "Close the main valve of the LN2 supply and contact IRELEC support"
+        "help": "Close the main valve of the LN2 supply"
     },
     18: {
         "error": "No LN2 available, regulation stopped",
         "description": "No LN2 available, autofill stopped",
-        "help": "Check LN2 main supply, check phase sensor, and contact IRELEC support",
+        "help": "Check LN2 main supply, check phase sensor",
         "state": StatusType.FAULT,
     },
     19: {
         "error": "FillingUp Timeout",
         "description": "Maximum time for filling up was exceeded",
-        "help": "Check LN2 main supply, check level sensor, and contact IRELEC support",
+        "help": "Check LN2 main supply, check level sensor",
     },
     20: {
         "error": "collision at the gonio",

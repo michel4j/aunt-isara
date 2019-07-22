@@ -338,7 +338,9 @@ class AuntISARAApp(object):
         self.status_received = None
 
     def load_positions(self):
-        # Load most recent file if one exists
+        """
+        Load most recent file if one exists. Returns a dictionary of named robot positions.
+        """
         data_files = glob.glob(os.path.join(self.app_directory, '{}*.dat'.format(self.positions_name)))
         if not data_files:
             return {}
@@ -352,6 +354,10 @@ class AuntISARAApp(object):
             return positions
 
     def save_positions(self):
+        """
+        Save current positions to a file. If previous file was older than today, create a new one with todays's date
+        as a suffix.
+        """
         logger.debug('Saving positions ...')
         positions_file = '{}-{}.dat'.format(self.positions_name, datetime.today().strftime('%Y%m%d'))
         with open(os.path.join(self.app_directory, positions_file), 'w') as fobj:
@@ -361,6 +367,10 @@ class AuntISARAApp(object):
         return self.ready and self.ioc.enabled.get() and self.ioc.connected.get()
 
     def sender(self):
+        """
+        Main method which sends commands to the robot from the outbox queue. New commands are placed in the queue
+        to be sent through this method. This method is called within the sender thread.
+        """
         self.send_on = True
         epics.threads_init()
         while self.send_on:
@@ -373,6 +383,11 @@ class AuntISARAApp(object):
             time.sleep(0)
 
     def receiver(self):
+        """
+        Main method which receives messages from the robot from the inbox queue. Messages from the robot are placed in
+        the queue to be processed by this method. It is called within the receiver thread.
+        """
+
         self.recv_on = True
         epics.threads_init()
         while self.recv_on:
@@ -387,6 +402,10 @@ class AuntISARAApp(object):
             time.sleep(0)
 
     def status_monitor(self):
+        """
+        Main monitor method which sends monior commands to the robot.
+        """
+
         epics.threads_init()
         self.recv_on = True
         cmd_index = 0
@@ -434,6 +453,40 @@ class AuntISARAApp(object):
         self.recv_on = False
         self.send_on = False
         self.ioc.shutdown()
+
+    def wait_for_position(self, *positions):
+        timeout = 30
+        while timeout > 0 and self.ioc.position_fbk.get() not in positions:
+            timeout -= 0.01
+            time.sleep(0.01)
+        if timeout > 0:
+            return True
+        else:
+            logger.warn('Timeout waiting for positions "{}"'.format(states))
+            return False
+
+    def wait_for_state(self, *states):
+        timeout = 30
+        state_values = [s.value for s in states]
+        while timeout > 0 and self.ioc.status.get() not in state_values:
+            timeout -= 0.01
+            time.sleep(0.01)
+        if timeout > 0:
+            return True
+        else:
+            logger.warn('Timeout waiting for states "{}"'.format(states))
+            return False
+
+    def wait_in_state(self, state):
+        timeout = 30
+        while timeout > 0 and self.ioc.status.get() == state.value:
+            timeout -= 0.01
+            time.sleep(0.01)
+        if timeout > 0:
+            return True
+        else:
+            logger.warn('Timeout in state "{}"'.format(state))
+            return False
 
     @staticmethod
     def make_args(tool=0, puck=0, sample=0, puck_type=PuckType.UNIPUCK.value, x_off=0, y_off=0, z_off=0, **kwargs):
@@ -496,14 +549,12 @@ class AuntISARAApp(object):
     def calc_position(self):
         cur = numpy.array([
             self.ioc.xpos_fbk.get(), self.ioc.ypos_fbk.get(), self.ioc.zpos_fbk.get(),
-            #self.ioc.rxpos_fbk.get(), self.ioc.rypos_fbk.get(), self.ioc.rzpos_fbk.get()
         ])
         found = False
         name = ""
         for name, info in self.positions.items():
             pos = numpy.array([
                 info['x'], info['y'], info['z'],
-                #info['rx'], info['ry'], info['rz'],
             ])
             dist = numpy.linalg.norm(cur-pos)
             if dist <= info['tol']:
@@ -521,7 +572,7 @@ class AuntISARAApp(object):
     def require_position(self, *allowed):
         if not self.positions.keys():
             self.warn('No positions have been defined')
-            self.ioc.help.put('Please save position named ` {} `'.format(' | '.join(allowed)))
+            self.ioc.help.put('Please move the robot manually and save positions named `{}`'.format(' | '.join(allowed)))
             return False
 
         current = self.ioc.position_fbk.get()
