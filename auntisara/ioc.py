@@ -1,17 +1,15 @@
-import re
-import json
 import glob
+import json
+import numpy
 import os
+import re
 import textwrap
 import time
-import numpy
-
-from datetime import datetime
 from Queue import Queue
-from threading import Thread
-
+from datetime import datetime
 from enum import Enum
 from softdev import epics, models, log
+from threading import Thread
 from twisted.internet import reactor
 
 from . import isara, msgs
@@ -30,7 +28,9 @@ NUM_PUCK_SAMPLES = 16
 NUM_PLATES = 8
 NUM_WELLS = 192
 NUM_ROW_WELLS = 24
-STATUS_TIME = 0.1
+STATUS_TIME = 0.025
+
+STATUS_PATT = re.compile('^(?P<context>\w+)\((?P<msg>.*?)\)?$')
 
 logger = log.get_module_logger(__name__)
 
@@ -43,7 +43,8 @@ class PuckType(Enum):
     ACTOR, UNIPUCK = range(2)
 
 
-StatusType  = msgs.StatusType
+StatusType = msgs.StatusType
+
 
 class OffOn(Enum):
     OFF, ON = range(2)
@@ -141,7 +142,7 @@ class AuntISARA(models.Model):
     soak_count_fbk = models.Integer('STATE:soakCount', desc='Soak Count')
     pucks_fbk = models.String('STATE:pucks', max_length=40, desc='Puck Detection')
     pucks_bit0 = models.BinaryInput('STATE:pucks:bit0', desc='Puck Detection')
-    pucks_bit1= models.BinaryInput('STATE:pucks:bit1', desc='Puck Detection')
+    pucks_bit1 = models.BinaryInput('STATE:pucks:bit1', desc='Puck Detection')
     xpos_fbk = models.Float('STATE:posX', prec=2, desc='X-Pos')
     ypos_fbk = models.Float('STATE:posY', prec=2, desc='Y-Pos')
     zpos_fbk = models.Float('STATE:posZ', prec=2, desc='Z-Pos')
@@ -150,6 +151,7 @@ class AuntISARA(models.Model):
     rzpos_fbk = models.Float('STATE:posRZ', prec=2, desc='RZ-Pos')
     mounted_fbk = models.String('STATE:onDiff', max_length=40, desc='On Gonio')
     tooled_fbk = models.String('STATE:onTool', max_length=40, desc='On Tool')
+    tooled2_fbk = models.String('STATE:onTool2', max_length=40, desc='On Tool 2')
 
     # Params
     next_param = models.String('PAR:nextPort', max_length=40, default='', desc='Port')
@@ -227,7 +229,7 @@ def port2args(port):
     else:
         args = {
             'tool': ToolType.UNIPUCK.value,
-            'puck': PUCK_LIST.index(port[:2])+1,
+            'puck': PUCK_LIST.index(port[:2]) + 1,
             'sample': zero_int(port[2:]),
             'mode': 'puck'
         }
@@ -236,8 +238,8 @@ def port2args(port):
 
 def pin2port(puck, sample):
     # converts puck=1, sample=16 to '1A16'
-    if all((puck, sample)):
-        return '{}{}'.format(PUCK_LIST[puck-1], sample)
+    if puck > 0 and pin > 0:
+        return '{}{}'.format(PUCK_LIST[puck - 1], sample)
     else:
         return ''
 
@@ -257,6 +259,13 @@ def zero_int(text):
         return 0
 
 
+def minus_int(text):
+    try:
+        return int(text)
+    except ValueError:
+        return -1
+
+
 def name_to_tool(text):
     return {
         'simple': ToolType.UNIPUCK.value,
@@ -265,22 +274,110 @@ def name_to_tool(text):
     }.get(text.lower(), 1)
 
 
+class PositionManager(object):
+    """Manages robot positions including saving/loading and testing for current position"""
+
+    def __init__(self, name, directory):
+        """
+        :param name: Name of positions file
+        :param directory: directory where file is located
+        """
+        self.name = name
+        self.directory = directory
+        self.raw = {}
+        self.info = {}
+        self.load()
+
+    def is_ready(self):
+        return bool(self.info)
+
+    def load(self):
+        """Load most recent positions from directory"""
+        self.raw = {}
+        data_files = glob.glob(os.path.join(self.directory, '{}*.dat'.format(self.name)))
+        if data_files:
+            data_files.sort(key=lambda x: -os.path.getmtime(x))
+            latest = data_files[0]
+
+            logger.info('Using Position File: {}'.format(latest))
+            with open(latest, 'r') as fobj:
+                self.raw = json.load(fobj)
+        self.setup()
+
+    def setup(self):
+        """Prepare arrays for calculating positions"""
+        if self.raw:
+            self.info = {
+                'names': numpy.array(list(self.raw.keys())),
+                'coords': numpy.array([(v['x'], v['y'], v['z']) for v in self.raw.values()]),
+                'tolerances': numpy.array([v['tol'] for v in self.raw.values()])
+            }
+        else:
+            self.info = {}
+
+    def save(self):
+        """
+        Save current positions to a file. If previous file was older than today, create a new one with todays's date
+        as a suffix.
+        """
+        logger.debug('Saving positions ...')
+        positions_file = '{}-{}.dat'.format(self.name, datetime.today().strftime('%Y%m%d'))
+        with open(os.path.join(self.directory, positions_file), 'w') as fobj:
+            json.dump(self.raw, fobj, indent=2)
+
+    def add(self, name, coords, tolerance, replace=False):
+        if replace or name not in self.info['names']:
+            self.raw[name] = {
+                'x': coords[0],
+                'y': coords[1],
+                'z': coords[2],
+                'rx': coords[3],
+                'ry': coords[4],
+                'rz': coords[5],
+                'tol': tolerance,
+            }
+            self.setup()
+            self.save()
+
+    def check(self, coords):
+        """
+        Determine named position from given coordinates
+        :param coords: (x, y, z, rx, ry, rz)
+        :return: named position or 'UNKNOWN'
+        """
+        if self.info:
+            pos = numpy.array(coords[:3])
+            distances = numpy.linalg.norm(self.info['coords'] - pos, axis=1)
+            within = ((self.info['tolerances'] - distances) >= 0)
+            if any(within):
+                return self.info['names'][within][0]
+            else:
+                return 'UNKNOWN'
+        else:
+            return 'UNKNOWN'
+
+
 class AuntISARAApp(object):
     def __init__(self, device_name, address, command_port=1000, status_port=10000, positions='positions'):
         self.app_directory = os.getcwd()
         self.ioc = AuntISARA(device_name, callbacks=self)
-        self.inbox = Queue()
-        self.outbox = Queue()
-        self.send_on = False
-        self.recv_on = False
+
+        self.responses = Queue()
+        self.statuses = Queue()
+        self.commands = Queue()
+
+        self.command_on = False
+        self.status_on = False
         self.user_enabled = False
         self.ready = False
+
         self.standby_active = False
         self.dewar_pucks = set()
+
+        # Prepare connection/protocols
         self.command_client = isara.CommandFactory(self)
         self.status_client = isara.StatusFactory(self)
         self.pending_clients = {self.command_client.protocol.message_type, self.status_client.protocol.message_type}
-
         reactor.connectTCP(address, status_port, self.status_client)
         reactor.connectTCP(address, command_port, self.command_client)
 
@@ -292,18 +389,18 @@ class AuntISARAApp(object):
             2: (self.ioc.default_fbk, int),
             3: (self.ioc.tool_fbk, name_to_tool),
             4: (self.ioc.path_fbk, str),
-            5: (self.ioc.puck_tool_fbk, zero_int),
-            6: (self.ioc.sample_tool_fbk, zero_int),
-            7: (self.ioc.puck_diff_fbk, zero_int),
-            8: (self.ioc.sample_diff_fbk, zero_int),
-            9: (self.ioc.plate_fbk, zero_int),
+            5: (self.ioc.puck_tool_fbk, minus_int),
+            6: (self.ioc.sample_tool_fbk, minus_int),
+            7: (self.ioc.puck_diff_fbk, minus_int),
+            8: (self.ioc.sample_diff_fbk, minus_int),
+            9: (self.ioc.plate_fbk, minus_int),
             11: (self.ioc.barcode_fbk, str),
             12: (self.ioc.running_fbk, int),
             13: (self.ioc.autofill_fbk, int),
             15: (self.ioc.speed_fbk, int),
             18: (self.ioc.pos_dew_fbk, zero_int),
-            20: (self.ioc.puck_tool2_fbk, zero_int),
-            21: (self.ioc.sample_tool2_fbk, zero_int),
+            20: (self.ioc.puck_tool2_fbk, minus_int),
+            21: (self.ioc.sample_tool2_fbk, minus_int),
             22: (self.ioc.soak_count_fbk, int),
         }
         self.position_map = [
@@ -331,117 +428,91 @@ class AuntISARAApp(object):
 
         self.mounting = False
         self.aborted = False
-        self.fault_active = False
 
-        self.positions_name = positions
-        self.positions = self.load_positions()
-        self.status_received = None
-
-    def load_positions(self):
-        """
-        Load most recent file if one exists. Returns a dictionary of named robot positions.
-        """
-        data_files = glob.glob(os.path.join(self.app_directory, '{}*.dat'.format(self.positions_name)))
-        if not data_files:
-            return {}
-        else:
-            data_files.sort(key=lambda x: -os.path.getmtime(x))
-            latest = data_files[0]
-
-            logger.info('Using Position File: {}'.format(latest))
-            with open(latest, 'r') as fobj:
-                positions = json.load(fobj)
-            return positions
-
-    def save_positions(self):
-        """
-        Save current positions to a file. If previous file was older than today, create a new one with todays's date
-        as a suffix.
-        """
-        logger.debug('Saving positions ...')
-        positions_file = '{}-{}.dat'.format(self.positions_name, datetime.today().strftime('%Y%m%d'))
-        with open(os.path.join(self.app_directory, positions_file), 'w') as fobj:
-            json.dump(self.positions, fobj, indent=2)
-
-    def ready_for_commands(self):
-        return self.ready and self.ioc.enabled.get() and self.ioc.connected.get()
+        self.positions = PositionManger(positions, self.app_directory)
 
     def sender(self):
         """
-        Main method which sends commands to the robot from the outbox queue. New commands are placed in the queue
+        Main method which sends commands to the robot from the commands queue. New commands are placed in the queue
         to be sent through this method. This method is called within the sender thread.
         """
-        self.send_on = True
+        self.command_on = True
         epics.threads_init()
-        while self.send_on:
-            command = self.outbox.get()
-            logger.debug('< {}'.format(command))
+        while self.command_on:
+            command, full_cmd = self.commands.get()
+            logger.debug('< {}'.format(full_cmd))
             try:
-                self.command_client.send_message(command)
+                self.command_client.send_message(full_cmd)
             except Exception as e:
-                logger.error('{}: {}'.format(command, e))
-            time.sleep(0)
-
-    def receiver(self):
-        """
-        Main method which receives messages from the robot from the inbox queue. Messages from the robot are placed in
-        the queue to be processed by this method. It is called within the receiver thread.
-        """
-
-        self.recv_on = True
-        epics.threads_init()
-        while self.recv_on:
-            message, message_type = self.inbox.get()
-            if message_type == isara.MessageType.RESPONSE:
-                self.ioc.warning.put('')  # clear warning if command is successful
-                logger.debug('> {}'.format(message))
-            try:
-                self.process_message(message, message_type)
-            except Exception as e:
-                logger.error('{}: {}'.format(message, e))
-            time.sleep(0)
+                logger.error('{}: {}'.format(full_cmd, e))
+            time.sleep(0.01)
 
     def status_monitor(self):
         """
-        Main monitor method which sends monior commands to the robot.
+        Sends status commands and receives status replies from ISARA.
         """
-
         epics.threads_init()
-        self.recv_on = True
+        self.status_on = True
         cmd_index = 0
-        commands = ['state', 'di', 'di2', 'do', 'position', 'message']
-        while self.recv_on:
-            self.status_received = None
-            cmd = commands[cmd_index]
-            self.status_client.send_message(cmd)
+        commands = ['state', 'di', 'di2', 'do', 'state', 'position', 'message']
+        while self.status_on:
+            command = commands[cmd_index]
+            self.status_client.send_message(command)
+            success, reply = self.wait_for_status(command, timeout=3)
+            if success:
+                self.parse_status(*reply)
+            else:
+                logger.warning(message)
             cmd_index = (cmd_index + 1) % len(commands)
-            timeout = 10 * STATUS_TIME
-            while self.status_received != cmd and timeout > 0:
-                time.sleep(STATUS_TIME)
-                timeout -= STATUS_TIME
+            time.sleep(STATUS_TIME)
+
+    def response_monitor(self):
+        """
+        Receives responses from commands sent to ISARA.
+        """
+        self.command_on = True
+        epics.threads_init()
+        while self.command_on:
+            message = self.responses.get()
+            self.ioc.log.put(message)
+            time.sleep(STATUS_TIME)
 
     def disconnect(self, client_type):
+        """
+        Called when a protocol client disconnects
+        :param client_type:  The client_type of the client which disconnected.
+        """
         self.pending_clients.add(client_type)
-        self.recv_on = False
-        self.send_on = False
+        self.status_on = False
+        self.command_on = False
         self.ioc.connected.put(0)
 
     def connect(self, client_type):
+        """
+        Called when a protocol client connects
+        :param client_type: The client_type of the connected client.
+        :return:
+        """
         self.pending_clients.remove(client_type)
 
         # all clients connected
         if not self.pending_clients:
-            self.inbox.queue.clear()
-            self.outbox.queue.clear()
-            send_thread = Thread(target=self.sender)
-            recv_thread = Thread(target=self.receiver)
+            self.responses.queue.clear()
+            self.commands.queue.clear()
+            self.statuses.queue.clear()
+
+            command_thread = Thread(target=self.sender)
             status_thread = Thread(target=self.status_monitor)
-            send_thread.setDaemon(True)
-            recv_thread.setDaemon(True)
+            response_thread = Thread(target=self.response_monitor)
+
+            command_thread.setDaemon(True)
             status_thread.setDaemon(True)
-            send_thread.start()
-            recv_thread.start()
+            response_thread.setDaemon(True)
+
+            command_thread.start()
             status_thread.start()
+            response_thread.start()
+
             self.ready = True
             self.ioc.connected.put(1)
             logger.warn('Controller ready!')
@@ -449,10 +520,34 @@ class AuntISARAApp(object):
             self.ready = False
 
     def shutdown(self):
+        """
+        Shutdown service
+        """
         logger.warn('Shutting down ...')
-        self.recv_on = False
-        self.send_on = False
+        self.status_on = False
+        self.command_on = False
+        self.ready = False
         self.ioc.shutdown()
+
+    @staticmethod
+    def wait_for_queue(context, timeout=5, queue=None):
+        context, reply = queue.get()
+        while timeout > 0 and not context.startswith(context):
+            timeout -= 0.01
+            time.sleep(0.01)
+            context, reply = queue.get()
+
+        if timeout > 0:
+            return True, reply
+        else:
+            logger.warn('Timeout waiting for response "{}"'.format(context))
+            return False, 'Timeout waiting for response to command "{}"'.format(context)
+
+    def wait_for_response(self, command, timeout=5):
+        return self.wait_for_queue(command, timeout=timeout, queue=self.responses)
+
+    def wait_for_status(self, command, timeout=5):
+        return self.wait_for_queue(command, timeout=timeout, queue=self.statuses)
 
     def wait_for_position(self, *positions):
         timeout = 30
@@ -488,6 +583,9 @@ class AuntISARAApp(object):
             logger.warn('Timeout in state "{}"'.format(state))
             return False
 
+    def ready_for_commands(self):
+        return self.ready and self.ioc.enabled.get() and self.ioc.connected.get()
+
     @staticmethod
     def make_args(tool=0, puck=0, sample=0, puck_type=PuckType.UNIPUCK.value, x_off=0, y_off=0, z_off=0, **kwargs):
         return (tool, puck, sample) + (0,) * 4 + (puck_type, 0, 0) + (x_off, y_off, z_off)
@@ -499,18 +597,20 @@ class AuntISARAApp(object):
                 cmd = '{}({})'.format(command, ','.join([str(arg) for arg in args]))
             else:
                 cmd = command
-            self.outbox.put(cmd)
+            self.commands.put((command, cmd))
 
     def receive_message(self, message, message_type):
-        self.inbox.put((message, message_type))
-
-    def process_message(self, message, message_type):
-        if message_type == isara.MessageType.STATUS:
-            # process state messages
-            self.parse_status(message)
+        if message_type == isara.MessageType.RESPONSE:
+            self.responses.put(message)
+        elif message_type == isara.MessageType.STATUS:
+            m = STATUS_PATT.match(message)
+            if m:
+                info = m.groupdict()
+                self.statuses.put((info['context'], info['msg']))
+            else:
+                self.statuses.put(('message', message))
         else:
-            # process response messages
-            self.ioc.log.put(message)
+            self.statuses.put(('message', message))
 
     def parse_inputs(self, bitstring):
         inputs = [self.ioc.input0_fbk, self.ioc.input1_fbk, self.ioc.input2_fbk, self.ioc.input3_fbk]
@@ -547,32 +647,21 @@ class AuntISARAApp(object):
                 pv.put(int(bit))
 
     def calc_position(self):
-        cur = numpy.array([
-            self.ioc.xpos_fbk.get(), self.ioc.ypos_fbk.get(), self.ioc.zpos_fbk.get(),
-        ])
-        found = False
-        name = ""
-        for name, info in self.positions.items():
-            pos = numpy.array([
-                info['x'], info['y'], info['z'],
-            ])
-            dist = numpy.linalg.norm(cur-pos)
-            if dist <= info['tol']:
-                found = True
-                if self.ioc.position_fbk.get() != name:
-                    self.ioc.position_fbk.put(name)
-                    # Set the standby flag whenever the robot goes to the DRY position
-                    # flag stays active until the next command is sent
-                    if 'DRY' in name:
-                        self.standby_active = True
-                continue
-        if not found:
-            self.ioc.position_fbk.put('UNKNOWN')
+        coords = numpy.array(
+            [
+                ioc.xpos_fbk.get(), ioc.ypos_fbk.get(), ioc.zpos_fbk.get(),
+                ioc.rxpos_fbk.get(), ioc.rypos_fbk.get(), ioc.rzpos_fbk.get(),
+            ]
+        )
+
+        name = self.positions.check(coords)
+        self.ioc.position_fbk.put(name)
 
     def require_position(self, *allowed):
-        if not self.positions.keys():
+        if not self.positions.is_ready():
             self.warn('No positions have been defined')
-            self.ioc.help.put('Please move the robot manually and save positions named `{}`'.format(' | '.join(allowed)))
+            self.ioc.help.put(
+                'Please move the robot manually and save positions named `{}`'.format(' | '.join(allowed)))
             return False
 
         current = self.ioc.position_fbk.get()
@@ -591,63 +680,72 @@ class AuntISARAApp(object):
     def warn(self, msg):
         self.ioc.warning.put('{} {}'.format(datetime.now().strftime('%b/%d %H:%M:%S'), msg))
 
-    def parse_status(self, message):
-        patt = re.compile('^(?P<context>\w+)\((?P<msg>.*?)\)?$')
-        m = patt.match(message)
-        next_status = None
-        cur_status = self.ioc.status.get()
-        if m:
-            details = m.groupdict()
-            self.status_received = details['context']
-            if details['context'] == 'state':
-                for i, value in enumerate(details['msg'].split(',')):
-                    if i not in self.status_map: continue
-                    record, converter = self.status_map[i]
-                    try:
-                        record.put(converter(value))
-                    except ValueError:
-                        logger.warning('Unable to parse state: {}'.format(message))
+    def parse_status(self, context, message):
+        # state
+        fault_active = False
+        wait_active = False
+        if context == 'state':
+            strings = message.split(',')
+            values = []
+            for i, txt in enumerate(strings):
+                record, converter = self.status_map[i]
+                try:
+                    value = converter(txt)
+                    values.append(value)
+                    record.put(value)
+                except ValueError:
+                    logger.warning('Unable to parse state: {}'.format(txt))
 
-                # determine robot state
-                if self.fault_active:
-                    next_status = StatusType.FAULT.value
-                elif self.ioc.running_fbk.get() and self.standby_active:
-                    next_status = StatusType.STANDBY.value
-                elif self.ioc.running_fbk.get() and self.ioc.trajectory_fbk.get():
-                    next_status = StatusType.BUSY.value
-                elif not self.ioc.running_fbk.get():
-                    next_status = StatusType.IDLE.value
+            # set mounted state
+            puck, pin = values[7], values[8]
+            port = pin2port(puck, pin)
+            if port != self.ioc.mounted_fbk.get():
+                self.ioc.mounted_fbk.put(port)
 
-            elif details['context'] == 'position':
-                for i, value in enumerate(details['msg'].split(',')):
-                    try:
-                        self.position_map[i].put(float(value))
-                    except ValueError:
-                        logger.warning('Unable to parse position: {}'.format(message))
-                self.calc_position()
-            elif details['context'] == 'di2':
-                # puck detection
-                bitstring = details['msg'].replace(',', '')
-                self.ioc.pucks_fbk.put(bitstring)
-                bit0, bit1 = textwrap.wrap(bitstring, 16)
-                self.ioc.pucks_bit0.put(int(bit0[::-1], 2))
-                self.ioc.pucks_bit1.put(int(bit1[::-1], 2))
-            elif details['context'] == 'di':
-                # process inputs
-                bitstring = details['msg'].replace(',', '').ljust(64, '0')
-                self.parse_inputs(bitstring)
-            elif details['context'] == 'do':
-                # process outputs
-                bitstring = details['msg'].replace(',', '').ljust(64, '0')
-                self.parse_outputs(bitstring)
-            elif details['context'] == 'message':
-                self.ioc.log.put(details['msg'])
-        else:
-            # must be messages
-            self.status_received = 'message'
-            if message.strip():
-                warning, help, state, bit = msgs.parse_error(message.strip())
+            # set tooled state
+            puck, pin = values[5], values[6]
+            port = pin2port(puck, pin)
+            if port != self.ioc.tooled_fbk.get():
+                self.ioc.tooled_fbk.put(port)
+
+            # set tooled2 state
+            puck, pin = values[20], values[21]
+            port = pin2port(puck, pin)
+            if port != self.ioc.tooled2_fbk.get():
+                self.ioc.tooled2_fbk.put(port)
+
+        # Positions
+        if context == 'position':
+            for i, value in enumerate(message.split(',')):
+                try:
+                    self.position_map[i].put(float(value))
+                except ValueError:
+                    logger.warning('Unable to parse position: {}'.format(message))
+            self.calc_position()
+
+        # puck detection
+        if context == 'di2':
+            bitstring = message.replace(',', '')
+            self.ioc.pucks_fbk.put(bitstring)
+            bit0, bit1 = textwrap.wrap(bitstring, 16)
+            self.ioc.pucks_bit0.put(int(bit0[::-1], 2))
+            self.ioc.pucks_bit1.put(int(bit1[::-1], 2))
+
+        # process inputs
+        if context == 'di':
+            bitstring = message.replace(',', '').ljust(64, '0')
+            self.parse_inputs(bitstring)
+
+        # process outputs
+        if context == 'do':
+            bitstring = context.replace(',', '').ljust(64, '0')
+            self.parse_outputs(bitstring)
+
+        if context == 'message':
+            if message:
+                warning, help, state, bit = msgs.parse_error(message)
                 bitarray = list(bin(self.ioc.error_fbk.get())[2:].rjust(32, '0'))
+
                 if bit is not None:
                     bitarray[bit] = '1'
                     new_value = int(''.join(bitarray), 2)
@@ -655,13 +753,28 @@ class AuntISARAApp(object):
                         self.ioc.error_fbk.put(new_value)
                     if state == StatusType.FAULT:
                         self.ioc.health.put(ErrorType.ERROR.value)
-                        self.fault_active = True
+                        fault_active = True
+                    elif state == StatusType.WAITING:
+                        wait_active = True
                 else:
                     self.ioc.error_fbk.put(0)
             else:
                 self.ioc.health.put(ErrorType.OK.value)
                 self.ioc.error_fbk.put(0)
-                self.fault_active = False
+
+        # determine robot state
+        next_status = None
+        cur_status = self.ioc.status.get()
+        if fault_active:
+            next_status = StatusType.FAULT.value
+        elif wait_active:
+            next_status = StatusType.WAITING.value
+        elif self.ioc.running_fbk.get() and self.standby_active:
+            next_status = StatusType.STANDBY.value
+        elif self.ioc.running_fbk.get() and self.ioc.trajectory_fbk.get():
+            next_status = StatusType.BUSY.value
+        elif not self.ioc.running_fbk.get():
+            next_status = StatusType.IDLE.value
 
         if next_status is not None and next_status != cur_status:
             self.ioc.status.put(next_status)
@@ -979,16 +1092,6 @@ class AuntISARAApp(object):
         if value:
             self.send_command('resetMotion')
 
-    def do_sample_diff_fbk(self, pv, value, ioc):
-        port = pin2port(ioc.puck_diff_fbk.get(), value)
-        ioc.mounted_fbk.put(port)
-        ioc.next_param.put('')
-
-    def do_plate_fbk(self, pv, value, ioc):
-        if value:
-            port = plate2port(value)
-            ioc.tooled_fbk.put(port)
-
     def do_pucks_fbk(self, pv, value, ioc):
         if len(value) != NUM_PUCKS:
             logger.error('Puck Detection does not contain {} values!'.format(NUM_PUCKS))
@@ -1011,36 +1114,33 @@ class AuntISARAApp(object):
         if value and ioc.pos_name.get().strip():
             pos_name = ioc.pos_name.get().strip().replace(' ', '_')
             tolerance = ioc.pos_tolerance.get()
-            if ioc.pos_force.get() or pos_name not in self.positions:
-                self.positions[pos_name] = {
-                    'x': ioc.xpos_fbk.get(),
-                    'y': ioc.ypos_fbk.get(),
-                    'z': ioc.zpos_fbk.get(),
-                    'rx': ioc.rxpos_fbk.get(),
-                    'ry': ioc.rypos_fbk.get(),
-                    'rz': ioc.rzpos_fbk.get(),
-                    'tol': tolerance,
-                }
-                self.save_positions()
+            replace = bool(ioc.pos_force.get())
+            coords = numpy.array(
+                [
+                    ioc.xpos_fbk.get(), ioc.ypos_fbk.get(), ioc.zpos_fbk.get(),
+                    ioc.rxpos_fbk.get(), ioc.rypos_fbk.get(), ioc.rzpos_fbk.get(),
+                ]
+            )
+            self.positions.add(pos_name, coords, tolerance, replace)
             ioc.pos_force.put(0)
             ioc.pos_name.put('')
 
-    def do_sample_tool_fbk(self, pv, value, ioc):
-        port = pin2port(ioc.puck_tool_fbk.get(), value)
-        ioc.tooled_fbk.put(port)
-    
     def do_status(self, pv, value, ioc):
         if value == 0:
             if ioc.error_fbk.get():
                 ioc.reset_cmd.put(1)
             self.mounting = False
 
+    def do_position_fbk(self, pv, value, ioc):
+        if 'DRY' in value:
+            self.standby_active = True
+
     def do_error_fbk(self, pv, value, ioc):
         if value:
             bitarray = list(bin(value)[2:].rjust(32, '0'))
             errors = filter(None, [msgs.MESSAGES.get(i) for i, bit in enumerate(bitarray) if bit == '1'])
             if errors:
-                texts = [(err.get('description', ''), err.get('help')) for err in errors ]
+                texts = [(err.get('description', ''), err.get('help')) for err in errors]
                 warnings, help = zip(*texts)
                 warning_text = '; '.join(warnings)
                 help_text = '; '.join(help)
