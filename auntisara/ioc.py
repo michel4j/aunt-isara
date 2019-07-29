@@ -600,6 +600,7 @@ class AuntISARAApp(object):
             self.commands.put((command, cmd))
 
     def receive_message(self, message, message_type):
+        logger.debug('{}: <- {}'.format(message_type, message))
         if message_type == isara.MessageType.RESPONSE:
             self.responses.put(message)
         elif message_type == isara.MessageType.STATUS:
