@@ -236,10 +236,10 @@ def port2args(port):
     return args
 
 
-def pin2port(puck, sample):
-    # converts puck=1, sample=16 to '1A16'
+def pin2port(puck, pin):
+    # converts puck=1, pin=16 to '1A16'
     if puck > 0 and pin > 0:
-        return '{}{}'.format(PUCK_LIST[puck - 1], sample)
+        return '{}{}'.format(PUCK_LIST[puck - 1], pin)
     else:
         return ''
 
@@ -347,8 +347,9 @@ class PositionManager(object):
         """
         if self.info:
             pos = numpy.array(coords[:3])
-            distances = numpy.linalg.norm(self.info['coords'] - pos, axis=1)
-            within = ((self.info['tolerances'] - distances) >= 0)
+            distances = (numpy.power((self.info['coords'] - pos), 2)).sum(axis=1)
+            tolerances = numpy.power(self.info['tolerances'], 2)
+            within = ((tolerances - distances) >= 0)
             if any(within):
                 return self.info['names'][within][0]
             else:
@@ -460,7 +461,7 @@ class AuntISARAApp(object):
             self.status_client.send_message(command)
             success, reply = self.wait_for_status(command, timeout=3)
             if success:
-                self.parse_status(*reply)
+                self.parse_status(command, reply)
             else:
                 logger.warning(message)
             cmd_index = (cmd_index + 1) % len(commands)
@@ -650,8 +651,8 @@ class AuntISARAApp(object):
     def calc_position(self):
         coords = numpy.array(
             [
-                ioc.xpos_fbk.get(), ioc.ypos_fbk.get(), ioc.zpos_fbk.get(),
-                ioc.rxpos_fbk.get(), ioc.rypos_fbk.get(), ioc.rzpos_fbk.get(),
+                self.ioc.xpos_fbk.get(), self.ioc.ypos_fbk.get(), self.ioc.zpos_fbk.get(),
+                self.ioc.rxpos_fbk.get(), self.ioc.rypos_fbk.get(), self.ioc.rzpos_fbk.get(),
             ]
         )
 
@@ -689,6 +690,7 @@ class AuntISARAApp(object):
             strings = message.split(',')
             values = []
             for i, txt in enumerate(strings):
+                if not i in self.status_map: continue
                 record, converter = self.status_map[i]
                 try:
                     value = converter(txt)
@@ -709,11 +711,12 @@ class AuntISARAApp(object):
             if port != self.ioc.tooled_fbk.get():
                 self.ioc.tooled_fbk.put(port)
 
+            # Not available on our ISARA
             # set tooled2 state
-            puck, pin = values[20], values[21]
-            port = pin2port(puck, pin)
-            if port != self.ioc.tooled2_fbk.get():
-                self.ioc.tooled2_fbk.put(port)
+            # puck, pin = values[20], values[21]
+            # port = pin2port(puck, pin)
+            # if port != self.ioc.tooled2_fbk.get():
+            #     self.ioc.tooled2_fbk.put(port)
 
         # Positions
         if context == 'position':
@@ -739,7 +742,7 @@ class AuntISARAApp(object):
 
         # process outputs
         if context == 'do':
-            bitstring = context.replace(',', '').ljust(64, '0')
+            bitstring = message.replace(',', '').ljust(64, '0')
             self.parse_outputs(bitstring)
 
         if context == 'message':
