@@ -429,7 +429,7 @@ class AuntISARAApp(object):
         self.mounting = False
         self.aborted = False
 
-        self.positions = PositionManger(positions, self.app_directory)
+        self.positions = PositionManager(positions, self.app_directory)
 
     def sender(self):
         """
