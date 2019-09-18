@@ -30,7 +30,7 @@ NUM_WELLS = 192
 NUM_ROW_WELLS = 24
 STATUS_TIME = 0.025
 
-STATUS_PATT = re.compile('^(?P<context>\w+)\((?P<msg>.*?)\)?$')
+STATUS_PATT = re.compile(r'^(?P<context>\w+)\((?P<msg>.*?)\)?$')
 
 logger = log.get_module_logger(__name__)
 
@@ -110,6 +110,7 @@ class AuntISARA(models.Model):
     output2_fbk = models.BinaryInput('STATE:OUT2', desc='Digital Oututs 32-47')
     output3_fbk = models.BinaryInput('STATE:OUT3', desc='Digital Oututs 48-63')
 
+
     # Status
     mode_fbk = models.Enum('STATE:mode', choices=ModeType, desc='Control Mode')
     error_fbk = models.Integer('STATE:error', desc='Error Code')
@@ -164,6 +165,10 @@ class AuntISARA(models.Model):
     pos_name = models.String('PAR:posName', max_length=40, default='', desc='Position Name')
     pos_force = models.Enum('PAR:posForce', choices=OffOn, default=0, desc='Overwrite Position')
     pos_tolerance = models.Float('PAR:posTol', default=0.1, prec=2, desc='Position Tolerance')
+
+    # New Autofill Levels
+    low_ln2_level = models.Integer('PAR:lowLN2', min_val=0, max_val=100, default=0, desc='Low LN2 Level')
+    high_ln2_level = models.Integer('PAR:highLN2', min_val=0, max_val=100, default=0, desc='High LN2 Level')
 
     # General Commands
     power_cmd = models.Toggle('CMD:power', desc='Power')
@@ -1154,3 +1159,13 @@ class AuntISARAApp(object):
                     ioc.help.put(help)
         else:
             ioc.help.put('')
+
+    def do_low_ln2_level(self, pv, value, ioc):
+        if value:
+            self.send_command('setLowLN2', value)
+
+    def do_high_ln2_level(self, pv, value, ioc):
+        if value:
+            self.send_command('setHighLN2', value)
+
+
