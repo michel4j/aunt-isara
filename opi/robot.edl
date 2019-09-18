@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 0
-y 64
+x 636
+y 114
 w 754
 h 626
 font "lucida-medium-r-18.0"
@@ -31,7 +31,7 @@ release 0
 x 240
 y 191
 w 321
-h 146
+h 181
 lineColor index 5
 fillColor index 1
 endObjectProperties
@@ -42,8 +42,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 240
-y 344
+x 241
+y 388
 w 321
 h 81
 lineColor index 5
@@ -60,7 +60,7 @@ release 0
 x 11
 y 142
 w 222
-h 282
+h 330
 lineColor index 5
 fillColor index 0
 endObjectProperties
@@ -72,23 +72,9 @@ major 4
 minor 0
 release 0
 x 570
-y 377
-w 173
-h 161
-lineColor index 5
-fillColor index 1
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 570
 y 145
 w 174
-h 218
+h 201
 lineColor index 5
 fillColor index 1
 endObjectProperties
@@ -100,7 +86,7 @@ major 4
 minor 7
 release 0
 x 11
-y 544
+y 587
 w 222
 h 23
 controlPv "$(device):LOG"
@@ -648,8 +634,8 @@ minor 1
 release 1
 x 15
 y 8
-w 238
-h 25
+w 319
+h 33
 font "utopia-bold-r-24.0"
 fgColor index 14
 bgColor index 0
@@ -1169,7 +1155,7 @@ major 4
 minor 1
 release 0
 x 248
-y 305
+y 341
 w 67
 h 22
 fgColor index 14
@@ -1193,8 +1179,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 248
-y 225
+x 406
+y 198
 w 67
 h 22
 fgColor index 14
@@ -1218,8 +1204,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 322
-y 225
+x 485
+y 198
 w 67
 h 22
 fgColor index 14
@@ -1243,8 +1229,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 484
-y 198
+x 406
+y 341
 w 67
 h 22
 fgColor index 123
@@ -1334,7 +1320,7 @@ major 4
 minor 1
 release 0
 x 406
-y 277
+y 265
 w 67
 h 22
 fgColor index 14
@@ -1358,8 +1344,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 484
-y 225
+x 485
+y 341
 w 67
 h 22
 fgColor index 35
@@ -1383,7 +1369,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 322
+x 327
 y 198
 w 67
 h 22
@@ -1409,7 +1395,7 @@ major 4
 minor 1
 release 0
 x 248
-y 277
+y 265
 w 67
 h 22
 fgColor index 14
@@ -1433,8 +1419,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 406
-y 305
+x 327
+y 291
 w 67
 h 22
 fgColor index 14
@@ -1458,8 +1444,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 485
-y 305
+x 406
+y 291
 w 67
 h 22
 fgColor index 14
@@ -1487,8 +1473,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 485
-y 277
+x 248
+y 291
 w 67
 h 22
 fgColor index 14
@@ -1963,392 +1949,6 @@ endGroup
 
 endObjectProperties
 
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 18
-y 450
-w 101
-h 20
-
-beginGroup
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 18
-y 450
-w 46
-h 20
-controlPv "$(device):STATE:posX"
-font "lucida-medium-r-10.0"
-fontAlign "center"
-fgColor index 35
-bgColor index 10
-limitsFromDb
-nullColor index 0
-fastUpdate
-useHexPrefix
-newPos
-objType "monitors"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 68
-y 454
-w 51
-h 12
-controlPv "$(device):STATE:posX.DESC"
-font "lucida-medium-r-10.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 18
-y 474
-w 101
-h 20
-
-beginGroup
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 68
-y 478
-w 51
-h 12
-controlPv "$(device):STATE:posY.DESC"
-font "lucida-medium-r-10.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 18
-y 474
-w 46
-h 20
-controlPv "$(device):STATE:posY"
-font "lucida-medium-r-10.0"
-fontAlign "center"
-fgColor index 35
-bgColor index 10
-limitsFromDb
-nullColor index 0
-fastUpdate
-useHexPrefix
-newPos
-objType "monitors"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 18
-y 498
-w 101
-h 20
-
-beginGroup
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 68
-y 502
-w 51
-h 12
-controlPv "$(device):STATE:posZ.DESC"
-font "lucida-medium-r-10.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 18
-y 498
-w 46
-h 20
-controlPv "$(device):STATE:posZ"
-font "lucida-medium-r-10.0"
-fontAlign "center"
-fgColor index 35
-bgColor index 10
-limitsFromDb
-nullColor index 0
-fastUpdate
-useHexPrefix
-newPos
-objType "monitors"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 124
-y 449
-w 101
-h 20
-
-beginGroup
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 174
-y 453
-w 51
-h 12
-controlPv "$(device):STATE:posRX.DESC"
-font "lucida-medium-r-10.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 124
-y 449
-w 46
-h 20
-controlPv "$(device):STATE:posRX"
-font "lucida-medium-r-10.0"
-fontAlign "center"
-fgColor index 35
-bgColor index 10
-limitsFromDb
-nullColor index 0
-fastUpdate
-useHexPrefix
-newPos
-objType "monitors"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 124
-y 473
-w 101
-h 20
-
-beginGroup
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 174
-y 477
-w 51
-h 12
-controlPv "$(device):STATE:posRY.DESC"
-font "lucida-medium-r-10.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 124
-y 473
-w 46
-h 20
-controlPv "$(device):STATE:posRY"
-font "lucida-medium-r-10.0"
-fontAlign "center"
-fgColor index 35
-bgColor index 10
-limitsFromDb
-nullColor index 0
-fastUpdate
-useHexPrefix
-newPos
-objType "monitors"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 124
-y 497
-w 101
-h 20
-
-beginGroup
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 174
-y 501
-w 51
-h 12
-controlPv "$(device):STATE:posRZ.DESC"
-font "lucida-medium-r-10.0"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 124
-y 497
-w 46
-h 20
-controlPv "$(device):STATE:posRZ"
-font "lucida-medium-r-10.0"
-fontAlign "center"
-fgColor index 35
-bgColor index 10
-limitsFromDb
-nullColor index 0
-fastUpdate
-useHexPrefix
-newPos
-objType "monitors"
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 11
-y 439
-w 222
-h 100
-lineColor index 5
-fillColor index 0
-endObjectProperties
-
 # (Text Control)
 object activeXTextDspClass
 beginObjectProperties
@@ -2356,7 +1956,7 @@ major 4
 minor 7
 release 0
 x 242
-y 544
+y 587
 w 452
 h 24
 controlPv "$(device):WARNING"
@@ -2370,226 +1970,14 @@ newPos
 objType "controls"
 endObjectProperties
 
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 241
-y 439
-w 321
-h 100
-lineColor index 5
-fillColor index 0
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 349
-y 506
-w 96
-h 24
-fgColor index 14
-onColor index 1
-offColor index 1
-inconsistentColor index 14
-topShadowColor index 0
-botShadowColor index 10
-controlPv "$(device):CMD:savePos"
-indicatorPv "$(device):CMD:savePos"
-onLabel "Save Position"
-buttonType "push"
-3d
-font "lucida-medium-r-10.0"
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 247
-y 493
-w 96
-h 12
-controlPv "$(device):PAR:posTol.DESC"
-font "lucida-medium-r-10.0"
-fgColor index 12
-bgColor index 0
-useDisplayBg
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 247
-y 506
-w 96
-h 23
-controlPv "$(device):PAR:posTol"
-font "lucida-medium-r-10.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-editable
-limitsFromDb
-nullColor index 0
-useKp
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 247
-y 450
-w 96
-h 12
-controlPv "$(device):PAR:posName.DESC"
-font "lucida-medium-r-10.0"
-fgColor index 12
-bgColor index 0
-useDisplayBg
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 247
-y 464
-w 96
-h 23
-controlPv "$(device):PAR:posName"
-font "lucida-medium-r-10.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-editable
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 350
-y 451
-w 96
-h 11
-controlPv "$(device):PAR:posForce.DESC"
-font "lucida-medium-r-10.0"
-fgColor index 12
-bgColor index 0
-useDisplayBg
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Choice Button)
-object activeChoiceButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 349
-y 463
-w 96
-h 24
-fgColor index 14
-bgColor index 56
-selectColor index 55
-inconsistentColor index 14
-topShadowColor index 0
-botShadowColor index 14
-controlPv "$(device):PAR:posForce"
-indicatorPv "$(device):PAR:posForce"
-font "lucida-medium-r-8.0"
-orientation "horizontal"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 17
-y 434
-w 79
-h 11
-font "lucida-bold-r-10.0"
-fgColor index 14
-bgColor index 3
-value {
-  "Arm Positions"
-}
-autoSize
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 250
-y 434
-w 94
-h 11
-font "lucida-bold-r-10.0"
-fgColor index 14
-bgColor index 3
-value {
-  "Named Positions"
-}
-autoSize
-endObjectProperties
-
 # (Group)
 object activeGroupClass
 beginObjectProperties
 major 4
 minor 0
 release 0
-x 368
-y 350
+x 369
+y 394
 w 107
 h 20
 
@@ -2601,8 +1989,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 422
-y 351
+x 423
+y 395
 w 54
 h 19
 controlPv "$(device):PAR:barcode.DESC"
@@ -2623,8 +2011,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 368
-y 350
+x 369
+y 394
 w 51
 h 19
 controlPv "$(device):PAR:barcode"
@@ -2653,7 +2041,7 @@ major 4
 minor 1
 release 0
 x 327
-y 277
+y 265
 w 67
 h 22
 fgColor index 14
@@ -2677,8 +2065,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 479
-y 398
+x 480
+y 442
 w 69
 h 21
 fgColor index 14
@@ -2702,8 +2090,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 479
-y 374
+x 480
+y 418
 w 69
 h 21
 fgColor index 14
@@ -2727,8 +2115,8 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 479
-y 350
+x 480
+y 394
 w 69
 h 21
 fgColor index 14
@@ -2744,1700 +2132,6 @@ buttonType "push"
 3d
 font "lucida-medium-r-10.0"
 objType "controls"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 568
-y 391
-w 176
-h 9
-controlPv "$(device):STATE:pucks"
-font "lucida-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-autoHeight
-limitsFromDb
-nullColor index 0
-useHexPrefix
-newPos
-objType "controls"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 575
-y 373
-w 86
-h 11
-font "lucida-bold-r-10.0"
-fgColor index 14
-bgColor index 3
-value {
-  "Puck Detection"
-}
-autoSize
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 581
-y 407
-w 151
-h 126
-
-beginGroup
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 594
-y 407
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 594
-y 407
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.B0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 600
-y 413
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "1A"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 619
-y 407
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 619
-y 407
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.B1"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 625
-y 413
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "2A"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 644
-y 407
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 644
-y 407
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.B2"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 650
-y 413
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "3A"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 670
-y 407
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 670
-y 407
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.B3"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 676
-y 413
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "4A"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 695
-y 407
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 695
-y 407
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.B4"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 701
-y 413
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "5A"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 582
-y 428
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 582
-y 428
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.B5"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 588
-y 434
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "1B"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 607
-y 428
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 607
-y 428
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.B6"
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 613
-y 434
-w 13
-h 12
-
-beginGroup
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 613
-y 434
-w 13
-h 12
-
-beginGroup
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 613
-y 434
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "2B"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 632
-y 428
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 632
-y 428
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.B7"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 638
-y 434
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "3B"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 658
-y 428
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 658
-y 428
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.B8"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 664
-y 434
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "4B"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 683
-y 428
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 683
-y 428
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.B9"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 689
-y 434
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "5B"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 708
-y 428
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 708
-y 428
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.BA"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 714
-y 434
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "6B"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 593
-y 447
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 593
-y 447
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.BB"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 599
-y 453
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "1C"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 618
-y 447
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 618
-y 447
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.BC"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 624
-y 453
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "2C"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 643
-y 447
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 643
-y 447
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.BD"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 649
-y 453
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "3C"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 669
-y 447
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 669
-y 447
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.BE"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 675
-y 453
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "4C"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 694
-y 447
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 694
-y 447
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit0.BF"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 700
-y 453
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "5C"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 581
-y 468
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 581
-y 468
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit1.B0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 587
-y 474
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "1D"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 606
-y 468
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 606
-y 468
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit1.B1"
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 612
-y 474
-w 13
-h 12
-
-beginGroup
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 612
-y 474
-w 13
-h 12
-
-beginGroup
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 612
-y 474
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "2D"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 631
-y 468
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 631
-y 468
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit1.B2"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 637
-y 474
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "3D"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 657
-y 468
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 657
-y 468
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit1.B3"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 663
-y 474
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "4D"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 682
-y 468
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 682
-y 468
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit1.B4"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 688
-y 474
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "5D"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 707
-y 468
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 707
-y 468
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit1.B5"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 713
-y 474
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "6D"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 593
-y 488
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 593
-y 488
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit1.B6"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 599
-y 494
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "1E"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 618
-y 488
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 618
-y 488
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit1.B7"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 624
-y 494
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "2E"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 643
-y 488
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 643
-y 488
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit1.B8"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 649
-y 494
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "3E"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 669
-y 488
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 669
-y 488
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit1.B9"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 675
-y 494
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "4E"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 694
-y 488
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 694
-y 488
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit1.BA"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 700
-y 494
-w 11
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "5E"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 631
-y 509
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 631
-y 509
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit1.BB"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 637
-y 515
-w 10
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "1F"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 657
-y 509
-w 24
-h 24
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 657
-y 509
-w 24
-h 24
-lineColor index 14
-fill
-fillColor index 92
-alarmPv "$(device):STATE:pucks:bit1.BC"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 663
-y 515
-w 10
-h 10
-font "helvetica-medium-r-8.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 0
-useDisplayBg
-value {
-  "2F"
-}
-autoSize
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-endGroup
-
 endObjectProperties
 
 # (Static Text)
@@ -4507,23 +2201,6 @@ buttonType "push"
 3d
 font "lucida-medium-r-10.0"
 objType "controls"
-endObjectProperties
-
-# (Multi-line Text Update)
-object multiLineTextUpdateClass
-beginObjectProperties
-major 10
-minor 0
-release 0
-x 11
-y 573
-w 732
-h 36
-controlPv "$(device):HELP"
-fgColour index 30
-bgColour index 9
-fill
-font "lucida-medium-r-10.0"
 endObjectProperties
 
 # (Group)
@@ -4612,7 +2289,7 @@ major 4
 minor 1
 release 0
 x 327
-y 305
+y 341
 w 67
 h 22
 fgColor index 14
@@ -4637,7 +2314,7 @@ major 4
 minor 1
 release 0
 x 698
-y 544
+y 587
 w 45
 h 24
 fgColor index 14
@@ -5160,7 +2837,6 @@ topShadowColor index 1
 botShadowColor index 10
 controlPv "$(device):CMD:tool"
 labelType "literal"
-buttonType "push"
 font "lucida-bold-r-10.0"
 objType "controls"
 endObjectProperties
@@ -5321,8 +2997,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 251
-y 351
+x 252
+y 395
 w 107
 h 19
 
@@ -5334,8 +3010,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 305
-y 351
+x 306
+y 395
 w 54
 h 19
 controlPv "$(device):PAR:puck.DESC"
@@ -5356,8 +3032,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 251
-y 351
+x 252
+y 395
 w 51
 h 19
 controlPv "$(device):PAR:puck"
@@ -5385,8 +3061,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 251
-y 375
+x 252
+y 419
 w 107
 h 19
 
@@ -5398,8 +3074,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 305
-y 375
+x 306
+y 419
 w 54
 h 19
 controlPv "$(device):PAR:smpl.DESC"
@@ -5420,8 +3096,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 251
-y 375
+x 252
+y 419
 w 51
 h 19
 controlPv "$(device):PAR:smpl"
@@ -5449,8 +3125,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 251
-y 398
+x 252
+y 442
 w 107
 h 20
 
@@ -5462,8 +3138,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 305
-y 399
+x 306
+y 443
 w 54
 h 19
 controlPv "$(device):PAR:plate.DESC"
@@ -5484,8 +3160,8 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 251
-y 398
+x 252
+y 442
 w 51
 h 19
 controlPv "$(device):PAR:plate"
@@ -5558,6 +3234,2466 @@ newPos
 objType "controls"
 endObjectProperties
 
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 567
+y 413
+w 176
+h 165
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 569
+y 417
+w 173
+h 161
+lineColor index 5
+fillColor index 1
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 567
+y 431
+w 176
+h 9
+controlPv "$(device):STATE:pucks"
+font "lucida-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+autoHeight
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 574
+y 413
+w 86
+h 11
+font "lucida-bold-r-10.0"
+fgColor index 14
+bgColor index 3
+value {
+  "Puck Detection"
+}
+autoSize
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 580
+y 447
+w 151
+h 126
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 593
+y 447
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 593
+y 447
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 599
+y 453
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "1A"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 618
+y 447
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 618
+y 447
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B1"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 624
+y 453
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "2A"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 643
+y 447
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 643
+y 447
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B2"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 649
+y 453
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "3A"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 669
+y 447
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 669
+y 447
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B3"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 675
+y 453
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "4A"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 694
+y 447
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 694
+y 447
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B4"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 700
+y 453
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "5A"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 581
+y 468
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 581
+y 468
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B5"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 587
+y 474
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "1B"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 606
+y 468
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 606
+y 468
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B6"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 612
+y 474
+w 13
+h 12
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 612
+y 474
+w 13
+h 12
+
+beginGroup
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 612
+y 474
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "2B"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 631
+y 468
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 631
+y 468
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B7"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 637
+y 474
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "3B"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 657
+y 468
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 657
+y 468
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B8"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 663
+y 474
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "4B"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 682
+y 468
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 682
+y 468
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.B9"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 688
+y 474
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "5B"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 707
+y 468
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 707
+y 468
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.BA"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 713
+y 474
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "6B"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 592
+y 487
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 592
+y 487
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.BB"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 598
+y 493
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "1C"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 617
+y 487
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 617
+y 487
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.BC"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 623
+y 493
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "2C"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 642
+y 487
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 642
+y 487
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.BD"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 648
+y 493
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "3C"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 668
+y 487
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 668
+y 487
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.BE"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 674
+y 493
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "4C"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 693
+y 487
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 693
+y 487
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit0.BF"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 699
+y 493
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "5C"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 580
+y 508
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 580
+y 508
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 586
+y 514
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "1D"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 605
+y 508
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 605
+y 508
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B1"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 611
+y 514
+w 13
+h 12
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 611
+y 514
+w 13
+h 12
+
+beginGroup
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 611
+y 514
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "2D"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 630
+y 508
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 630
+y 508
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B2"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 636
+y 514
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "3D"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 656
+y 508
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 656
+y 508
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B3"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 662
+y 514
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "4D"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 681
+y 508
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 681
+y 508
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B4"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 687
+y 514
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "5D"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 706
+y 508
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 706
+y 508
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B5"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 712
+y 514
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "6D"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 592
+y 528
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 592
+y 528
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B6"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 598
+y 534
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "1E"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 617
+y 528
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 617
+y 528
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B7"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 623
+y 534
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "2E"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 642
+y 528
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 642
+y 528
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B8"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 648
+y 534
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "3E"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 668
+y 528
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 668
+y 528
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.B9"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 674
+y 534
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "4E"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 693
+y 528
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 693
+y 528
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.BA"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 699
+y 534
+w 11
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "5E"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 630
+y 549
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 630
+y 549
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.BB"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 636
+y 555
+w 10
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "1F"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 656
+y 549
+w 24
+h 24
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 656
+y 549
+w 24
+h 24
+lineColor index 14
+fill
+fillColor index 92
+alarmPv "$(device):STATE:pucks:bit1.BC"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 662
+y 555
+w 10
+h 10
+font "helvetica-medium-r-8.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "2F"
+}
+autoSize
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 20
+y 428
+w 96
+h 37
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 20
+y 442
+w 96
+h 23
+controlPv "$(device):PAR:lowLN2"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 20
+y 428
+w 96
+h 12
+controlPv "$(device):PAR:lowLN2.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 129
+y 428
+w 96
+h 37
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 129
+y 442
+w 96
+h 23
+controlPv "$(device):PAR:highLN2"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 129
+y 428
+w 96
+h 12
+controlPv "$(device):PAR:highLN2.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 11
+y 474
+w 551
+h 105
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 18
+y 490
+w 101
+h 20
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 18
+y 490
+w 46
+h 20
+controlPv "$(device):STATE:posX"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 35
+bgColor index 10
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 68
+y 494
+w 51
+h 12
+controlPv "$(device):STATE:posX.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 18
+y 514
+w 101
+h 20
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 68
+y 518
+w 51
+h 12
+controlPv "$(device):STATE:posY.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 18
+y 514
+w 46
+h 20
+controlPv "$(device):STATE:posY"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 35
+bgColor index 10
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 18
+y 538
+w 101
+h 20
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 68
+y 542
+w 51
+h 12
+controlPv "$(device):STATE:posZ.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 18
+y 538
+w 46
+h 20
+controlPv "$(device):STATE:posZ"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 35
+bgColor index 10
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 124
+y 489
+w 101
+h 20
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 174
+y 493
+w 51
+h 12
+controlPv "$(device):STATE:posRX.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 124
+y 489
+w 46
+h 20
+controlPv "$(device):STATE:posRX"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 35
+bgColor index 10
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 124
+y 513
+w 101
+h 20
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 174
+y 517
+w 51
+h 12
+controlPv "$(device):STATE:posRY.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 124
+y 513
+w 46
+h 20
+controlPv "$(device):STATE:posRY"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 35
+bgColor index 10
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 124
+y 537
+w 101
+h 20
+
+beginGroup
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 174
+y 541
+w 51
+h 12
+controlPv "$(device):STATE:posRZ.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 124
+y 537
+w 46
+h 20
+controlPv "$(device):STATE:posRZ"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 35
+bgColor index 10
+limitsFromDb
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 11
+y 478
+w 222
+h 101
+lineColor index 5
+fillColor index 0
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 241
+y 479
+w 321
+h 100
+lineColor index 5
+fillColor index 0
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 349
+y 546
+w 96
+h 24
+fgColor index 14
+onColor index 1
+offColor index 1
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 10
+controlPv "$(device):CMD:savePos"
+indicatorPv "$(device):CMD:savePos"
+onLabel "Save Position"
+buttonType "push"
+3d
+font "lucida-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 247
+y 533
+w 96
+h 12
+controlPv "$(device):PAR:posTol.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 247
+y 546
+w 96
+h 23
+controlPv "$(device):PAR:posTol"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+limitsFromDb
+nullColor index 0
+useKp
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 247
+y 490
+w 96
+h 12
+controlPv "$(device):PAR:posName.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 247
+y 504
+w 96
+h 23
+controlPv "$(device):PAR:posName"
+font "lucida-medium-r-10.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 0
+editable
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 350
+y 491
+w 96
+h 11
+controlPv "$(device):PAR:posForce.DESC"
+font "lucida-medium-r-10.0"
+fgColor index 12
+bgColor index 0
+useDisplayBg
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 349
+y 503
+w 96
+h 24
+fgColor index 14
+bgColor index 56
+selectColor index 55
+inconsistentColor index 14
+topShadowColor index 0
+botShadowColor index 14
+controlPv "$(device):PAR:posForce"
+indicatorPv "$(device):PAR:posForce"
+font "lucida-medium-r-8.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 17
+y 474
+w 79
+h 11
+font "lucida-bold-r-10.0"
+fgColor index 14
+bgColor index 3
+value {
+  "Arm Positions"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 250
+y 474
+w 94
+h 11
+font "lucida-bold-r-10.0"
+fgColor index 14
+bgColor index 3
+value {
+  "Named Positions"
+}
+autoSize
+endObjectProperties
+
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -5565,7 +5701,7 @@ major 4
 minor 1
 release 1
 x 466
-y 462
+y 502
 w 86
 h 50
 font "helvetica-medium-r-8.0"
@@ -5580,5 +5716,9 @@ value {
   "HOME B .. one per tool"
 }
 autoSize
+endObjectProperties
+
+endGroup
+
 endObjectProperties
 

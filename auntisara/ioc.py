@@ -110,7 +110,6 @@ class AuntISARA(models.Model):
     output2_fbk = models.BinaryInput('STATE:OUT2', desc='Digital Oututs 32-47')
     output3_fbk = models.BinaryInput('STATE:OUT3', desc='Digital Oututs 48-63')
 
-
     # Status
     mode_fbk = models.Enum('STATE:mode', choices=ModeType, desc='Control Mode')
     error_fbk = models.Integer('STATE:error', desc='Error Code')
