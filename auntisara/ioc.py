@@ -834,6 +834,11 @@ class AuntISARAApp(object):
             self.mounting = True
             port = ioc.next_param.get().strip()
             current = ioc.mounted_fbk.get().strip()
+            if port == current:
+                self.warn('Sample Already mounted: {}'.format(current))
+                self.mounting = False
+                return
+            
             command = 'put' if not current else 'getput'
             params = port2args(port)
             if params and all(params.values()):
