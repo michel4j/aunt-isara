@@ -1,6 +1,6 @@
-import re
+
 from enum import Enum
-from softdev import log
+from devioc import log
 from twisted.internet import reactor, protocol
 from twisted.protocols.basic import LineReceiver
 
@@ -12,7 +12,7 @@ class MessageType(Enum):
 
 
 class CommandProtocol(LineReceiver):
-    delimiter = '\r'
+    delimiter = b'\r'
     protocol_name = 'Command Link'
     message_type = MessageType.RESPONSE
 
@@ -27,11 +27,11 @@ class CommandProtocol(LineReceiver):
         logger.warning('{} Disconnected: {}'.format(self.protocol_name, reason.getErrorMessage()))
 
     def lineReceived(self, line):
-        self.receive_message(line.strip())
+        self.receive_message(line.decode('utf-8').strip())
 
     def send_message(self, message):
         if self.transport:
-            self.sendLine('{}'.format(message))
+            self.sendLine(message.encode('utf-8'))
 
     def receive_message(self, message):
         self.factory.receive_message(message, self.message_type)

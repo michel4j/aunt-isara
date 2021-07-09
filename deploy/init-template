@@ -22,7 +22,7 @@ appdir=/path/to/ioc/instance/${device}              # IOC Directory
 
 # --------------------- Update Only once for each IOC Type ------------------------------#
 iocname=`hostname`
-cmdfile=${ioc_path}/bin/runIOC.py
+cmdfile=${ioc_path}/bin/app.server
 proccmd=${procserv_path}/procServ
 pidfile="/var/run/${device}.pid"
 logfile="/var/log/${device}.log"

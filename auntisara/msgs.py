@@ -127,7 +127,7 @@ MESSAGES = {
         "error": "collision at the gonio",
         "description": "Collision at gonio",
         "help": "Abort task and safely return robot home. If pin is in gripper, return it to puck using 'back' command.",
-        "state":StatusType.FAULT,
+        "state": StatusType.FAULT,
     }
 }
 

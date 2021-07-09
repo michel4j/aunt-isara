@@ -5,10 +5,12 @@ import os
 import re
 import textwrap
 import time
-from Queue import Queue
+import gepics
+from queue import Queue
 from datetime import datetime
 from enum import Enum
-from softdev import epics, models, log
+from devioc import models, log
+
 from threading import Thread
 from twisted.internet import reactor
 
@@ -442,7 +444,7 @@ class AuntISARAApp(object):
         to be sent through this method. This method is called within the sender thread.
         """
         self.command_on = True
-        epics.threads_init()
+        gepics.threads_init()
         while self.command_on:
             command, full_cmd = self.commands.get()
             logger.debug('< {}'.format(full_cmd))
@@ -456,7 +458,7 @@ class AuntISARAApp(object):
         """
         Sends status commands and receives status replies from ISARA.
         """
-        epics.threads_init()
+        gepics.threads_init()
         self.status_on = True
         cmd_index = 0
         commands = ['state', 'di', 'di2', 'do', 'state', 'position', 'message']
@@ -467,7 +469,7 @@ class AuntISARAApp(object):
             if success:
                 self.parse_status(command, reply)
             else:
-                logger.warning(message)
+                logger.warning(reply)
             cmd_index = (cmd_index + 1) % len(commands)
             time.sleep(STATUS_TIME)
 
@@ -476,7 +478,7 @@ class AuntISARAApp(object):
         Receives responses from commands sent to ISARA.
         """
         self.command_on = True
-        epics.threads_init()
+        gepics.threads_init()
         while self.command_on:
             message = self.responses.get()
             self.ioc.log.put(message)
@@ -562,7 +564,7 @@ class AuntISARAApp(object):
         if timeout > 0:
             return True
         else:
-            logger.warn('Timeout waiting for positions "{}"'.format(states))
+            logger.warn('Timeout waiting for positions "{}"'.format(positions))
             return False
 
     def wait_for_state(self, *states):
@@ -690,17 +692,18 @@ class AuntISARAApp(object):
         # state
         fault_active = False
         wait_active = False
+
         if context == 'state':
             strings = message.split(',')
             values = []
             for i, txt in enumerate(strings):
-                if not i in self.status_map: continue
+                if i not in self.status_map: continue
                 record, converter = self.status_map[i]
                 try:
                     value = converter(txt)
                     values.append(value)
                     record.put(value)
-                except ValueError:
+                except (ValueError, TypeError):
                     logger.warning('Unable to parse state: {}'.format(txt))
 
             # set mounted state
@@ -786,46 +789,6 @@ class AuntISARAApp(object):
 
         if next_status is not None and next_status != cur_status:
             self.ioc.status.put(next_status)
-
-    # def mount_operation(self, cmd, args):
-    #     epics.threads_init()
-    #     allowed_tools = (ToolType.UNIPUCK, ToolType.ROTATING, ToolType.DOUBLE, ToolType.PLATE)
-    #     puck_tools = (ToolType.UNIPUCK.value, ToolType.ROTATING.value, ToolType.DOUBLE.value)
-    #     if not self.mounting:
-    #         self.mounting = True
-    #         self.aborted = False
-    #
-    #         port = self.ioc.next_param.get().strip()
-    #         current = self.ioc.mounted_fbk.get().strip()
-    #         params = port2args(port)
-    #
-    #         if not (params and all(params.values())):
-    #             self.warn('Invalid Port for mounting: {}'.format(port))
-    #             self.mounting = False
-    #             return
-    #
-    #         if params.get('tool') in puck_tools:
-    #             if self.ioc.barcode_param.get():
-    #                 command = 'put_bcrd' if not current else 'getput_bcrd'
-    #             else:
-    #                 command = 'put' if not current else 'getput'
-    #         else:
-    #             command = 'putplate' if not current else 'getputplate'
-    #
-    #         current_tool = self.ioc.tool_fbk.get()
-    #         if self.require_position('SOAK') and self.require_tool(*allowed_tools):
-    #             if params['tool'] == current_tool and current_tool in puck_tools:
-    #                 args = self.make_args(
-    #                     tool=params['tool'], puck=params['puck'], sample=params['sample'],
-    #                     puck_type=params['tool']
-    #                 )
-    #             else:
-    #                 args = (
-    #                     ToolType.PLATE.value, 0, 0, 0, 0, ioc.plate_param.get()
-    #                 )
-    #             self.send_command(command, *args)
-    #
-    #         self.mounting = False
 
     # callbacks
     def do_mount_cmd(self, pv, value, ioc):
