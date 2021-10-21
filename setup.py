@@ -21,12 +21,17 @@ setup(
     keywords='epics device ioc development',
     include_package_data=True,
     packages=find_packages(),
+    data_files=[
+        ('opi', ['opi/robot.edl']),
+        ('etc', ['init-template']),
+    ],
     install_requires=requirements + [
         'devioc',
         'importlib-metadata ~= 1.0 ; python_version < "3.8"',
     ],
     scripts=[
         'bin/app.server',
+        'bin/app.client'
     ],
     classifiers=[
         'Intended Audience :: Developers',

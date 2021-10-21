@@ -1,4 +1,4 @@
 include README.md
 include LICENSE
-include deploy/*
+include deploy/init-template
 include opi/robot.edl
