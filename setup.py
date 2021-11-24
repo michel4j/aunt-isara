@@ -23,7 +23,7 @@ setup(
     packages=find_packages(),
     data_files=[
         ('opi', ['opi/robot.edl']),
-        ('etc', ['init-template']),
+        ('etc', ['deploy/init-template']),
     ],
     install_requires=requirements + [
         'devioc',

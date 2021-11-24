@@ -140,7 +140,7 @@ class AuntISARA(models.Model):
     remote_speed_fbk = models.Enum('STATE:remSpeed', choices=OffOn, desc='Remote Speed')
 
     speed_fbk = models.Integer('STATE:speed', min_val=0, max_val=100, units='%', desc='Speed Ratio')
-    pos_dew_fbk = models.String('STATE:posDewar', max_length=40, desc='Position in Dewar')
+    pos_dew_fbk = models.Integer('STATE:posDewar', min_val=-1, max_val=30, desc='Position in Dewar')
     soak_count_fbk = models.Integer('STATE:soakCount', desc='Soak Count')
     pucks_fbk = models.String('STATE:pucks', max_length=40, desc='Puck Detection')
     pucks_bit0 = models.BinaryInput('STATE:pucks:bit0', desc='Puck Detection')
@@ -704,7 +704,8 @@ class AuntISARAApp(object):
                     values.append(value)
                     record.put(value)
                 except (ValueError, TypeError):
-                    logger.warning('Unable to parse state: {}'.format(txt))
+                    logger.warning(f'{txt}, {record}, {i}, "{message}"')
+                    logger.error('Unable to parse state: {}'.format(txt))
 
             # set mounted state
             puck, pin = values[7], values[8]
