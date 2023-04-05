@@ -788,8 +788,6 @@ class AuntISARAApp(object):
                     if state == StatusType.FAULT:
                         self.ioc.health.put(ErrorType.ERROR.value)
                         fault_active = True
-                    elif state == StatusType.WAITING:
-                        wait_active = True
                 else:
                     self.ioc.error_fbk.put(0)
             else:
@@ -801,8 +799,6 @@ class AuntISARAApp(object):
         cur_status = self.ioc.status.get()
         if fault_active:
             next_status = StatusType.FAULT.value
-        elif wait_active:
-            next_status = StatusType.WAITING.value
         elif self.ioc.running_fbk.get() and self.standby_active:
             next_status = StatusType.STANDBY.value
         elif self.ioc.running_fbk.get() and self.ioc.trajectory_fbk.get():
