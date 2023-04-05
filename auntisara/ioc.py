@@ -8,7 +8,7 @@ import time
 import gepics
 from queue import Queue
 from datetime import datetime
-from enum import Enum
+from enum import Enum, IntFlag, auto
 from devioc import models, log
 
 from threading import Thread
@@ -84,6 +84,25 @@ class ErrorType(Enum):
     OK, WAITING, WARNING, ERROR = range(4)
 
 
+class OutputFlags(IntFlag):
+    LID = auto()
+    AUTOFILL = auto()
+    HEATER = auto()
+    VALVE1 = auto()
+    VALVE2 = auto()
+    OUTPUT05 = auto()
+    OUTPUT06 = auto()
+    RUNNING = auto()
+    OUTPUT08 = auto()
+    UNLOADING = auto()
+    LOADING = auto()
+    APPROACH = auto()
+    OUTPUT12 = auto()
+    OUTPUT13 = auto()
+    TOOL = auto()
+    OUTPUT15 = auto()
+
+
 class AuntISARA(models.Model):
     connected = models.Enum('CONNECTED', choices=ActiveType, default=0, desc="Robot Connection")
     enabled = models.Enum('ENABLED', choices=EnableType, default=1, desc="Robot Control")
@@ -107,18 +126,18 @@ class AuntISARA(models.Model):
     cryojet_fbk = models.Enum('INP:cryojet', choices=OffOn, desc='Cryojet Back')
     heartbeat = models.Enum('INP:heartbeat', choices=OffOn, desc='Heart beat')
 
-    output0_fbk = models.BinaryInput('STATE:OUT0', desc='Digital Outpus 00-15')
-    output1_fbk = models.BinaryInput('STATE:OUT1', desc='Digital Oututs 16-31')
-    output2_fbk = models.BinaryInput('STATE:OUT2', desc='Digital Oututs 32-47')
-    output3_fbk = models.BinaryInput('STATE:OUT3', desc='Digital Oututs 48-63')
+    output0_fbk = models.BinaryInput('STATE:OUT0', desc='Digital Outputs 00-15')
+    output1_fbk = models.BinaryInput('STATE:OUT1', desc='Digital Outputs 16-31')
+    output2_fbk = models.BinaryInput('STATE:OUT2', desc='Digital Outputs 32-47')
+    output3_fbk = models.BinaryInput('STATE:OUT3', desc='Digital Outputs 48-63')
 
     # Status
     mode_fbk = models.Enum('STATE:mode', choices=ModeType, desc='Control Mode')
     error_fbk = models.Integer('STATE:error', desc='Error Code')
     position_fbk = models.String('STATE:pos', max_length=40, desc='Position')
-    default_fbk = models.Enum('STATE:default', choices=OffOn, desc='Default Status')
+    default_fbk = models.Enum('STATE:default', choices=OffOn, default=0, desc='Default Status')
     tool_fbk = models.Enum('STATE:tool', choices=ToolType, desc='Tool Status')
-    tool_open_fbk = models.Enum('STATE:toolOpen', choices=OpenClosed, desc='Tool Open')
+    tool_open_fbk = models.Enum('STATE:toolOpen', choices=OpenClosed, default=0, desc='Tool Open')
     path_fbk = models.String('STATE:path', max_length=40, desc='Path Name')
     puck_tool_fbk = models.Integer('STATE:toolPuck', min_val=0, max_val=29, desc='Puck On tool')
     puck_tool2_fbk = models.Integer('STATE:tool2Puck', min_val=0, max_val=29, desc='Puck On tool2')
@@ -128,16 +147,16 @@ class AuntISARA(models.Model):
     sample_diff_fbk = models.Integer('STATE:diffSmpl', min_val=0, max_val=NUM_PUCK_SAMPLES, desc='On Diff Sample')
     plate_fbk = models.Integer('STATE:plate', min_val=0, max_val=NUM_PLATES, desc='Plate Status')
     barcode_fbk = models.String('STATE:barcode', max_length=40, desc='Barcode Status')
-    power_fbk = models.Enum('STATE:power', choices=OffOn, desc='Robot Power')
-    running_fbk = models.Enum('STATE:running', choices=OffOn, desc='Path Running')
-    trajectory_fbk = models.Enum('STATE:traj', choices=OffOn, desc='Traj Running')
-    autofill_fbk = models.Enum('STATE:autofill', choices=OffOn, desc='Auto-Fill')
-    approach_fbk = models.Enum('STATE:approach', choices=OffOn, desc='Approaching')
-    magnet_fbk = models.Enum('STATE:magnet', choices=OffOn, desc='Magnet')
-    heater_fbk = models.Enum('STATE:heater', choices=OffOn, desc='Heater')
-    lid_fbk = models.Enum('STATE:lidOpen', choices=OpenClosed, desc='Lid')
-    software_fbk = models.Enum('STATE:software', choices=OffOn, desc='Software')
-    remote_speed_fbk = models.Enum('STATE:remSpeed', choices=OffOn, desc='Remote Speed')
+    power_fbk = models.Enum('STATE:power', choices=OffOn, default=0, desc='Robot Power')
+    running_fbk = models.Enum('STATE:running', choices=OffOn, default=0, desc='Path Running')
+    trajectory_fbk = models.Enum('STATE:traj', choices=OffOn, default=0, desc='Traj Running')
+    autofill_fbk = models.Enum('STATE:autofill', choices=OffOn, default=0, desc='Auto-Fill')
+    approach_fbk = models.Enum('STATE:approach', choices=OffOn, default=0, desc='Approaching')
+    magnet_fbk = models.Enum('STATE:magnet', choices=OffOn, default=0, desc='Magnet')
+    heater_fbk = models.Enum('STATE:heater', choices=OffOn, default=0, desc='Heater')
+    lid_fbk = models.Enum('STATE:lidOpen', choices=OpenClosed, default=0, desc='Lid')
+    software_fbk = models.Enum('STATE:software', choices=OffOn, default=0, desc='Software')
+    remote_speed_fbk = models.Enum('STATE:remSpeed', choices=OffOn, default=0, desc='Remote Speed')
 
     speed_fbk = models.Integer('STATE:speed', min_val=0, max_val=100, units='%', desc='Speed Ratio')
     pos_dew_fbk = models.Integer('STATE:posDewar', min_val=-1, max_val=30, desc='Position in Dewar')
@@ -425,12 +444,11 @@ class AuntISARAApp(object):
             9: self.ioc.sample_detected,
         }
         self.output_map = {
-            1: self.ioc.tool_open_fbk,
-            4: self.ioc.approach_fbk,
-            5: self.ioc.trajectory_fbk,
-            6: self.ioc.magnet_fbk,
-            8: self.ioc.software_fbk,
-            12: self.ioc.heater_fbk
+            OutputFlags.TOOL: self.ioc.tool_open_fbk,
+            OutputFlags.APPROACH: self.ioc.approach_fbk,
+            OutputFlags.LOADING | OutputFlags.UNLOADING: self.ioc.trajectory_fbk,
+            OutputFlags.RUNNING: self.ioc.software_fbk,
+            OutputFlags.HEATER: self.ioc.heater_fbk
         }
 
         self.mounting = False
@@ -647,12 +665,16 @@ class AuntISARAApp(object):
     def parse_outputs(self, bitstring):
         outputs = [self.ioc.output0_fbk, self.ioc.output1_fbk, self.ioc.output2_fbk, self.ioc.output3_fbk]
 
-        for pv, bits in zip(outputs, textwrap.wrap(bitstring, 16)):
-            pv.put(int(bits, 2))
-        for i, bit in enumerate(bitstring):
-            if i in self.output_map:
-                pv = self.output_map[i]
-                pv.put(int(bit))
+        for i, (pv, bits) in enumerate(zip(outputs, textwrap.wrap(bitstring, 16))):
+            value = int(bits, 2)
+            pv.put(value)
+
+            if i == 0:  # restrict to output0
+                for flag, flag_pv in self.output_map.items():
+                    flag_value = int(bool(flag & OutputFlags(value)))
+                    if flag_pv.get() != flag_value:
+                        flag_pv.put(flag_value)
+                        logger.info(f'{OutputFlags(value)!r}')
 
     def calc_position(self):
         coords = numpy.array(
@@ -802,7 +824,7 @@ class AuntISARAApp(object):
                 self.warn('Sample Already mounted: {}'.format(current))
                 self.mounting = False
                 return
-            
+
             command = 'put' if not current else 'getput'
             params = port2args(port)
             if params and all(params.values()):
@@ -842,7 +864,8 @@ class AuntISARAApp(object):
     def do_power_cmd(self, pv, value, ioc):
         if value:
             cmd = 'off' if ioc.power_fbk.get() else 'on'
-            self.send_command(cmd)
+            if cmd == 'on':
+                self.send_command(cmd)
 
     def do_panic_cmd(self, pv, value, ioc):
         if value:
@@ -1124,7 +1147,8 @@ class AuntISARAApp(object):
                 if warning_text:
                     self.warn(warning_text)
                 if help_text:
-                    ioc.help.put(help)
+                    # ioc.help.put(help)
+                    pass
         else:
             ioc.help.put('')
 
@@ -1135,5 +1159,4 @@ class AuntISARAApp(object):
     def do_high_ln2_level(self, pv, value, ioc):
         if value:
             self.send_command('setHighLN2', value)
-
 
