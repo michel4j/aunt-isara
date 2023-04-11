@@ -396,8 +396,8 @@ class AuntISARAApp(object):
         self.status_on = False
         self.user_enabled = False
         self.ready = False
+        self.standby_time = time.time()
 
-        self.standby_active = False
         self.dewar_pucks = set()
 
         # Prepare connection/protocols
@@ -616,7 +616,7 @@ class AuntISARAApp(object):
         return (tool, puck, sample) + (0,) * 4 + (puck_type, 0, 0) + (x_off, y_off, z_off)
 
     def send_command(self, command, *args):
-        self.standby_active = False
+        self.standby_time = time.time() + 10.0
         if self.ready_for_commands():
             if args:
                 cmd = '{}({})'.format(command, ','.join([str(arg) for arg in args]))
@@ -799,10 +799,10 @@ class AuntISARAApp(object):
         cur_status = self.ioc.status.get()
         if fault_active:
             next_status = StatusType.FAULT.value
-        elif self.ioc.running_fbk.get() and self.standby_active:
-            next_status = StatusType.STANDBY.value
         elif self.ioc.running_fbk.get() and self.ioc.trajectory_fbk.get():
             next_status = StatusType.BUSY.value
+        elif self.ioc.running_fbk.get() and time.time() > self.standby_time:
+            next_status = StatusType.STANDBY.value
         elif not self.ioc.running_fbk.get():
             next_status = StatusType.IDLE.value
 
@@ -812,7 +812,6 @@ class AuntISARAApp(object):
     # callbacks
     def do_mount_cmd(self, pv, value, ioc):
         if value and self.require_position('SOAK') and not self.mounting:
-            self.standby_active = False
             self.mounting = True
             port = ioc.next_param.get().strip()
             current = ioc.mounted_fbk.get().strip()
@@ -837,8 +836,10 @@ class AuntISARAApp(object):
                     return
 
                 if command == 'put':
+                    self.standby_time = time.time() + 5.0
                     self.ioc.put_cmd.put(1)
                 elif command == 'getput':
+                    self.standby_time = time.time() + 10.0
                     self.ioc.getput_cmd.put(1)
             else:
                 self.warn('Invalid Port for mounting: {}'.format(port))
@@ -847,11 +848,11 @@ class AuntISARAApp(object):
     def do_dismount_cmd(self, pv, value, ioc):
         if value and self.require_position('SOAK') and not self.mounting:
             self.mounting = True
-            self.standby_active = False
             current = ioc.mounted_fbk.get().strip()
             params = port2args(current)
             if params and all(params.values()):
                 ioc.tool_param.put(params['tool'])
+                self.standby_time = time.time() + 5.0
                 self.ioc.get_cmd.put(1)
             else:
                 self.warn('Invalid port or sample not mounted')
@@ -1129,7 +1130,7 @@ class AuntISARAApp(object):
 
     def do_position_fbk(self, pv, value, ioc):
         if 'DRY' in value:
-            self.standby_active = True
+            self.standby_time = time.time() - 1.0
 
     def do_error_fbk(self, pv, value, ioc):
         if value:
