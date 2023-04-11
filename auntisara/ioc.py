@@ -835,10 +835,10 @@ class AuntISARAApp(object):
                     return
 
                 if command == 'put':
-                    self.standby_time = time.time() + 5.0
+                    self.standby_time = time.time() + 2.0
                     self.ioc.put_cmd.put(1)
                 elif command == 'getput':
-                    self.standby_time = time.time() + 10.0
+                    self.standby_time = time.time() + 2.0
                     self.ioc.getput_cmd.put(1)
             else:
                 self.warn('Invalid Port for mounting: {}'.format(port))
@@ -851,7 +851,7 @@ class AuntISARAApp(object):
             params = port2args(current)
             if params and all(params.values()):
                 ioc.tool_param.put(params['tool'])
-                self.standby_time = time.time() + 5.0
+                self.standby_time = time.time() + 2.0
                 self.ioc.get_cmd.put(1)
             else:
                 self.warn('Invalid port or sample not mounted')
