@@ -616,7 +616,6 @@ class AuntISARAApp(object):
         return (tool, puck, sample) + (0,) * 4 + (puck_type, 0, 0) + (x_off, y_off, z_off)
 
     def send_command(self, command, *args):
-        self.standby_time = time.time() + 10.0
         if self.ready_for_commands():
             if args:
                 cmd = '{}({})'.format(command, ','.join([str(arg) for arg in args]))
@@ -801,7 +800,7 @@ class AuntISARAApp(object):
             next_status = StatusType.FAULT.value
         elif self.ioc.running_fbk.get() and self.ioc.trajectory_fbk.get():
             next_status = StatusType.BUSY.value
-        elif self.ioc.running_fbk.get() and time.time() > self.standby_time:
+        elif self.ioc.running_fbk.get() and time.time() >= self.standby_time:
             next_status = StatusType.STANDBY.value
         elif not self.ioc.running_fbk.get():
             next_status = StatusType.IDLE.value
@@ -1130,7 +1129,7 @@ class AuntISARAApp(object):
 
     def do_position_fbk(self, pv, value, ioc):
         if 'DRY' in value:
-            self.standby_time = time.time() - 1.0
+            self.standby_time = time.time()
 
     def do_error_fbk(self, pv, value, ioc):
         if value:
