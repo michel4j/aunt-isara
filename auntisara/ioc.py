@@ -353,12 +353,13 @@ class TimeoutManager(object):
 
         :param flags: Error Flags
         """
-        for flag in flags:
-            if self.elapse[flag] == 0.0:
-                self.elapse[flag] = time.time() + self.FLAGS.get(flag, self.DEFAULT_TIMEOUT)
-        for flag in ~flags:
-            if self.elapse[flag] != 0.0:
-                self.elapse[flag] = 0.0
+        for flag in msgs.Error:
+            if flag in flags:
+                if self.elapse[flag] == 0.0:
+                    self.elapse[flag] = time.time() + self.FLAGS.get(flag, self.DEFAULT_TIMEOUT)
+            else:
+                if self.elapse[flag] != 0.0:
+                    self.elapse[flag] = 0.0
 
     def check(self):
         """
