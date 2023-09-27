@@ -935,8 +935,23 @@ class AuntISARAApp(object):
     # callbacks
     def do_mount_cmd(self, pv, value, ioc):
         if value and self.require_position('SOAK') and not self.mounting:
-            self.mounting = True
+
+            valid_port = False
             port = ioc.next_param.get().strip()
+            m = PORT_PATT.match(port)
+            if m:
+                port_info = m.groupdict()
+                port_info['pin'] = int(port_info['pin'])
+                valid_port = port_info['puck'] in PUCK_LIST and 1 <= port_info['pin'] <= 16
+
+            if not valid_port:
+                self.warn('Invalid Port!')
+                ioc.next_param.put('')
+                return
+
+            self.mounting = True
+
+
             current = ioc.mounted_fbk.get().strip()
             if port == current:
                 self.warn('Sample Already mounted: {}'.format(current))
@@ -1286,4 +1301,4 @@ class AuntISARAApp(object):
             self.send_command('setHighLN2', value)
 
     def do_next_param(self, pv, value, ioc: AuntISARA):
-        print(value)
+        pass
