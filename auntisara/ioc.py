@@ -912,9 +912,10 @@ class AuntISARAApp(object):
         self.ioc.abort_cmd.put(1)
         self.wait_for_state(StatusType.IDLE, timeout=20)
 
-        if self.ioc.position_fbk.get() == "SOAK" and self.sample_inconsistent():
-            self.warn('Blank mounted, clearing the status!')
-            self.ioc.clear_cmd.put(1)
+        if self.ioc.position_fbk.get() == "SOAK":
+            if self.sample_inconsistent():
+                self.warn('Blank mounted, clearing the status!')
+                self.ioc.clear_cmd.put(1)
         elif self.ioc.position_fbk.get() != "HOME":
             self.warn('Safely returning to home position ...')
             self.ioc.safe_cmd.put(1)
