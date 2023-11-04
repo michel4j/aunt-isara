@@ -335,7 +335,7 @@ class TimeoutManager(object):
     # Flag name mapping to timeout duration for error flag, by default uses DEFAULT_TIMEOUT
     FLAGS = {
         msgs.Error.AWAITING_FILL: 360,
-        msgs.Error.AWAITING_GONIO: 10,
+        msgs.Error.AWAITING_GONIO: 30,
         msgs.Error.AWAITING_LID: 10,
         msgs.Error.AWAITING_PUCK: 10,
         msgs.Error.AWAITING_SAMPLE: 10,
