@@ -337,9 +337,9 @@ class TimeoutManager(object):
         msgs.Error.AWAITING_FILL: 360,
         msgs.Error.AWAITING_GONIO: 10,
         msgs.Error.AWAITING_LID: 10,
-        msgs.Error.AWAITING_PUCK: 5,
-        msgs.Error.AWAITING_SAMPLE: 5,
-        msgs.Error.SAMPLE_MISMATCH: 5,
+        msgs.Error.AWAITING_PUCK: 10,
+        msgs.Error.AWAITING_SAMPLE: 10,
+        msgs.Error.SAMPLE_MISMATCH: 10,
     }
     DEFAULT_TIMEOUT = 1     # all errors elapse after this duration if not explicitly specified above
 
@@ -839,7 +839,7 @@ class AuntISARAApp(object):
         if message:
             err_flag = msgs.parse_error(message)
 
-        if not self.sample_is_consistent():
+        if self.sample_inconsistent():
             err_flag |= msgs.Error.SAMPLE_MISMATCH
 
         if err_flag != self.ioc.error_fbk.get():
@@ -900,8 +900,10 @@ class AuntISARAApp(object):
             self.ioc.status.put(next_status)
 
     # Operations
-    def sample_is_consistent(self):
-        return bool(self.ioc.mounted_fbk.get()) == bool(self.ioc.sample_detected.get())
+    def sample_inconsistent(self):
+        sample_mounted = bool(self.ioc.mounted_fbk.get())
+        sample_detected = bool(self.ioc.sample_detected.get())
+        return sample_mounted and (sample_detected != sample_mounted)
 
     @async_operation
     def recover_operation(self):
@@ -910,7 +912,7 @@ class AuntISARAApp(object):
         self.ioc.abort_cmd.put(1)
         self.wait_for_state(StatusType.IDLE, timeout=20)
 
-        if self.ioc.position_fbk.get() == "SOAK" and not self.sample_is_consistent():
+        if self.ioc.position_fbk.get() == "SOAK" and self.sample_inconsistent():
             self.warn('Blank mounted, clearing the status!')
             self.ioc.clear_cmd.put(1)
         elif self.ioc.position_fbk.get() != "HOME":
