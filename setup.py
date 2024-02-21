@@ -26,7 +26,7 @@ setup(
         ('etc', ['deploy/init-template']),
     ],
     install_requires=requirements + [
-        'devioc',
+        'devioc >= 2024.1.0',
         'importlib-metadata ~= 1.0 ; python_version < "3.8"',
     ],
     scripts=[

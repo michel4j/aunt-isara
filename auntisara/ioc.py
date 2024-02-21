@@ -1,20 +1,21 @@
 import glob
 import json
-import numpy
 import os
 import re
 import textwrap
 import time
-import gepics
-from queue import Queue
+from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from enum import Enum, IntFlag, IntEnum, auto
-from devioc import models, log
-from concurrent.futures import ThreadPoolExecutor, Future
 from functools import wraps
-from collections import defaultdict
 from itertools import cycle
+from queue import Queue
 from threading import Thread
+
+import gepics
+import numpy
+from devioc import models, log
 from twisted.internet import reactor
 
 from . import isara, msgs
@@ -42,6 +43,7 @@ logger = log.get_module_logger(__name__)
 
 executor = ThreadPoolExecutor(max_workers=5)
 
+
 def async_operation(f):
     """
     Run the specified function asynchronously in a thread. Return values will not be available
@@ -55,7 +57,9 @@ def async_operation(f):
     @wraps(f)
     def _f(*args, **kwargs):
         return executor.submit(new_f, *args, **kwargs)
+
     return _f
+
 
 class ToolType(IntEnum):
     NONE, UNIPUCK, ROTATING, PLATE, LASER, DOUBLE = range(6)
@@ -106,7 +110,6 @@ class ErrorType(IntEnum):
     SAMPLE = auto()
     COLLISION = auto()
     ERROR = auto()
-
 
 
 class OutputFlags(IntFlag):
@@ -229,12 +232,12 @@ class AuntISARA(models.Model):
     tool_cmd = models.Enum('CMD:tool', choices=('Close Tool', 'Open Tool'), desc='Tool')
     faster_cmd = models.Toggle('CMD:faster', desc='Speed Up')
     slower_cmd = models.Toggle('CMD:slower', desc='Speed Down')
-    magnet_enable = models.Toggle('CMD:magnet', desc='Magnet')
-    heater_enable = models.Toggle('CMD:heater', desc='Heater')
-    speed_enable = models.Toggle('CMD:speed', desc='Remote Speed')
-    approach_enable = models.Toggle('CMD:approach', desc='Approaching')
-    running_enable = models.Toggle('CMD:running', desc='Path Running')
-    autofill_enable = models.Toggle('CMD:autofill', desc='LN2 AutoFill')
+    magnet_enable = models.Toggle('CMD:magnet', high=0, desc='Magnet')
+    heater_enable = models.Toggle('CMD:heater', high=0, desc='Heater')
+    speed_enable = models.Toggle('CMD:speed', high=0, desc='Remote Speed')
+    approach_enable = models.Toggle('CMD:approach', high=0, desc='Approaching')
+    running_enable = models.Toggle('CMD:running', high=0, desc='Path Running')
+    autofill_enable = models.Toggle('CMD:autofill', high=0, desc='LN2 AutoFill')
 
     # Trajectory Commands
     home_cmd = models.Toggle('CMD:home', desc='Home')
@@ -317,11 +320,13 @@ def minus_int(text):
     except ValueError:
         return -1
 
+
 def path_name(text):
     if text == 'None':
         return ''
     else:
         return text.upper()
+
 
 def name_to_tool(text):
     return {
@@ -341,7 +346,7 @@ class TimeoutManager(object):
         msgs.Error.AWAITING_SAMPLE: 10,
         msgs.Error.SAMPLE_MISMATCH: 10,
     }
-    DEFAULT_TIMEOUT = 1     # all errors elapse after this duration if not explicitly specified above
+    DEFAULT_TIMEOUT = 1  # all errors elapse after this duration if not explicitly specified above
 
     def __init__(self):
         self.elapse = defaultdict(float)
@@ -954,7 +959,6 @@ class AuntISARAApp(object):
 
             self.mounting = True
 
-
             current = ioc.mounted_fbk.get().strip()
             if port == current:
                 self.warn('Sample Already mounted: {}'.format(current))
@@ -1058,18 +1062,18 @@ class AuntISARAApp(object):
             self.send_command('speeddown')
 
     def do_magnet_enable(self, pv, value, ioc: AuntISARA):
-        if value:
+        if value != ioc.magnet_fbk.get():
             cmd = 'magnetoff' if ioc.magnet_fbk.get() else 'magneton'
             self.send_command(cmd)
 
     def do_heater_enable(self, pv, value, ioc):
-        if value:
+        if value != ioc.heater_fbk.get():
             cmd = 'heateroff' if ioc.heater_fbk.get() else 'heateron'
             self.send_command(cmd)
 
     def do_speed_enable(self, pv, value, ioc: AuntISARA):
-        if value:
-            st, cmd = (0, 'remotespeedoff') if ioc.remote_speed_fbk.get() else (1, 'remotespeedon')
+        st, cmd = (0, 'remotespeedoff') if ioc.remote_speed_fbk.get() else (1, 'remotespeedon')
+        if value != st:
             self.send_command(cmd)
             ioc.remote_speed_fbk.put(st)
 
@@ -1084,7 +1088,7 @@ class AuntISARAApp(object):
     #         self.send_command(cmd, ioc.tool_fbk.get())
 
     def do_autofill_enable(self, pv, value, ioc: AuntISARA):
-        if value:
+        if value != ioc.autofill_fbk.get():
             cmd = 'reguloff' if ioc.autofill_fbk.get() else 'regulon'
             self.send_command(cmd)
 
