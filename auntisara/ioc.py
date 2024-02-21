@@ -219,7 +219,7 @@ class AuntISARA(models.Model):
     high_ln2_level = models.Integer('PAR:highLN2', min_val=0, max_val=100, default=0, desc='High LN2 Level')
 
     # General Commands
-    power_cmd = models.Toggle('CMD:power', desc='Power')
+    power_cmd = models.Toggle('CMD:power', high=0, desc='Power')
     panic_cmd = models.Toggle('CMD:panic', desc='Panic')
     abort_cmd = models.Toggle('CMD:abort', desc='Abort')
     pause_cmd = models.Toggle('CMD:pause', desc='Pause')
@@ -1004,10 +1004,8 @@ class AuntISARAApp(object):
                 self.mounting = False
 
     def do_power_cmd(self, pv, value, ioc: AuntISARA):
-        if value:
-            cmd = 'off' if ioc.power_fbk.get() else 'on'
-            if cmd == 'on':
-                self.send_command(cmd)
+        cmd = "on" if value else "off"
+        self.send_command(cmd)
 
     def do_panic_cmd(self, pv, value, ioc: AuntISARA):
         if value:
@@ -1062,35 +1060,21 @@ class AuntISARAApp(object):
             self.send_command('speeddown')
 
     def do_magnet_enable(self, pv, value, ioc: AuntISARA):
-        if value != ioc.magnet_fbk.get():
-            cmd = 'magnetoff' if ioc.magnet_fbk.get() else 'magneton'
-            self.send_command(cmd)
+        cmd = "magneton" if value else 'magnetoff'
+        self.send_command(cmd)
 
     def do_heater_enable(self, pv, value, ioc):
-        if value != ioc.heater_fbk.get():
-            cmd = 'heateroff' if ioc.heater_fbk.get() else 'heateron'
-            self.send_command(cmd)
+        cmd = 'heateron' if value else 'heateroff'
+        self.send_command(cmd)
 
     def do_speed_enable(self, pv, value, ioc: AuntISARA):
-        st, cmd = (0, 'remotespeedoff') if ioc.remote_speed_fbk.get() else (1, 'remotespeedon')
-        if value != st:
-            self.send_command(cmd)
-            ioc.remote_speed_fbk.put(st)
-
-    # def do_approach_enable(self, pv, value, ioc: AuntISARA):
-    #     if value:
-    #         cmd = 'cryoOFF' if ioc.approach_fbk.get() else 'cryoON'
-    #         self.send_command(cmd, ioc.tool_fbk.get())
-
-    # def do_running_enable(self, pv, value, ioc: AuntISARA):
-    #     if value:
-    #         cmd = 'trajOFF' if ioc.running_fbk.get() else 'trajON'
-    #         self.send_command(cmd, ioc.tool_fbk.get())
+        cmd = 'remotespeedon' if value else 'remotespeedoff'
+        self.send_command(cmd)
+        ioc.remote_speed_fbk.put(value)
 
     def do_autofill_enable(self, pv, value, ioc: AuntISARA):
-        if value != ioc.autofill_fbk.get():
-            cmd = 'reguloff' if ioc.autofill_fbk.get() else 'regulon'
-            self.send_command(cmd)
+        cmd = 'regulon' if value else 'reguloff'
+        self.send_command(cmd)
 
     def do_home_cmd(self, pv, value, ioc: AuntISARA):
         if value and self.require_position('SOAK', 'HOME', 'UNKNOWN'):
