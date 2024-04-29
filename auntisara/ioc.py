@@ -268,6 +268,7 @@ class AuntISARA(models.Model):
     # Simplified commands
     dismount_cmd = models.Toggle('CMD:dismount', desc='Dismount')
     mount_cmd = models.Toggle('CMD:mount', desc='Mount')
+    prefetch_cmd = models.Toggle('CMD:prefetch', desc='Prefetch')
 
 
 def port2args(port):
@@ -283,7 +284,7 @@ def port2args(port):
         }
     else:
         args = {
-            'tool': ToolType.UNIPUCK.value,
+            'tool': ToolType.DOUBLE.value,
             'puck': PUCK_LIST.index(port[:2]) + 1,
             'sample': zero_int(port[2:]),
             'mode': 'puck'
@@ -330,6 +331,7 @@ def path_name(text):
 
 def name_to_tool(text):
     return {
+        'double': ToolType.DOUBLE.value,
         'simple': ToolType.UNIPUCK.value,
         'laser': ToolType.LASER.value,
         'flange': ToolType.NONE.value,
@@ -339,12 +341,12 @@ def name_to_tool(text):
 class TimeoutManager(object):
     # Flag name mapping to timeout duration for error flag, by default uses DEFAULT_TIMEOUT
     FLAGS = {
-        msgs.Error.AWAITING_FILL: 360,
-        msgs.Error.AWAITING_GONIO: 30,
-        msgs.Error.AWAITING_LID: 10,
-        msgs.Error.AWAITING_PUCK: 10,
-        msgs.Error.AWAITING_SAMPLE: 10,
-        msgs.Error.SAMPLE_MISMATCH: 10,
+        msgs.Error.AWAITING_FILL: 3600,
+        msgs.Error.AWAITING_GONIO: 300,
+        msgs.Error.AWAITING_LID: 100,
+        msgs.Error.AWAITING_PUCK: 100,
+        msgs.Error.AWAITING_SAMPLE: 100,
+        msgs.Error.SAMPLE_MISMATCH: 100,
     }
     DEFAULT_TIMEOUT = 1  # all errors elapse after this duration if not explicitly specified above
 
@@ -750,6 +752,7 @@ class AuntISARAApp(object):
             self.statuses.put(('message', message))
 
     def require_position(self, *allowed):
+        return True
         if not self.positions.is_ready():
             self.warn('No positions have been defined')
             self.ioc.help.put(
@@ -1003,6 +1006,25 @@ class AuntISARAApp(object):
                 self.warn('Invalid port or sample not mounted')
                 self.mounting = False
 
+    def do_prefetch_cmd(self, pv, value, ioc: AuntISARA):
+        allowed_tools = (ToolType.UNIPUCK, ToolType.ROTATING, ToolType.DOUBLE, ToolType.PLATE)
+        if value and self.require_position('SOAK') and self.require_tool(*allowed_tools):
+            if self.ioc.tool_fbk.get() in [ToolType.UNIPUCK.value, ToolType.ROTATING.value, ToolType.DOUBLE.value]:
+                port = ioc.next_param.get().strip()
+
+                params = port2args(port)
+                if params and all(params.values()):
+                    if params['mode'] == 'puck':
+                        ioc.tool_param.put(params['tool'])
+                        ioc.puck_param.put(params['puck'])
+                        ioc.sample_param.put(params['sample'])
+                    else:
+                        self.warn('Invalid Port parameters for mounting: {}'.format(params))
+                        self.mounting = False
+                        return
+
+                    self.ioc.pick_cmd.put(1)
+
     def do_power_cmd(self, pv, value, ioc: AuntISARA):
         cmd = "on" if value else "off"
         self.send_command(cmd)
@@ -1039,11 +1061,11 @@ class AuntISARAApp(object):
 
     def do_open_cmd(self, pv, value, ioc: AuntISARA):
         if value and self.require_position('HOME'):
-            self.send_command('openlid')
+            self.send_command('openlid', ioc.tool_fbk.get())
 
     def do_close_cmd(self, pv, value, ioc: AuntISARA):
         if value and self.require_position('HOME'):
-            self.send_command('closelid')
+            self.send_command('closelid', ioc.tool_fbk.get())
 
     def do_tool_cmd(self, pv, value, ioc: AuntISARA):
         if value:
