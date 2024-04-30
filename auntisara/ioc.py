@@ -795,19 +795,6 @@ class AuntISARAApp(object):
             if i in self.rev_input_map:
                 self.rev_input_map[i].put((int(bit) + 1) % 2)
 
-        # setup LN2 status & alarms
-        hihi, hi, lo, lolo = map(int, bitstring[3:7])
-        if not hihi:
-            self.ioc.cryo_level.put(CryoLevel.TOO_HIGH.value)
-        elif not lolo:
-            self.ioc.cryo_level.put(CryoLevel.TOO_LOW.value)
-        elif hi:
-            self.ioc.cryo_level.put(CryoLevel.HIGH.value)
-        elif lo:
-            self.ioc.cryo_level.put(CryoLevel.LOW.value)
-        else:
-            self.ioc.cryo_level.put(CryoLevel.NORMAL.value)
-
     def parse_pucks(self, message):
         bitstring = message.replace(',', '')
         self.ioc.pucks_fbk.put(bitstring)
@@ -907,7 +894,17 @@ class AuntISARAApp(object):
         if next_status is not None and next_status != cur_status:
             self.ioc.status.put(next_status)
 
-    # Operations
+        # set cryo level status
+        lo_probe, hi_probe = float(strings[25]), float(strings[26])
+        if hi_probe < -170:
+            self.ioc.cryo_level.put(CryoLevel.TOO_HIGH.value)
+        elif lo_probe > -190:
+            self.ioc.cryo_level.put(CryoLevel.TOO_LOW.value)
+        else:
+            self.ioc.cryo_level.put(CryoLevel.NORMAL.value)
+
+            # Operations
+
     def sample_inconsistent(self):
         sample_mounted = bool(self.ioc.mounted_fbk.get())
         sample_detected = bool(self.ioc.sample_detected.get())
