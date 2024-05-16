@@ -752,19 +752,19 @@ class AuntISARAApp(object):
             self.statuses.put(('message', message))
 
     def require_position(self, *allowed):
-        return True
         if not self.positions.is_ready():
             self.warn('No positions have been defined')
             self.ioc.help.put(
                 'Please move the robot manually and save positions named `{}`'.format(' | '.join(allowed)))
             return False
-
-        current = self.ioc.position_fbk.get()
-        for pos in allowed:
-            if re.match('^' + pos + '(?:_\w*)?$', current):
-                return True
-        self.warn('Command allowed only from ` {} ` position'.format(' | '.join(allowed)))
-        self.ioc.help.put('Please move the robot into the correct position and the re-issue the command')
+        #
+        # current = self.ioc.position_fbk.get()
+        # for pos in allowed:
+        #     if re.match('^' + pos + r'(?:_\w*)?$', current):
+        #         return True
+        # self.warn('Command allowed only from ` {} ` position'.format(' | '.join(allowed)))
+        # self.ioc.help.put('Please move the robot into the correct position and the re-issue the command')
+        return True
 
     def require_tool(self, *tools):
         if self.ioc.tool_fbk.get() in [t.value for t in tools]:
@@ -781,7 +781,6 @@ class AuntISARAApp(object):
         self.ioc.log.put(msg)
 
     # parsing
-
     def parse_inputs(self, message):
         bitstring = message.replace(',', '').ljust(64, '0')
         inputs = [self.ioc.input0_fbk, self.ioc.input1_fbk, self.ioc.input2_fbk, self.ioc.input3_fbk]
@@ -869,12 +868,11 @@ class AuntISARAApp(object):
         if port != self.ioc.tooled_fbk.get():
             self.ioc.tooled_fbk.put(port)
 
-        # Not available on our ISARA
         # set tooled2 state
-        # puck, pin = values[20], values[21]
-        # port = pin2port(puck, pin)
-        # if port != self.ioc.tooled2_fbk.get():
-        #     self.ioc.tooled2_fbk.put(port)
+        puck, pin = values[20], values[21]
+        port = pin2port(puck, pin)
+        if port != self.ioc.tooled2_fbk.get():
+            self.ioc.tooled2_fbk.put(port)
 
         # determine robot state
         # state
