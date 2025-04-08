@@ -5,25 +5,26 @@ from enum import IntEnum, IntFlag, auto
 class StatusType(IntEnum):
     IDLE, WAITING, BUSY, STANDBY, FAULT = range(5)
 
+
 class Error(IntFlag):
-    BRAKE_TOGGLED = auto()
+    ROBOT_ERROR = auto()
     EMERGENCY_STOP = auto()
     COLLISION = auto()
-    COMMUNICATION_ERROR = auto()
-    WRONG_MENU = auto()
     WRONG_MODE = auto()
+    PIN_MISSING = auto()
+    SAMPLE_MISMATCH = auto()
     AWAITING_GONIO = auto()
     AWAITING_SAMPLE = auto()
     AWAITING_PUCK = auto()
     AWAITING_FILL = auto()
     AWAITING_LID = auto()
-    SAMPLE_MISMATCH = auto()
+    AWAITING_SOAK = auto()
 
 
 MESSAGES = [
     {
         "error": "Manual brake control selected",
-        "flag": Error.BRAKE_TOGGLED
+        "flag": Error.ROBOT_ERROR
     },
     {
         "error": "emergency stop or air pressure fault",
@@ -31,11 +32,11 @@ MESSAGES = [
     },
     {
         "error": "Modbus communication fault",
-        "flag": Error.COMMUNICATION_ERROR
+        "flag": Error.ROBOT_ERROR
     },
     {
         "error": "LOC menu not disabled",
-        "flag": Error.WRONG_MENU,
+        "flag": Error.ROBOT_ERROR,
     },
     {
         "error": "Remote Mode requested",
@@ -58,6 +59,14 @@ MESSAGES = [
         "flag": Error.AWAITING_PUCK,
     },
     {
+        "error": "WAIT for AtSoak condition",
+        "flag": Error.AWAITING_SOAK,
+    },
+    {
+        "error": "WAIT for SplOff condition",
+        "flag": Error.AWAITING_SAMPLE,
+    },
+    {
         "error": "No LN2 available, regulation stopped",
         "flag": Error.COLLISION,
     },
@@ -68,7 +77,12 @@ MESSAGES = [
     {
         "error": "Lid",
         "flag": Error.AWAITING_LID,
-    }
+    },
+    {
+        "error": "Warning: No sample detected in gripper A. Please abort, reset and run safe trajectory",
+        "flag": Error.PIN_MISSING,
+    },
+
 ]
 
 

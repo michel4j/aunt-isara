@@ -9,9 +9,6 @@ from twisted.internet import gireactor
 gireactor.install()
 from twisted.internet import reactor
 
-# add the project to the python path and inport it. Comment this out if using setup.py install
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from devioc import log
 from auntisara import ioc
 
