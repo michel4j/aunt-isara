@@ -743,12 +743,13 @@ class AuntISARAApp(object):
             return False
         return True
 
-    def wait_above_coord(self, x: float = None, y: float = None, z: float = None) -> bool:
+    def wait_above_coord(self, x: float = None, y: float = None, z: float = None, **kwargs) -> bool:
         """
         Wait for the robot to go below a specific coordinate
         :param x: x coordinate or None to ignore this axis
         :param y: y coordinate or None to ignore this axis
         :param z: z coordinate or None to ignore this axis
+        :param kwargs: additional arguments
         :return: True if successful, False if timed out
         """
         end_time = time.time() + 30
@@ -1183,6 +1184,25 @@ class AuntISARAApp(object):
             return False
         return True
 
+    def clear_prefetch(self, **kwargs) -> bool:
+        """
+        If a sample is prefetched, clear the prefetch and return to SOAK
+        :param kwargs: keyword arguments
+        """
+        logger.info('Clearing the prefetched sample')
+        self.wait_for_state(StatusType.IDLE)
+        if self.ioc.tooled_fbk.get():
+            self.ioc.back_cmd.put(1)
+            success = chain_monitors(
+                self.wait_above_coord,
+                self.check_standby,
+                z=DEWAR_PIN_Z
+            )
+            is_idle = self.wait_for_state(StatusType.IDLE)
+            return success and is_idle
+
+        return True
+
     @async_operation
     def mount_operation(self):
         """
@@ -1198,6 +1218,7 @@ class AuntISARAApp(object):
         # send the command
         configured = self.set_mount_params(port)
         if configured:
+            logger.info(f'Mounting sample ... {port}')
             self.mounting = True
             start = time.time()
             self.standby_time = time.time() + 2.0
@@ -1241,9 +1262,11 @@ class AuntISARAApp(object):
         # send the command
         configured = self.set_mount_params(port)
         if configured:
+            logger.info(f'Dismounting sample ... {port}')
             self.mounting = True
             start = time.time()
             self.standby_time = time.time() + 2.0
+            self.clear_prefetch()
             self.ioc.get_cmd.put(1)
             success = chain_monitors(
                 self.check_gonio_ready,
@@ -1274,6 +1297,7 @@ class AuntISARAApp(object):
         # send the command
         configured = self.set_mount_params(port)
         if configured:
+            logger.info(f'Prefetching sample ... {port}')
             self.mounting = True
             start = time.time()
             self.standby_time = time.time() + 2.0
@@ -1600,6 +1624,9 @@ class AuntISARAApp(object):
         if message:
             err_flag = msgs.parse_error(message)
 
+        if self.ioc.status.get() == StatusType.IDLE:
+            err_flag &= ~msgs.Error.AWAITING_GONIO # ignore gonio error in idle state
+
         if self.sample_mismatch():
             err_flag |= msgs.Error.SAMPLE_MISMATCH
 
@@ -1618,11 +1645,16 @@ class AuntISARAApp(object):
             self.send_command('setHighLN2', value)
 
     def do_next_port(self, pv, port, ioc: AuntISARA):
-        if port and not self.port_is_valid(port):
-            self.warn('Invalid Port!')
+        port = port.strip()
+        prefetched = self.ioc.tooled_fbk.get()
+        if prefetched and port != prefetched:
+            self.warn(f'Sample Already in the tool: {prefetched}')
+            pv.put(prefetched)
+
+        elif port and self.port_is_valid(port):
+            pv.put(port)
+        else:
             pv.put('')
-        elif port.strip() != port:
-            pv.put(port.strip())
 
     def do_tooled_fbk(self, pv, value, ioc: AuntISARA):
         ioc.next_port.put(value)
