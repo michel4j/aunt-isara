@@ -1167,21 +1167,28 @@ class AuntISARAApp(object):
         sample_on_gonio = self.wait_for_value(self.ioc.sample_detected, 1)
         flags = msgs.Error(self.ioc.error_fbk.get())
 
-        failed_mount = (
-            (not sample_mounted) or
-            (not sample_on_gonio) or
-            (msgs.Error.AWAITING_SAMPLE in flags) or
-            (msgs.Error.SAMPLE_MISMATCH in flags) or
-            (msgs.Error.PIN_MISSING in flags) or
-            (msgs.Error.COLLISION in flags)
-        )
+        failures = {
+            (not sample_mounted) or (not sample_on_gonio) : 'Sample not mounted',
+            (msgs.Error.AWAITING_SAMPLE in flags): 'Sample not on gonio',
+            (msgs.Error.SAMPLE_MISMATCH in flags): 'Sample mismatch',
+            (msgs.Error.PIN_MISSING in flags): 'Pin missing',
+            (msgs.Error.COLLISION in flags): 'Collision detected',
+        }
+        failed_mount = any(failures.keys())
         if failed_mount:
-            if self.ioc.tooled_fbk.get() == next_port:
+            message = ', '.join([msg for failed, msg in failures.items() if failed])
+            logger.warn(f'Failures: {message}!')
+            success = not failed_mount
+            if bool(self.ioc.tooled_fbk.get()) != bool(self.ioc.tooled2_fbk.get()):
                 self.recover_to_soak(sample=True)
-            elif not (self.ioc.tooled_fbk.get() or self.ioc.tooled2_fbk.get()):
+            elif self.ioc.tooled_fbk.get() or self.ioc.tooled2_fbk.get():
                 self.recover_to_soak()
-            logger.error(f'Failed to mount {next_port}!')
-            return False
+
+            if self.ioc.position_fbk.get() == 'SOAK' and self.ioc.tooled_fbk.get():
+                success = self.retry_mount(next_port=next_port)
+            if not success:
+                logger.error(f'Failed to mount {next_port}!')
+            return success
         return True
 
     def clear_prefetch(self, **kwargs) -> bool:
@@ -1202,6 +1209,19 @@ class AuntISARAApp(object):
             return success and is_idle
 
         return True
+
+    def retry_mount(self, **kwargs) -> bool:
+        """
+        Put sequence for retrying mount operation. Sends the command and then monitors
+        the status of the system.
+        """
+
+        self.ioc.put_cmd.put(1)
+        return chain_monitors(
+            self.check_gonio_ready,
+            self.check_sample_mounted,
+            **kwargs,
+        )
 
     @async_operation
     def mount_operation(self):
@@ -1472,10 +1492,10 @@ class AuntISARAApp(object):
 
     def do_back_cmd(self, pv, value, ioc: AuntISARA):
         if value:
-            if ioc.tooled_fbk.get():
+            if bool(ioc.tooled_fbk.get()) != bool(ioc.tooled2_fbk.get()):
                 self.send_command('back', ioc.tool_fbk.get())
             else:
-                self.warn('No sample on tool, command ignored')
+                self.warn('Tool state not compatible with command, ignored')
 
     def do_soak_cmd(self, pv, value, ioc: AuntISARA):
         allowed = (ToolType.DOUBLE, ToolType.UNIPUCK, ToolType.ROTATING)
@@ -1657,4 +1677,4 @@ class AuntISARAApp(object):
             pv.put('')
 
     def do_tooled_fbk(self, pv, value, ioc: AuntISARA):
-        ioc.next_port.put(value)
+        self.ioc.next_port.put(value)
