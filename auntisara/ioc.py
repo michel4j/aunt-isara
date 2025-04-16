@@ -739,7 +739,8 @@ class AuntISARAApp(object):
                 break
             time.sleep(0.01)
         else:
-            logger.warn(f'Timeout waiting for variable "{variable.name}" to be "{values}"')
+            value_str = ' | '.join([str(v) for v in values])
+            logger.warn(f'Timeout waiting for variable "{variable.name}" to be "{value_str}"')
             return False
         return True
 
@@ -1178,27 +1179,22 @@ class AuntISARAApp(object):
         if failed_mount:
             message = ', '.join([msg for failed, msg in failures.items() if failed])
             logger.warn(f'Failures: {message}!')
-            success = not failed_mount
             if bool(self.ioc.tooled_fbk.get()) != bool(self.ioc.tooled2_fbk.get()):
                 self.recover_to_soak(sample=True)
             elif self.ioc.tooled_fbk.get() or self.ioc.tooled2_fbk.get():
                 self.recover_to_soak()
-
-            if self.ioc.position_fbk.get() == 'SOAK' and self.ioc.tooled_fbk.get():
-                success = self.retry_mount(next_port=next_port)
-            if not success:
-                logger.error(f'Failed to mount {next_port}!')
-            return success
+            logger.error(f'Failed to mount {next_port}!')
+            return False
         return True
 
-    def clear_prefetch(self, **kwargs) -> bool:
+    def replace_sample(self, **kwargs) -> bool:
         """
-        If a sample is prefetched, clear the prefetch and return to SOAK
+        If one sample is present in gripper, return the sample to the dear and return to SOAK
         :param kwargs: keyword arguments
         """
-        logger.info('Clearing the prefetched sample')
+        logger.info('Returning sample to dewar ...')
         self.wait_for_state(StatusType.IDLE)
-        if self.ioc.tooled_fbk.get():
+        if bool(self.ioc.tooled_fbk.get()) != bool(self.ioc.tooled2_fbk.get()):
             self.ioc.back_cmd.put(1)
             success = chain_monitors(
                 self.wait_above_coord,
@@ -1215,13 +1211,16 @@ class AuntISARAApp(object):
         Put sequence for retrying mount operation. Sends the command and then monitors
         the status of the system.
         """
-
+        logger.info('Retrying mount operation ...')
         self.ioc.put_cmd.put(1)
-        return chain_monitors(
+        success = chain_monitors(
             self.check_gonio_ready,
+            self.check_picking,
             self.check_sample_mounted,
-            **kwargs,
+            self.check_standby,
+            **kwargs
         )
+        return success
 
     @async_operation
     def mount_operation(self):
@@ -1254,6 +1253,12 @@ class AuntISARAApp(object):
                     cur_port=current,
                     next_port=port,
                 )
+                if not success and self.is_soaking():
+                    if self.grippers_occupied():
+                        logger.warn('Both grippers are occupied!')
+                        success = self.retry_mount(cur_port=current, next_port=port)
+                    if success and self.pin_on_placer():
+                        success = self.replace_sample()
             else:
                 self.ioc.put_cmd.put(1)
                 success = chain_monitors(
@@ -1263,6 +1268,10 @@ class AuntISARAApp(object):
                     self.check_standby,
                     next_port=port,
                 )
+                if not success and self.pin_on_picker():
+                    # retry mount operation
+                    success = self.retry_mount(next_port=port)
+
             if success:
                 self.warn(f'Sample {port} mounted!')
             else:
@@ -1286,7 +1295,7 @@ class AuntISARAApp(object):
             self.mounting = True
             start = time.time()
             self.standby_time = time.time() + 2.0
-            self.clear_prefetch()
+            self.replace_sample()
             self.ioc.get_cmd.put(1)
             success = chain_monitors(
                 self.check_gonio_ready,
@@ -1295,6 +1304,8 @@ class AuntISARAApp(object):
                 self.check_standby,
                 cur_port=port,
             )
+            if not success and self.pin_on_placer() and self.is_soaking():
+                success = self.replace_sample()
             if success:
                 self.warn(f'Sample {port} dismounted!')
             else:
@@ -1334,6 +1345,36 @@ class AuntISARAApp(object):
                 self.warn(f'Prefetch failed - {port}!')
             self.ioc.duration.put(time.time() - start)
             self.mounting = False
+
+    def is_soaking(self) -> bool:
+        """
+        Check if the robot is in soaking position
+        """
+        return "SOAK" in self.ioc.position_fbk.get()
+
+    def is_home(self) -> bool:
+        """
+        Check if the robot is in home position
+        """
+        return "HOME" in self.ioc.position_fbk.get()
+
+    def pin_on_placer(self) -> bool:
+        """
+        Placer is tool B, for placing pin in dewar
+        """
+        return bool(self.ioc.tooled2_fbk.get())
+
+    def pin_on_picker(self) -> bool:
+        """
+        Picker is tool A, for picking pin from dewar
+        """
+        return bool(self.ioc.tooled_fbk.get())
+
+    def grippers_occupied(self) -> bool:
+        """
+        Both picker and placer are occupied
+        """
+        return self.pin_on_picker() and self.pin_on_placer()
 
     # callbacks
     def do_mount_cmd(self, pv, value, ioc):
@@ -1678,3 +1719,4 @@ class AuntISARAApp(object):
 
     def do_tooled_fbk(self, pv, value, ioc: AuntISARA):
         self.ioc.next_port.put(value)
+
