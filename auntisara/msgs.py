@@ -68,7 +68,7 @@ MESSAGES = [
     },
     {
         "error": "No LN2 available, regulation stopped",
-        "flag": Error.COLLISION,
+        "flag": Error.ROBOT_ERROR,
     },
     {
         "error": "collision at the gonio",

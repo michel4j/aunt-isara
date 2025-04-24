@@ -200,7 +200,7 @@ class AuntISARA(models.Model):
     power_fbk = models.Enum('STATE:power', choices=OffOn, default=0, desc='Power')
     running_fbk = models.Enum('STATE:running', choices=OffOn, default=0, desc='Path Running')
     trajectory_fbk = models.Enum('STATE:traj', choices=OffOn, default=0, desc='Traj Running')
-    autofill_fbk = models.Enum('STATE:autofill', choices=OffOn, default=0, desc='Auto-Fill')
+    autofill_fbk = models.Enum('STATE:autofill', choices=OffOn, default=0, desc='LN2 Mode')
     approach_fbk = models.Enum('STATE:approach', choices=OffOn, default=0, desc='Approaching')
     magnet_fbk = models.Enum('STATE:magnet', choices=OffOn, default=0, desc='Magnet')
     heater_fbk = models.Enum('STATE:heater', choices=OffOn, default=0, desc='Heater')
@@ -578,7 +578,7 @@ class AuntISARAApp(object):
         gepics.threads_init()
         while self.command_on:
             command, full_cmd = self.commands.get()
-            logger.info(f'< {command}: {full_cmd}')
+            logger.info(f'COMMAND <~ {full_cmd}')
             try:
                 self.command_client.send_message(full_cmd)
             except Exception as e:
@@ -710,50 +710,57 @@ class AuntISARAApp(object):
             logger.warn(f'Timeout waiting for response "{context}"')
             return False, f'Timeout waiting for response to command "{context}"'
 
-    def wait_for_position(self, *positions, timeout=30):
-        end_time = time.time() + timeout
-        while time.time() < end_time:
-            position = self.ioc.position_fbk.get()
-            if position in positions:
-                break
-            time.sleep(0.1)
-        else:
-            logger.warn(f'Timeout waiting for positions "{positions}"')
-            return False
-        return True
-
-    @staticmethod
-    def wait_for_value(variable: Any, *values: Any, timeout: int = 30, invert: bool = False) -> bool:
+    def wait_for_value(
+        self, variable: Any, *values: Any, timeout: int = 30, invert: bool = False, message: str = None
+    ) -> bool:
         """
         Wait for a variable to reach a specific value
         :param variable: process variable to check
         :param values: values to check
         :param timeout: max duration to wait
         :param invert: if True, wait for the variable to not be in values
+        :param message: optional message to use for logging
         :return: True if successful, False if timed out
         """
+
+        if message is None:
+            value_str = ' | '.join([str(v) for v in values])
+            link_str = 'to be' if not invert else 'not to be'
+            message = f'"{variable.name}" {link_str} "{value_str}"'
+
         end_time = time.time() + timeout
+        logger.info(f'Waiting for {message} ...')
+
         while time.time() < end_time:
             current_value = variable.get()
             if invert != (current_value in values):
                 break
             time.sleep(0.01)
+            if self.aborted:
+                return False
         else:
-            value_str = ' | '.join([str(v) for v in values])
-            logger.warn(f'Timeout waiting for variable "{variable.name}" to be "{value_str}"')
+            logger.warn(f'Timed-out waiting for {message} after {timeout} seconds!')
             return False
         return True
 
-    def wait_above_coord(self, x: float = None, y: float = None, z: float = None, **kwargs) -> bool:
+    def wait_for_position(self, *positions, timeout=30):
+        message = 'position ' + '|'.join(positions)
+        return self.wait_for_value(self.ioc.position_fbk, *positions, timeout=timeout, message=message)
+
+    def wait_above_coord(self, x: float = None, y: float = None, z: float = None, timeout: int =30, **kwargs) -> bool:
         """
         Wait for the robot to go below a specific coordinate
         :param x: x coordinate or None to ignore this axis
         :param y: y coordinate or None to ignore this axis
         :param z: z coordinate or None to ignore this axis
+        :param timeout: max duration to wait
         :param kwargs: additional arguments
         :return: True if successful, False if timed out
         """
-        end_time = time.time() + 30
+        end_time = time.time() + timeout
+        pos = {'x': x, 'y': y, 'z': z}
+        pos_text = ', '.join([f'{k}={v}' for k, v in pos.items() if v is not None])
+        logger.info(f'Waiting to go below coordinates: {pos_text}')
         while time.time() < end_time:
             current_x = self.ioc.xpos_fbk.get()
             current_y = self.ioc.ypos_fbk.get()
@@ -761,20 +768,26 @@ class AuntISARAApp(object):
             if (x is None or current_x <= x) and (y is None or current_y <= y) and (z is None or current_z <= z):
                 break
             time.sleep(0.01)
+            if self.aborted:
+                return False
         else:
-            logger.warn(f'Timeout waiting for coordinates to be above ({x:=}, {y:=}, {z:=})')
+            logger.warn(f'Timed-out waiting above {pos_text} after {timeout} seconds!')
             return False
         return True
 
-    def wait_below_coord(self, x: float = None, y: float = None, z: float = None) -> bool:
+    def wait_below_coord(self, x: float = None, y: float = None, z: float = None, timeout: int = 30) -> bool:
         """
         Wait for the robot to go above a specific coordinate
         :param x: x coordinate or None to ignore this axis
         :param y: y coordinate or None to ignore this axis
         :param z: z coordinate or None to ignore this axis
+        :param timeout: max duration to wait
         :return: True if successful, False if timed out
         """
-        end_time = time.time() + 30
+        end_time = time.time() + timeout
+        pos = {'x': x, 'y': y, 'z': z}
+        pos_text = ', '.join([f'{k}={v}' for k, v in pos.items() if v is not None])
+        logger.info(f'Waiting to go above coordinates: {pos_text}')
         while time.time() < end_time:
             current_x = self.ioc.xpos_fbk.get()
             current_y = self.ioc.ypos_fbk.get()
@@ -782,21 +795,26 @@ class AuntISARAApp(object):
             if (x is None or current_x >= x) and (y is None or current_y >= y) and (z is None or current_z >= z):
                 break
             time.sleep(0.01)
+            if self.aborted:
+                return False
         else:
-            logger.warn(f'Timeout waiting for coordinates to be above ({x:=}, {y:=}, {z:=})')
+            logger.warn(f'Timed-out below {pos_text} after {timeout} seconds!')
             return False
         return True
 
     # aliases for wait_for_value
     def wait_for_state(self, *states, timeout=30):
         state_values = [int(s) for s in states]
-        return self.wait_for_value(self.ioc.status, *state_values, timeout=timeout)
+        message = 'state ' + '|'.join([state.name for state in states])
+        return self.wait_for_value(self.ioc.status, *state_values, timeout=timeout, message=message)
 
     def wait_in_state(self, state, timeout=30):
-        return self.wait_for_value(self.ioc.status, state, timeout=timeout, invert=True)
+        message = f'state to leave {state.name}'
+        return self.wait_for_value(self.ioc.status, state, timeout=timeout, invert=True, message=message)
 
     def wait_in_path(self, path, timeout=30):
-        return self.wait_for_value(self.ioc.path_fbk, path, timeout=timeout, invert=True)
+        message = f'path {path} to complete'
+        return self.wait_for_value(self.ioc.path_fbk, path, timeout=timeout, invert=True, message=message)
 
     def ready_for_commands(self):
         return self.ready and self.ioc.enabled.get() and self.ioc.connected.get()
@@ -911,7 +929,8 @@ class AuntISARAApp(object):
         """
         if self.ioc.error.get() != message:
             self.ioc.error.put(message)
-            logger.warning(message)
+            if message:
+                logger.warning(message)
 
     def parse_state(self, message):
         info = parse_text(STATE_SPECS, message)
@@ -974,8 +993,7 @@ class AuntISARAApp(object):
         sample_detected = bool(self.ioc.sample_detected.get())
         return sample_mounted and (sample_detected != sample_mounted)
 
-    @staticmethod
-    def port_is_valid(port: str) -> bool:
+    def port_is_valid(self, port: str) -> bool:
         """
         Check if the port is a valid port
         :param port:
@@ -984,7 +1002,11 @@ class AuntISARAApp(object):
         if m:
             port_info = m.groupdict()
             port_info['pin'] = int(port_info['pin'])
-            return port_info['puck'] in PUCK_LIST and 1 <= port_info['pin'] <= 16
+            puck_detected = port_info['puck'] in self.dewar_pucks
+            pin_is_valid = (1 <= port_info['pin'] <= 16)
+            if not puck_detected:
+                self.warn(f'Port {port_info["puck"]} not in dewar')
+            return puck_detected and pin_is_valid
         return False
 
     def set_mount_params(self, port: str):
@@ -1007,12 +1029,11 @@ class AuntISARAApp(object):
             return True
 
     def abort_to_home(self):
-        self.ioc.abort_cmd.put(1)
-        time.sleep(1)
-        self.ioc.reset_cmd.put(1)
-        time.sleep(1)
-        self.warn('Safely returning to home position ...')
-        self.ioc.safe_cmd.put(1)
+        self.send_command('abort')
+        is_idle = self.wait_for_state(StatusType.IDLE)
+        self.send_command('reset')
+        time.sleep(2)
+        self.send_command('safe', self.ioc.tool_fbk.get())
         at_home = self.wait_for_position("HOME")
         is_idle = self.wait_for_state(StatusType.IDLE)
         return at_home and is_idle
@@ -1024,13 +1045,15 @@ class AuntISARAApp(object):
         """
         logger.info('Recovering to SOAK position...')
         if self.abort_to_home():
-            if sample:
+            if self.grippers_occupied():
+                pass
+            elif self.pin_on_picker() or self.pin_on_placer():
                 self.ioc.back_cmd.put(1)
             else:
                 self.ioc.soak_cmd.put(1)
             self.wait_for_position("SOAK")
             success = self.wait_for_state(StatusType.IDLE)
-            logger.info('Recovered automatically')
+            self.warn('Recovered automatically!')
         else:
             self.warn('Manual intervention required!')
             success = False
@@ -1047,25 +1070,43 @@ class AuntISARAApp(object):
             logger.error('No next port provided!')
             return False
 
-        logger.info('Waiting for sample to be picked ...')
-        # check picking
-        if self.ioc.tooled_fbk.get() != next_port:
-            self.wait_above_coord(z=DEWAR_PIN_Z)
-            self.wait_below_coord(z=DEWAR_PIN_Z)
-            time.sleep(2)   # stabilization time
+        if self.ioc.tooled_fbk.get() == next_port:
+            logger.info(f'Sample already picked - {next_port}!')
+            return True
+
+        reached_dewar = self.wait_above_coord(z=DEWAR_PIN_Z)
+        left_dewar = self.wait_below_coord(z=DEWAR_PIN_Z)
+        time.sleep(2.0) # stabilization time
+        message = 'sample to be picked'
+        sample_picked  = self.wait_for_value(self.ioc.tooled_fbk,  next_port, timeout=2, message=message)
+
+        if self.aborted:
+            logger.error('Aborted!')
+            return False
+
         flags = msgs.Error(self.ioc.error_fbk.get())
-        sample_not_picked = self.ioc.tooled_fbk.get() != next_port
-        failed_pick = (
-            sample_not_picked and
-            (
-                (msgs.Error.PIN_MISSING in flags) or
-                (msgs.Error.COLLISION in flags)
-            )
-        )
+        sample_not_picked = not sample_picked
+        hard_collision = not bool(self.ioc.collision_ok.get())
+        soft_collision = bool(msgs.Error.COLLISION in flags)
+        pin_missing = bool(msgs.Error.PIN_MISSING in flags)
+
+        failures = {
+            sample_not_picked: "Sample not picked",
+            hard_collision: "Hard collision detected",
+            soft_collision: "Soft collision detected",
+            pin_missing: "Pin missing",
+        }
+
+        failed_pick = any(list(failures.keys()))
+        failure_msg = ', '.join([msg for failed, msg in failures.items() if failed])
 
         if failed_pick:
-            self.recover_to_soak()
-            logger.error(f'Failed to pick {next_port}!')
+            logger.error(f'Failed to pick {next_port}: {failure_msg}!')
+            if hard_collision:
+                self.warn(f'Manual recovery required!')
+            else:
+                self.recover_to_soak()
+                self.warn(f'Failed to pick {next_port}!')
             return False
         return True
 
@@ -1074,8 +1115,12 @@ class AuntISARAApp(object):
         Check if the gonio is ready
         :param kwargs: keyword arguments
         """
-        logger.info('Waiting for gonio ready ...')
-        gonio_ready = self.wait_for_value(self.ioc.gonio_ready, 1)
+
+        gonio_ready = self.wait_for_value(self.ioc.gonio_ready, 1, message='gonio to be ready')
+        if self.aborted:
+            logger.error('Aborted!')
+            return False
+
         flags = msgs.Error(self.ioc.error_fbk.get())
         failed_gonio = (
             (not gonio_ready) and
@@ -1092,8 +1137,11 @@ class AuntISARAApp(object):
         Wait for operation to complete and for gripper to return to SOAK position
         :param kwargs:
         """
-        logger.info('Waiting to reach SOAK ...')
-        soak_ready = self.wait_for_value(self.ioc.position_fbk, "SOAK")
+        soak_ready = self.wait_for_position("SOAK")
+        if self.aborted:
+            logger.error('Aborted!')
+            return False
+
         if not soak_ready:
             self.warn('Gripper not in SOAK position!')
             return False
@@ -1104,8 +1152,11 @@ class AuntISARAApp(object):
         Check if the robot is in standby mode
         :param kwargs: keyword arguments
         """
-        logger.info('Waiting for robot to be in standby ...')
-        standby = self.wait_for_value(self.ioc.status, StatusType.STANDBY.value)
+        standby = self.wait_for_state(StatusType.STANDBY)
+        if self.aborted:
+            logger.error('Aborted!')
+            return False
+
         if not standby:
             self.warn('Robot failed to reach in standby state!')
             if not (self.ioc.tooled_fbk.get() or self.ioc.tooled2_fbk.get()):
@@ -1113,43 +1164,6 @@ class AuntISARAApp(object):
             else:
                 self.warn('Manual intervention required!')
                 self.abort_to_home()
-            return False
-        return True
-
-    def check_sample_dismount(self, **kwargs) -> bool:
-        """
-        Monitor the dismount operation
-        :param kwargs: must contain a 'cur_port' key
-        """
-        cur_port = kwargs.get('cur_port')
-        if not cur_port:
-            logger.error('No cur_port provided!')
-            return False
-
-        logger.info('Waiting for sample to be dismounted ...')
-        sample_in_tool = self.wait_for_value(self.ioc.tooled2_fbk, cur_port, timeout=10)
-        failed_dismount = (
-            not sample_in_tool
-        )
-        if failed_dismount:
-            self.recover_to_soak()
-            logger.error('Failed to dismount sample!')
-            return False
-        return True
-
-    def check_sample_returned(self, **kwargs) -> bool:
-        """
-        Check if the sample has been returned to the dewar
-        :param kwargs: keyword arguments
-        """
-        logger.info('Waiting for sample to be returned to dewar ...')
-        sample_returned = self.wait_for_value(self.ioc.tooled2_fbk, '')
-        failed_return = (
-            not sample_returned
-        )
-        if failed_return:
-            self.recover_to_soak(sample=True)
-            logger.error('Failed to return sample!')
             return False
         return True
 
@@ -1163,33 +1177,109 @@ class AuntISARAApp(object):
             logger.error('No next port provided!')
             return False
 
-        logger.info('Waiting for sample to be mounted ...')
-        sample_mounted = self.wait_for_value(self.ioc.mounted_fbk, next_port)
-        sample_on_gonio = self.wait_for_value(self.ioc.sample_detected, 1)
+        sample_mounted = self.wait_for_value(self.ioc.mounted_fbk, next_port, message='sample to be mounted')
+        time.sleep(2)  # stabilization time
+        sample_on_gonio = self.wait_for_value(self.ioc.sample_detected, 1, message='sample on gonio')
+
+        if self.aborted:
+            logger.error('Aborted!')
+            return False
+
         flags = msgs.Error(self.ioc.error_fbk.get())
+        sample_not_mounted = not (sample_mounted and sample_on_gonio)
+        hard_gonio_collision = not bool(self.ioc.collision_ok.get())
+        soft_gonio_collision = bool(msgs.Error.COLLISION in flags)
+        tool_gonio_mismatch = self.sample_mismatch()
+        sample_in_tool = self.ioc.tooled_fbk.get() or self.ioc.tooled2_fbk.get()
 
         failures = {
-            (not sample_mounted) or (not sample_on_gonio) : 'Sample not mounted',
-            (msgs.Error.AWAITING_SAMPLE in flags): 'Sample not on gonio',
-            (msgs.Error.SAMPLE_MISMATCH in flags): 'Sample mismatch',
-            (msgs.Error.PIN_MISSING in flags): 'Pin missing',
-            (msgs.Error.COLLISION in flags): 'Collision detected',
+            sample_not_mounted: "Gonio can't detect pin",
+            tool_gonio_mismatch: "Tool and gonio states don't match",
+            soft_gonio_collision: "Soft collision detected at gonio",
+            hard_gonio_collision: "Hard collision detected at gonio",
         }
-        failed_mount = any(failures.keys())
+        failed_mount = any(list(failures.keys()))
         if failed_mount:
             message = ', '.join([msg for failed, msg in failures.items() if failed])
             logger.warn(f'Failures: {message}!')
-            if bool(self.ioc.tooled_fbk.get()) != bool(self.ioc.tooled2_fbk.get()):
-                self.recover_to_soak(sample=True)
-            elif self.ioc.tooled_fbk.get() or self.ioc.tooled2_fbk.get():
+            if hard_gonio_collision:
+                msg = 'Hard collision detected at gonio!'
+                logger.error(msg)
+                self.warn(f'{msg}. Manual recovery required!')
+            else:
                 self.recover_to_soak()
-            logger.error(f'Failed to mount {next_port}!')
+                self.warn(f'Failed to mount {next_port}!')
+            return False
+        return True
+
+    def check_sample_dismount(self, **kwargs) -> bool:
+        """
+        Monitor the dismount operation
+        :param kwargs: must contain a 'cur_port' key
+        """
+        cur_port = kwargs.get('cur_port')
+        if not cur_port:
+            logger.error('No cur_port provided!')
+            return False
+
+        sample_in_tool = self.wait_for_value(
+            self.ioc.tooled2_fbk, cur_port, message='sample to be dismounted', timeout=10
+        )
+
+        if self.aborted:
+            logger.error('Aborted!')
+            return False
+
+        failed_dismount = (
+            not sample_in_tool
+        )
+        if failed_dismount:
+            self.recover_to_soak()
+            logger.error('Failed to dismount sample!')
+            return False
+        return True
+
+    def check_approach(self, **kwargs) -> bool:
+        """
+        Monitor the dismount operation
+        :param kwargs: must contain a 'cur_port' key
+        """
+
+        approached = self.wait_for_value(self.ioc.approach_fbk, 1, message='arm to approach gonio', timeout=10)
+
+        if self.aborted:
+            logger.error('Aborted!')
+            return False
+
+        if not approached:
+            self.recover_to_soak()
+            logger.error('Failed to approach gonio!')
+            return False
+        return True
+
+    def check_sample_returned(self, **kwargs) -> bool:
+        """
+        Check if the sample has been returned to the dewar
+        :param kwargs: keyword arguments
+        """
+        sample_returned = self.wait_for_value(self.ioc.tooled2_fbk, '', message='sample to be returned', timeout=10)
+
+        if self.aborted:
+            logger.error('Aborted!')
+            return False
+
+        failed_return = (
+            not sample_returned
+        )
+        if failed_return:
+            self.recover_to_soak()
+            logger.error('Failed to return sample!')
             return False
         return True
 
     def replace_sample(self, **kwargs) -> bool:
         """
-        If one sample is present in gripper, return the sample to the dear and return to SOAK
+        If one sample is present in gripper, return the sample to the dewar and return to SOAK
         :param kwargs: keyword arguments
         """
         logger.info('Returning sample to dewar ...')
@@ -1214,12 +1304,18 @@ class AuntISARAApp(object):
         logger.info('Retrying mount operation ...')
         self.ioc.put_cmd.put(1)
         success = chain_monitors(
-            self.check_gonio_ready,
             self.check_picking,
+            self.check_gonio_ready,
+            self.check_approach,
             self.check_sample_mounted,
             self.check_standby,
             **kwargs
         )
+        if success:
+            logger.info('Retrying mount operation ...')
+        else:
+            logger.warn('Retrying mount operation failed!')
+
         return success
 
     @async_operation
@@ -1227,16 +1323,16 @@ class AuntISARAApp(object):
         """
         Perform Mount operation
         """
-
+        self.aborted = False
         port = self.ioc.next_port.get()
         current = self.ioc.mounted_fbk.get()
         if port == current:
             self.warn(f'Sample Already mounted: {current}')
             return
 
-        # send the command
+        ready = self.wait_for_state(StatusType.IDLE, timeout=60)
         configured = self.set_mount_params(port)
-        if configured:
+        if ready and configured:
             logger.info(f'Mounting sample ... {port}')
             self.mounting = True
             start = time.time()
@@ -1244,8 +1340,9 @@ class AuntISARAApp(object):
             if current:
                 self.ioc.getput_cmd.put(1)
                 success = chain_monitors(
-                    self.check_gonio_ready,
                     self.check_picking,
+                    self.check_gonio_ready,
+                    self.check_approach,
                     self.check_sample_dismount,
                     self.check_sample_mounted,
                     self.check_sample_returned,
@@ -1253,29 +1350,38 @@ class AuntISARAApp(object):
                     cur_port=current,
                     next_port=port,
                 )
-                if not success and self.is_soaking():
+                if self.aborted:
+                    self.warn('Mount operation aborted!')
+                elif not success and self.is_soaking():
                     if self.grippers_occupied():
                         logger.warn('Both grippers are occupied!')
                         success = self.retry_mount(cur_port=current, next_port=port)
+                    elif self.pin_on_picker():
+                        success = self.replace_sample()
+
                     if success and self.pin_on_placer():
                         success = self.replace_sample()
+
             else:
                 self.ioc.put_cmd.put(1)
                 success = chain_monitors(
-                    self.check_gonio_ready,
                     self.check_picking,
+                    self.check_gonio_ready,
+                    self.check_approach,
                     self.check_sample_mounted,
                     self.check_standby,
                     next_port=port,
                 )
-                if not success and self.pin_on_picker():
+                if self.aborted:
+                    self.warn('Mount operation aborted!')
+                elif not success and self.pin_on_picker():
                     # retry mount operation
                     success = self.retry_mount(next_port=port)
 
             if success:
-                self.warn(f'Sample {port} mounted!')
+                self.warn(f'Mount operation succeeded - {port}!')
             else:
-                self.warn(f'Sample mount failed - {port}!')
+                self.warn(f'Mount operation failed - {port}!')
 
             self.mounting = False
             self.ioc.duration.put(time.time() - start)
@@ -1285,12 +1391,13 @@ class AuntISARAApp(object):
         """
         Perform dismount operation
         """
-
+        self.aborted = False
         port = self.ioc.mounted_fbk.get()
 
         # send the command
+        ready = self.wait_for_state(StatusType.IDLE, timeout=60)
         configured = self.set_mount_params(port)
-        if configured:
+        if ready and configured:
             logger.info(f'Dismounting sample ... {port}')
             self.mounting = True
             start = time.time()
@@ -1299,17 +1406,21 @@ class AuntISARAApp(object):
             self.ioc.get_cmd.put(1)
             success = chain_monitors(
                 self.check_gonio_ready,
+                self.check_approach,
                 self.check_sample_dismount,
                 self.check_sample_returned,
                 self.check_standby,
                 cur_port=port,
             )
-            if not success and self.pin_on_placer() and self.is_soaking():
+            if self.aborted:
+                self.warn('Dismount operation aborted!')
+            elif not success and self.pin_on_placer() and self.is_soaking():
                 success = self.replace_sample()
+
             if success:
-                self.warn(f'Sample {port} dismounted!')
+                self.warn(f'Dismount operation succeeded - {port}!')
             else:
-                self.warn(f'Sample dismount failed - {port}!')
+                self.warn(f'Dismount operation failed - {port}!')
             self.ioc.duration.put(time.time() - start)
             self.mounting = False
 
@@ -1318,16 +1429,16 @@ class AuntISARAApp(object):
         """
         Perform Prefetching operation
         """
-
+        self.aborted = False
         port = self.ioc.next_port.get()
         current = self.ioc.mounted_fbk.get()
         if port == current:
             self.warn(f'Sample Already mounted: {current}')
             return
 
-        # send the command
+        ready = self.wait_for_state(StatusType.IDLE, timeout=60)
         configured = self.set_mount_params(port)
-        if configured:
+        if ready and configured:
             logger.info(f'Prefetching sample ... {port}')
             self.mounting = True
             start = time.time()
@@ -1339,12 +1450,19 @@ class AuntISARAApp(object):
                 cur_port=current,
                 next_port=port,
             )
-            if success:
-                self.warn(f'Sample {port} prefetched!')
+            if self.aborted:
+                self.warn('Prefetch operation aborted!')
+            elif success:
+                self.warn(f'Prefetch succeeded - {port}!')
             else:
                 self.warn(f'Prefetch failed - {port}!')
             self.ioc.duration.put(time.time() - start)
             self.mounting = False
+
+    @async_operation
+    def abort_operation(self):
+        self.abort_to_home()
+        self.aborted = True
 
     def is_soaking(self) -> bool:
         """
@@ -1400,9 +1518,7 @@ class AuntISARAApp(object):
 
     def do_abort_cmd(self, pv, value, ioc: AuntISARA):
         if value:
-            self.send_command('abort')
-            self.aborted = True
-            self.mounting = False
+            self.abort_operation()
 
     def do_pause_cmd(self, pv, value, ioc: AuntISARA):
         if value:
@@ -1411,10 +1527,6 @@ class AuntISARAApp(object):
     def do_reset_cmd(self, pv, value, ioc):
         if value:
             self.send_command('reset')
-            #self.ioc.error_fbk.put(0)
-            self.ioc.help.put('')
-            self.ioc.warning.put('')
-            self.mounting = False
 
     def do_restart_cmd(self, pv, value, ioc: AuntISARA):
         if value:
@@ -1458,8 +1570,9 @@ class AuntISARAApp(object):
         ioc.remote_speed_fbk.put(value)
 
     def do_autofill_enable(self, pv, value, ioc: AuntISARA):
-        cmd = 'regulon' if value else 'reguloff'
-        self.send_command(cmd)
+        cmds = ('regulon', 'heateron') if value else ('reguloff', 'heateroff')
+        for cmd in cmds:
+            self.send_command(cmd)
 
     def do_home_cmd(self, pv, value, ioc: AuntISARA):
         if value:
@@ -1611,9 +1724,7 @@ class AuntISARAApp(object):
             self.send_command('resetMotion')
 
     def do_pucks_fbk(self, pv, value, ioc: AuntISARA):
-        if len(value) != NUM_PUCKS:
-            logger.error(f'Puck Detection does not contain {NUM_PUCKS} values!')
-        else:
+        if len(value) == NUM_PUCKS:
             pucks_detected = {v[1] for v in zip(value, PUCK_LIST) if v[0] == '1'}
             added = pucks_detected - self.dewar_pucks
             removed = self.dewar_pucks - pucks_detected
@@ -1622,11 +1733,12 @@ class AuntISARAApp(object):
 
             # If currently mounting a puck and it is removed abort
             on_tool = ioc.tooled_fbk.get().strip()
-            if on_tool and on_tool[:2] in removed and ioc.status.get() in [StatusType.BUSY]:
+            on_tool2 = ioc.tooled2_fbk.get().strip()
+            tooled_pucks = {on_tool[:2], on_tool2[:2]}
+            if (tooled_pucks & removed) and ioc.status.get() in [StatusType.BUSY]:
                 msg = 'Target puck removed while mounting. Aborting! Manual recovery required.'
                 logger.error(msg)
                 self.warn(msg)
-                self.send_command('abort')
 
     def do_save_pos_cmd(self, pv, value, ioc: AuntISARA):
         if value and ioc.pos_name.get().strip():
@@ -1645,9 +1757,8 @@ class AuntISARAApp(object):
 
     def do_status(self, pv, value, ioc: AuntISARA):
         if value == 0:
-            if ioc.error_fbk.get():
-                ioc.reset_cmd.put(1)
-            self.mounting = False
+            if self.ioc.error_fbk.get() and self.ioc.position_fbk.get().strip() == 'SOAK':
+                self.ioc.reset_cmd.put(1)
 
     def do_health(self, pv, value, ioc: AuntISARA):
         if value == ErrorType.TIMEOUT:
@@ -1707,12 +1818,12 @@ class AuntISARAApp(object):
 
     def do_next_port(self, pv, port, ioc: AuntISARA):
         port = port.strip()
-        prefetched = self.ioc.tooled_fbk.get()
-        if prefetched and port != prefetched:
-            self.warn(f'Sample Already in the tool: {prefetched}')
-            pv.put(prefetched)
-
-        elif port and self.port_is_valid(port):
+        # prefetched = self.ioc.tooled_fbk.get()
+        # if prefetched and port != prefetched:
+        #     self.warn(f'Sample already in the tool: {prefetched}')
+        #     pv.put(prefetched)
+        #
+        if port and self.port_is_valid(port):
             pv.put(port)
         else:
             pv.put('')
