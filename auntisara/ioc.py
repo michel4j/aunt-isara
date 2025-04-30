@@ -223,6 +223,8 @@ class AuntISARA(models.Model):
     mounted_fbk = models.String('STATE:onDiff', max_length=40, desc='On Gonio')
     tooled_fbk = models.String('STATE:onTool', max_length=40, desc='On Tool')
     tooled2_fbk = models.String('STATE:onTool2', max_length=40, desc='On Tool 2')
+    dewar_temp1_fbk = models.Float('STATE:dewarT1', prec=1, desc='Dewar Temp 1')
+    dewar_temp2_fbk = models.Float('STATE:dewarT2', prec=2, desc='Dewar Temp 2')
 
     # Params
     next_port = models.String('PAR:nextPort', max_length=40, default='', desc='Port')
@@ -539,6 +541,8 @@ class AuntISARAApp(object):
             'b_puck': self.ioc.puck_tool2_fbk,
             'b_pin': self.ioc.sample_tool2_fbk,
             'soak_count': self.ioc.soak_count_fbk,
+            'low_temp': self.ioc.dewar_temp1_fbk,
+            'high_temp': self.ioc.dewar_temp2_fbk,
         }
 
         self.position_map = [
@@ -1657,9 +1661,12 @@ class AuntISARAApp(object):
             self.send_command('soak', ioc.tool_fbk.get())
 
     def do_dry_cmd(self, pv, value, ioc: AuntISARA):
-        allowed = (ToolType.DOUBLE, ToolType.UNIPUCK, ToolType.ROTATING)
-        if value and self.require_position('SOAK', 'HOME') and self.require_tool(*allowed):
-            self.send_command('dry', ioc.tool_fbk.get())
+        allowed = (ToolType.DOUBLE, ToolType.UNIPUCK)
+        if value and self.require_position('SOAK') and self.require_tool(*allowed):
+            if ioc.dewar_temp1_fbk.get() <= -150:
+                self.send_command('dry', ioc.tool_fbk.get())
+            else:
+                self.warn('Dewar temperature too high, command ignored')
 
     def do_pick_cmd(self, pv, value, ioc: AuntISARA):
         if value and self.require_tool(ToolType.DOUBLE):
