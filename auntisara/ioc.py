@@ -508,11 +508,6 @@ class AuntISARAApp(object):
     ):
         self.app_directory = os.getcwd()
         self.ioc = AuntISARA(device_name, callbacks=self)
-        if api and Path(api).exists():
-            with open(api, 'r') as fobj:
-                self.api = json.load(fobj)
-        else:
-            self.api = {}
         self.responses = Queue()
         self.statuses = Queue()
         self.commands = Queue()
@@ -578,17 +573,28 @@ class AuntISARAApp(object):
 
         self.mounting = False
         self.aborted = False
-
+        self.api = self.load_api(api)
         self.positions = PositionManager(positions, self.app_directory)
         self.timeouts = TimeoutManager()
+
+    def load_api(self, api):
+        if api:
+            api_file = Path(self.app_directory) / api
+            logger.info(f'Loading API from: {api_file}')
+            try:
+                with open(api, 'r') as f:
+                    return json.load(f)
+            except (FileNotFoundError, IOError):
+                logger.error(f'Unable to load API: {api_file}')
+        return {}
 
     def change_puck_status(self, puck, load=True):
         if self.api and self.api.get('load_url') and self.api.get('unload_url'):
             headers = {'X-Access-Token': f'Bearer {self.api.get("key", "")}'}
             url = self.api['load_url'] if load else self.api['unload_url']
-            r = requests.post(url, data={'location': puck}, headers=headers)
+            r = requests.post(f'{url}{puck}', data={'location': puck}, headers=headers)
             if r.status_code != requests.codes.ok:
-                logger.error(f'Unable to load puck: {r.text}')
+                logger.error(f'Unable to load puck: HTTP-{r.status_code}')
 
     def load_puck(self, puck):
         """
