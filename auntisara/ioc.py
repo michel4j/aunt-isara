@@ -11,9 +11,11 @@ from datetime import datetime
 from enum import Enum, IntFlag, IntEnum, auto
 from functools import wraps
 from itertools import cycle
+from pathlib import Path
 from queue import Queue
 from threading import Thread
 from typing import Any
+import requests
 
 from parsefire.parser import parse_text
 
@@ -500,10 +502,17 @@ class PositionManager(object):
 
 
 class AuntISARAApp(object):
-    def __init__(self, device_name, address, command_port=1000, status_port=10000, positions='positions'):
+    def __init__(
+        self, device_name, address, command_port=1000, status_port=10000, positions='positions',
+        api=None
+    ):
         self.app_directory = os.getcwd()
         self.ioc = AuntISARA(device_name, callbacks=self)
-
+        if api and Path(api).exists():
+            with open(api, 'r') as fobj:
+                self.api = json.load(fobj)
+        else:
+            self.api = {}
         self.responses = Queue()
         self.statuses = Queue()
         self.commands = Queue()
@@ -572,6 +581,28 @@ class AuntISARAApp(object):
 
         self.positions = PositionManager(positions, self.app_directory)
         self.timeouts = TimeoutManager()
+
+    def change_puck_status(self, puck, load=True):
+        if self.api and self.api.get('load_url') and self.api.get('unload_url'):
+            headers = {'X-Access-Token': f'Bearer {self.api.get("key", "")}'}
+            url = self.api['load_url'] if load else self.api['unload_url']
+            r = requests.post(url, data={'location': puck}, headers=headers)
+            if r.status_code != requests.codes.ok:
+                logger.error(f'Unable to load puck: {r.text}')
+
+    def load_puck(self, puck):
+        """
+        Load a puck into the dewar
+        :param puck: Puck to load
+        """
+        self.change_puck_status(puck, load=True)
+
+    def unload_puck(self, puck):
+        """
+        Unload a puck from the dewar
+        :param puck: Puck to unload
+        """
+        self.change_puck_status(puck, load=False)
 
     def sender(self):
         """
@@ -1737,6 +1768,12 @@ class AuntISARAApp(object):
             removed = self.dewar_pucks - pucks_detected
             self.dewar_pucks = pucks_detected
             logger.info(f'Pucks changed: added={list(added)}, removed={list(removed)}')
+
+            # call lims API to load/unload puckas as they are removed an added
+            if len(added) == 1 and len(removed) == 0:
+                self.load_puck(list(added)[0])
+            elif len(removed) == 1 and len(added) == 0:
+                self.unload_puck(list(removed)[0])
 
             # If currently mounting a puck and it is removed abort
             on_tool = ioc.tooled_fbk.get().strip()

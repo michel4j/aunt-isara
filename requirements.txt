@@ -1,3 +1,4 @@
 devioc>=2024.1.0
+requests
 pyepics
 gepics
