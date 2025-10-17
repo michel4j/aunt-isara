@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-import os
+
 import logging
-import sys
 import argparse
 
 # Twisted boiler-plate code.
@@ -19,7 +18,6 @@ parser.add_argument('-d', '--device', type=str, help='Device Name', required=Tru
 parser.add_argument('--address', type=str, help='Controller address', required=True)
 parser.add_argument('--commands', type=int, help='Command Port', required=True)
 parser.add_argument('--status', type=int, help='Status Port', required=True)
-parser.add_argument('--api', type=str, help='JSON File with API information')
 
 if __name__== '__main__':
     args = parser.parse_args()
@@ -30,7 +28,7 @@ if __name__== '__main__':
 
     app = ioc.AuntISARAApp(
         args.device, address=args.address, command_port=args.commands,
-        status_port=args.status, api=args.api
+        status_port=args.status,
     )
     reactor.addSystemEventTrigger('before', 'shutdown', app.shutdown) # make sure app is properly shutdown
     reactor.run()               # run main-loop

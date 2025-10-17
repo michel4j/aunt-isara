@@ -1,0 +1,36 @@
+[project]
+name = "aunt-isara"
+description = "A python based Soft IOC Server for ISARA Automounter"
+authors = [
+    {name = "Michel Fodje",email = "michel.fodje@lightsource.ca"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "devioc (>=2024.1.0,<2026.0.0)",
+    "requests (>=2.32.5,<3.0.0)",
+    "gepics (>=2025.10.2,<2026.0.0)"
+]
+dynamic = ["version"]
+
+[tool.poetry]
+packages = [
+    { include = "auntisara", from = "." },
+]
+version = "0.0.0"
+
+[tool.poetry.scripts]
+isara-server = { reference = 'bin/app.server', type = "file" }
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry.requires-plugins]
+poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = ["plugin"] }
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+format = "{base}.{revision}{distance}"
