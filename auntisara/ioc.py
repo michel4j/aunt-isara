@@ -931,7 +931,8 @@ class AuntISARAApp(object):
         Update the error PV value if the message is different from the current value.
         :param message: message to process
         """
-        if self.ioc.error.get() != message:
+        message = ''.join(message)
+        if self.ioc.error.get(as_string=True) != message:
             self.ioc.error.put(message)
             if message:
                 logger.warning(message)
@@ -1800,7 +1801,7 @@ class AuntISARAApp(object):
 
     def do_error(self, pv, message, ioc: AuntISARA):
         err_flag = msgs.Error(0)
-        if message:
+        if len(message):
             err_flag = msgs.parse_error(message)
 
         if self.ioc.status.get() == StatusType.IDLE:
@@ -1837,4 +1838,3 @@ class AuntISARAApp(object):
 
     def do_tooled_fbk(self, pv, value, ioc: AuntISARA):
         self.ioc.next_port.put(value)
-
