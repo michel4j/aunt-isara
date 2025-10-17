@@ -10,7 +10,9 @@ requires-python = ">=3.10,<4.0"
 dependencies = [
     "devioc (>=2024.1.0,<2026.0.0)",
     "requests (>=2.32.5,<3.0.0)",
-    "gepics (>=2025.10.3,<2026.0.0)"
+    "gepics (>=2025.10.3,<2026.0.0)",
+    "parsefire (>=2024.6.0,<2025.0.0)",
+    "pygobject (==3.44.2)"
 ]
 dynamic = ["version"]
 
