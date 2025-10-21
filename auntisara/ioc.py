@@ -1424,6 +1424,9 @@ class AuntISARAApp(object):
 
             if success:
                 self.warn(f'Dismount operation succeeded - {port}!')
+                # temporary lid close after dismount, until dry nitrogen system is ready
+                time.sleep(5)  # wait for tool to stabilize
+                self.send_command('closelid', self.ioc.tool_fbk.get())
             else:
                 self.warn(f'Dismount operation failed - {port}!')
             self.ioc.duration.put(time.time() - start)
