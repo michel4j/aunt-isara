@@ -1049,10 +1049,9 @@ class AuntISARAApp(object):
         :param sample: if True, the sample is in the tool
         """
         logger.info('Recovering to SOAK position...')
+        gripper_error = bool(msgs.Error.GRIPPER_ERROR in msgs.Error(self.ioc.error_fbk.get()))
         if self.abort_to_home():
-            if self.grippers_occupied():
-                pass
-            elif self.pin_on_picker() or self.pin_on_placer():
+            if self.pin_on_picker() != self.pin_on_placer():
                 self.ioc.back_cmd.put(1)
             else:
                 self.ioc.soak_cmd.put(1)
@@ -1094,12 +1093,14 @@ class AuntISARAApp(object):
         hard_collision = not bool(self.ioc.collision_ok.get())
         soft_collision = bool(msgs.Error.COLLISION in flags)
         pin_missing = bool(msgs.Error.PIN_MISSING in flags)
+        gripper_error = bool(msgs.Error.GRIPPER_ERROR in flags)
 
         failures = {
             sample_not_picked: "Sample not picked",
             hard_collision: "Hard collision detected",
             soft_collision: "Soft collision detected",
             pin_missing: "Pin missing",
+            gripper_error: "Gripper error",
         }
 
         failed_pick = any(list(failures.keys()))
@@ -1359,7 +1360,7 @@ class AuntISARAApp(object):
                     self.warn('Mount operation aborted!')
                 elif not success and self.is_soaking():
                     if self.grippers_occupied():
-                        logger.warn('Both grippers are occupied!')
+                        logger.warn('Grippers are occupied!')
                         success = self.retry_mount(cur_port=current, next_port=port)
                     elif self.pin_on_picker():
                         success = self.replace_sample()

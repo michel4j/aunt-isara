@@ -19,6 +19,7 @@ class Error(IntFlag):
     AWAITING_FILL = auto()
     AWAITING_LID = auto()
     AWAITING_SOAK = auto()
+    GRIPPER_ERROR = auto()
 
 
 MESSAGES = [
@@ -82,6 +83,18 @@ MESSAGES = [
         "error": "Warning: No sample detected in gripper A. Please abort, reset and run safe trajectory",
         "flag": Error.PIN_MISSING,
     },
+    {
+        'error': "Warning: Failed to open double gripper",
+        'flag': Error.GRIPPER_ERROR,
+    },
+    {
+        "error": "Warning: Failed to open gripper A",
+        "flag": Error.GRIPPER_ERROR,
+    },
+    {
+        "error": "Warning: Failed to open gripper B",
+        "flag": Error.GRIPPER_ERROR,
+    }
 
 ]
 
