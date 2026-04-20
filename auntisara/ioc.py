@@ -225,6 +225,7 @@ class AuntISARA(models.Model):
     tooled2_fbk = models.String('STATE:onTool2', max_length=40, desc='On Tool 2')
     dewar_temp1_fbk = models.Float('STATE:dewarT1', prec=1, desc='Dewar Temp 1')
     dewar_temp2_fbk = models.Float('STATE:dewarT2', prec=2, desc='Dewar Temp 2')
+    drying_fbk = models.Enum('STATE:drying', choices=OffOn, default=0, desc='Drying')
 
     # Params
     next_port = models.String('PAR:nextPort', max_length=40, default='', desc='Port')
@@ -262,6 +263,7 @@ class AuntISARA(models.Model):
     approach_enable = models.Toggle('CMD:approach', high=0, desc='Approaching')
     running_enable = models.Toggle('CMD:running', high=0, desc='Path Running')
     autofill_enable = models.Toggle('CMD:autofill', high=0, desc='LN2 AutoFill')
+    air_wipe_enable = models.Toggle('CMD:enableAirWipe', high=0, desc='Auto Air Wipe')
 
     # Trajectory Commands
     home_cmd = models.Toggle('CMD:home', desc='Home')
@@ -1796,6 +1798,9 @@ class AuntISARAApp(object):
 
         if 'DRY' in value:
             self.standby_time = time.time()
+            self.ioc.drying_fbk.put(1)
+        else:
+            self.ioc.drying_fbk.put(0)
 
         # reset gonio wait flag if robot has moved to the gonio
         error_flags = msgs.Error(self.ioc.error_fbk.get())
