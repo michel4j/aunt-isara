@@ -263,7 +263,7 @@ class AuntISARA(models.Model):
     approach_enable = models.Toggle('CMD:approach', high=0, desc='Approaching')
     running_enable = models.Toggle('CMD:running', high=0, desc='Path Running')
     autofill_enable = models.Toggle('CMD:autofill', high=0, desc='LN2 AutoFill')
-    air_wipe_enable = models.Enum('CMD:enableAirWipe', choices=OffOn, desc='Auto Air Wipe')
+    air_wipe_enable = models.Enum('CMD:enableAirWipe', default=1, choices=OffOn, desc='Auto Air Wipe')
 
     # Trajectory Commands
     home_cmd = models.Toggle('CMD:home', desc='Home')
