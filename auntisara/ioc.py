@@ -255,7 +255,7 @@ class AuntISARA(models.Model):
     open_cmd = models.Toggle('CMD:lid:open', desc='Open Lid')
     close_cmd = models.Toggle('CMD:lid:close', desc='Close Lid')
     tool_a_cmd = models.Enum('CMD:toolA', choices=('Close Tool', 'Open Tool A'), desc='Tool A')
-    tool_b_cmd = models.Enum('CMD:toolA', choices=('Close Tool', 'Open Tool B'), desc='Tool B')
+    tool_b_cmd = models.Enum('CMD:toolB', choices=('Close Tool', 'Open Tool B'), desc='Tool B')
     faster_cmd = models.Toggle('CMD:faster', desc='Speed Up')
     slower_cmd = models.Toggle('CMD:slower', desc='Speed Down')
     magnet_enable = models.Toggle('CMD:magnet', high=0, desc='Magnet')
