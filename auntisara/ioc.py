@@ -189,11 +189,11 @@ class AuntISARA(models.Model):
     tool_fbk = models.Enum('STATE:tool', choices=ToolType, desc='Tool Status')
     tool_open_fbk = models.Enum('STATE:toolOpen', choices=OpenClosed, default=0, desc='Tool Open')
     path_fbk = models.String('STATE:path', max_length=40, desc='Path Name')
-    puck_tool_fbk = models.Integer('STATE:toolPuck', min_val=0, max_val=29, desc='Puck On tool')
-    puck_tool2_fbk = models.Integer('STATE:tool2Puck', min_val=0, max_val=29, desc='Puck On tool2')
+    puck_tool_a_fbk = models.Integer('STATE:toolAPuck', min_val=0, max_val=29, desc='Puck On tool A')
+    puck_tool_b_fbk = models.Integer('STATE:toolBPuck', min_val=0, max_val=29, desc='Puck On tool B')
     puck_diff_fbk = models.Integer('STATE:diffPuck', min_val=0, max_val=29, desc='Puck On Diff')
-    sample_tool_fbk = models.Integer('STATE:toolSmpl', min_val=0, max_val=NUM_PUCK_SAMPLES, desc='On tool Sample')
-    sample_tool2_fbk = models.Integer('STATE:tool2Smpl', min_val=0, max_val=NUM_PUCK_SAMPLES, desc='On tool2 Sample')
+    sample_tool_a_fbk = models.Integer('STATE:toolASmpl', min_val=0, max_val=NUM_PUCK_SAMPLES, desc='On tool A Sample')
+    sample_tool_b_fbk = models.Integer('STATE:toolBSmpl', min_val=0, max_val=NUM_PUCK_SAMPLES, desc='On tool B Sample')
     sample_diff_fbk = models.Integer('STATE:diffSmpl', min_val=0, max_val=NUM_PUCK_SAMPLES, desc='On Diff Sample')
     plate_fbk = models.Integer('STATE:plate', min_val=0, max_val=NUM_PLATES, desc='Plate Status')
     barcode_fbk = models.String('STATE:barcode', max_length=40, desc='Barcode Status')
@@ -221,8 +221,8 @@ class AuntISARA(models.Model):
     rypos_fbk = models.Float('STATE:posRY', prec=2, desc='RY-Pos')
     rzpos_fbk = models.Float('STATE:posRZ', prec=2, desc='RZ-Pos')
     mounted_fbk = models.String('STATE:onDiff', max_length=40, desc='On Gonio')
-    tooled_fbk = models.String('STATE:onTool', max_length=40, desc='On Tool')
-    tooled2_fbk = models.String('STATE:onTool2', max_length=40, desc='On Tool 2')
+    tooled_a_fbk = models.String('STATE:onToolA', max_length=40, desc='On Tool A')
+    tooled_b_fbk = models.String('STATE:onToolB', max_length=40, desc='On Tool B')
     dewar_temp1_fbk = models.Float('STATE:dewarT1', prec=1, desc='Dewar Temp 1')
     dewar_temp2_fbk = models.Float('STATE:dewarT2', prec=2, desc='Dewar Temp 2')
     drying_fbk = models.Enum('STATE:drying', choices=OffOn, default=0, desc='Drying')
@@ -254,7 +254,8 @@ class AuntISARA(models.Model):
     clear_barcode_cmd = models.Toggle('CMD:clrBarcode', desc='Clear Barcode')
     open_cmd = models.Toggle('CMD:lid:open', desc='Open Lid')
     close_cmd = models.Toggle('CMD:lid:close', desc='Close Lid')
-    tool_cmd = models.Enum('CMD:tool', choices=('Close Tool', 'Open Tool'), desc='Tool')
+    tool_a_cmd = models.Enum('CMD:toolA', choices=('Close Tool', 'Open Tool A'), desc='Tool A')
+    tool_b_cmd = models.Enum('CMD:toolA', choices=('Close Tool', 'Open Tool B'), desc='Tool B')
     faster_cmd = models.Toggle('CMD:faster', desc='Speed Up')
     slower_cmd = models.Toggle('CMD:slower', desc='Speed Down')
     magnet_enable = models.Toggle('CMD:magnet', high=0, desc='Magnet')
@@ -285,8 +286,8 @@ class AuntISARA(models.Model):
     # Maintenance commands
     clear_cmd = models.Toggle('CMD:clear', desc='Clear')
     set_diff_cmd = models.Toggle('CMD:setDiffSmpl', desc='Set Sample')
-    set_tool_cmd = models.Toggle('CMD:setToolSmpl', desc='Set Tool')
-    set_tool2_cmd = models.Toggle('CMD:setTool2Smpl', desc='Set Tool2')
+    set_tool_a_cmd = models.Toggle('CMD:setToolA', desc='Set Tool A')
+    set_tool_b_cmd = models.Toggle('CMD:setToolB', desc='Set Tool B')
     reset_params = models.Toggle('CMD:resetParams', desc='Reset Parameters')
     reset_motion = models.Toggle('CMD:resetMotion', desc='Reset Motion')
     save_pos_cmd = models.Toggle('CMD:savePos', desc='Save Position')
@@ -532,8 +533,8 @@ class AuntISARAApp(object):
             'power': self.ioc.power_fbk,
             'auto': self.ioc.mode_fbk,
             'default': self.ioc.default_fbk,
-            'a_puck': self.ioc.puck_tool_fbk,
-            'a_pin': self.ioc.sample_tool_fbk,
+            'a_puck': self.ioc.puck_tool_a_fbk,
+            'a_pin': self.ioc.sample_tool_a_fbk,
             'gonio_puck': self.ioc.puck_diff_fbk,
             'gonio_pin': self.ioc.sample_diff_fbk,
             'plate': self.ioc.plate_fbk,
@@ -541,8 +542,8 @@ class AuntISARAApp(object):
             'running': self.ioc.running_fbk,
             'autofill': self.ioc.autofill_fbk,
             'speed': self.ioc.speed_fbk,
-            'b_puck': self.ioc.puck_tool2_fbk,
-            'b_pin': self.ioc.sample_tool2_fbk,
+            'b_puck': self.ioc.puck_tool_b_fbk,
+            'b_pin': self.ioc.sample_tool_b_fbk,
             'soak_count': self.ioc.soak_count_fbk,
             'low_temp': self.ioc.dewar_temp1_fbk,
             'high_temp': self.ioc.dewar_temp2_fbk,
@@ -957,15 +958,15 @@ class AuntISARAApp(object):
         if port != self.ioc.mounted_fbk.get():
             self.ioc.mounted_fbk.put(port)
 
-        # set tooled state
+        # set tooled A state
         port = pin2port(info['a_puck'], info['a_pin'])
-        if port != self.ioc.tooled_fbk.get():
-            self.ioc.tooled_fbk.put(port)
+        if port != self.ioc.tooled_a_fbk.get():
+            self.ioc.tooled_a_fbk.put(port)
 
-        # set tooled2 state
+        # set tooled B state
         port = pin2port(info['b_puck'], info['b_pin'])
-        if port != self.ioc.tooled2_fbk.get():
-            self.ioc.tooled2_fbk.put(port)
+        if port != self.ioc.tooled_b_fbk.get():
+            self.ioc.tooled_b_fbk.put(port)
 
         fault_active = False
         next_status = None
@@ -1076,7 +1077,7 @@ class AuntISARAApp(object):
             logger.error('No next port provided!')
             return False
 
-        if self.ioc.tooled_fbk.get() == next_port:
+        if self.ioc.tooled_a_fbk.get() == next_port:
             logger.info(f'Sample already picked - {next_port}!')
             return True
 
@@ -1084,7 +1085,7 @@ class AuntISARAApp(object):
         left_dewar = self.wait_below_coord(z=DEWAR_PIN_Z)
         time.sleep(2.0) # stabilization time
         message = 'sample to be picked'
-        sample_picked  = self.wait_for_value(self.ioc.tooled_fbk,  next_port, timeout=2, message=message)
+        sample_picked  = self.wait_for_value(self.ioc.tooled_a_fbk,  next_port, timeout=2, message=message)
 
         if self.aborted:
             logger.error('Aborted!')
@@ -1167,7 +1168,7 @@ class AuntISARAApp(object):
 
         if not standby:
             self.warn('Robot failed to reach in standby state!')
-            if not (self.ioc.tooled_fbk.get() or self.ioc.tooled2_fbk.get()):
+            if not (self.ioc.tooled_a_fbk.get() or self.ioc.tooled_b_fbk.get()):
                 self.recover_to_soak()
             else:
                 self.warn('Manual intervention required!')
@@ -1198,7 +1199,7 @@ class AuntISARAApp(object):
         hard_gonio_collision = not bool(self.ioc.collision_ok.get())
         soft_gonio_collision = bool(msgs.Error.COLLISION in flags)
         tool_gonio_mismatch = self.sample_mismatch()
-        sample_in_tool = self.ioc.tooled_fbk.get() or self.ioc.tooled2_fbk.get()
+        sample_in_tool = self.ioc.tooled_a_fbk.get() or self.ioc.tooled_b_fbk.get()
 
         failures = {
             sample_not_mounted: "Gonio can't detect pin",
@@ -1231,7 +1232,7 @@ class AuntISARAApp(object):
             return False
 
         sample_in_tool = self.wait_for_value(
-            self.ioc.tooled2_fbk, cur_port, message='sample to be dismounted', timeout=10
+            self.ioc.tooled_b_fbk, cur_port, message='sample to be dismounted', timeout=10
         )
 
         if self.aborted:
@@ -1270,7 +1271,7 @@ class AuntISARAApp(object):
         Check if the sample has been returned to the dewar
         :param kwargs: keyword arguments
         """
-        sample_returned = self.wait_for_value(self.ioc.tooled2_fbk, '', message='sample to be returned', timeout=10)
+        sample_returned = self.wait_for_value(self.ioc.tooled_b_fbk, '', message='sample to be returned', timeout=10)
 
         if self.aborted:
             logger.error('Aborted!')
@@ -1292,7 +1293,7 @@ class AuntISARAApp(object):
         """
         logger.info('Returning sample to dewar ...')
         self.wait_for_state(StatusType.IDLE)
-        if bool(self.ioc.tooled_fbk.get()) != bool(self.ioc.tooled2_fbk.get()):
+        if bool(self.ioc.tooled_a_fbk.get()) != bool(self.ioc.tooled_b_fbk.get()):
             self.ioc.back_cmd.put(1)
             success = chain_monitors(
                 self.wait_above_coord,
@@ -1491,13 +1492,13 @@ class AuntISARAApp(object):
         """
         Placer is tool B, for placing pin in dewar
         """
-        return bool(self.ioc.tooled2_fbk.get())
+        return bool(self.ioc.tooled_b_fbk.get())
 
     def pin_on_picker(self) -> bool:
         """
         Picker is tool A, for picking pin from dewar
         """
-        return bool(self.ioc.tooled_fbk.get())
+        return bool(self.ioc.tooled_a_fbk.get())
 
     def grippers_occupied(self) -> bool:
         """
@@ -1553,11 +1554,17 @@ class AuntISARAApp(object):
     def do_close_cmd(self, pv, value, ioc: AuntISARA):
         self.send_command('closelid', ioc.tool_fbk.get())
 
-    def do_tool_cmd(self, pv, value, ioc: AuntISARA):
+    def do_tool_a_cmd(self, pv, value, ioc: AuntISARA):
         if value:
             self.send_command('opentool')
         else:
             self.send_command('closetool')
+
+    def do_tool_b_cmd(self, pv, value, ioc: AuntISARA):
+        if value:
+            self.send_command('opentool2')
+        else:
+            self.send_command('closetool2')
 
     def do_faster_cmd(self, pv, value, ioc: AuntISARA):
         if value:
@@ -1657,7 +1664,7 @@ class AuntISARAApp(object):
 
     def do_back_cmd(self, pv, value, ioc: AuntISARA):
         if value:
-            if bool(ioc.tooled_fbk.get()) != bool(ioc.tooled2_fbk.get()):
+            if bool(ioc.tooled_a_fbk.get()) != bool(ioc.tooled_b_fbk.get()):
                 self.send_command('back', ioc.tool_fbk.get())
             else:
                 self.warn('Tool state not compatible with command, ignored')
@@ -1707,7 +1714,7 @@ class AuntISARAApp(object):
             else:
                 self.warn('No Sample specified')
 
-    def do_set_tool_cmd(self, pv, value, ioc: AuntISARA):
+    def do_set_tool_a_cmd(self, pv, value, ioc: AuntISARA):
         if value:
             port = ioc.next_port.get()
             if port:
@@ -1716,7 +1723,7 @@ class AuntISARAApp(object):
             else:
                 self.warn('No Sample specified')
 
-    def do_set_tool2_cmd(self, pv, value, ioc: AuntISARA):
+    def do_set_tool_b_cmd(self, pv, value, ioc: AuntISARA):
         if value and self.require_tool(ToolType.DOUBLE):
             port = ioc.next_port.get()
             if port:
@@ -1746,9 +1753,9 @@ class AuntISARAApp(object):
             logger.info(f'Pucks changed: added={list(added)}, removed={list(removed)}')
 
             # If currently mounting a puck and it is removed abort
-            on_tool = ioc.tooled_fbk.get().strip()
-            on_tool2 = ioc.tooled2_fbk.get().strip()
-            tooled_pucks = {on_tool[:2], on_tool2[:2]}
+            on_tool_a = ioc.tooled_a_fbk.get().strip()
+            on_tool_b = ioc.tooled_b_fbk.get().strip()
+            tooled_pucks = {on_tool_a[:2], on_tool_b[:2]}
             if (tooled_pucks & removed) and ioc.status.get() in [StatusType.BUSY]:
                 msg = 'Target puck removed while mounting. Aborting! Manual recovery required.'
                 logger.error(msg)
@@ -1835,15 +1842,10 @@ class AuntISARAApp(object):
 
     def do_next_port(self, pv, port, ioc: AuntISARA):
         port = port.strip()
-        # prefetched = self.ioc.tooled_fbk.get()
-        # if prefetched and port != prefetched:
-        #     self.warn(f'Sample already in the tool: {prefetched}')
-        #     pv.put(prefetched)
-        #
         if port and self.port_is_valid(port):
             pv.put(port)
         else:
             pv.put('')
 
-    def do_tooled_fbk(self, pv, value, ioc: AuntISARA):
+    def do_tooled_a_fbk(self, pv, value, ioc: AuntISARA):
         self.ioc.next_port.put(value)
