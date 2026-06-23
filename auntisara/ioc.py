@@ -120,7 +120,7 @@ class EnableType(IntEnum):
     DISABLED, ENABLED = range(2)
 
 
-def add_flag[T](flag: T, bits: int | T, raw: bool = False) -> T | int:
+def add_flag(flag: IntFlag, bits: int | IntFlag, raw: bool = False) -> IntFlag | int:
     """
     Add a flag to an IntFlag and return a new flag or integer
     :param flag: original flag
@@ -134,7 +134,7 @@ def add_flag[T](flag: T, bits: int | T, raw: bool = False) -> T | int:
     return out
 
 
-def del_flag[T](flag: T, bits: int | T, raw: bool = False) -> T | int:
+def del_flag(flag: IntFlag, bits: int | IntFlag, raw: bool = False) -> IntFlag | int:
     """
     Delete a flag from an IntFlag and return a new flag or integer
     :param flag: original flag
