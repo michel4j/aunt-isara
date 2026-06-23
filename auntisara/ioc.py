@@ -12,12 +12,17 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from enum import Enum, IntFlag, IntEnum, auto
 from functools import wraps
+
 from itertools import cycle
 from queue import Queue
 from threading import Thread
 from typing import Any
 
 from parsefire.parser import parse_text
+
+import gi
+gi.require_version('GLib', '2.0')
+from gi.repository import GLib
 
 import gepics
 import numpy
@@ -287,6 +292,7 @@ class AuntISARA(models.Model):
     pos_name = models.String('PAR:posName', max_length=40, default='', desc='Position Name')
     pos_force = models.Enum('PAR:posForce', choices=OffOn, default=0, desc='Overwrite Position')
     pos_tolerance = models.Float('PAR:posTol', default=0.1, prec=2, desc='Position Tolerance')
+    lid_timeout = models.Integer('PAR:lidTimeout', default=900, units='sec', desc='Lid Timeout Duration')
 
     # New Autofill Levels
     low_ln2_level = models.Integer('PAR:lowLN2', min_val=0, max_val=100, default=0, desc='Low LN2 Level')
@@ -566,6 +572,7 @@ class AuntISARAApp(object):
         self.user_enabled = False
         self.ready = False
         self.standby_time = time.time()
+        self.last_opr_time = time.time()
 
         self.dewar_pucks = set()
 
@@ -608,6 +615,7 @@ class AuntISARAApp(object):
             8: self.ioc.gonio_ready,
             47: self.ioc.cryojet_fbk,
             31: self.ioc.heartbeat,
+            32: self.ioc.lid_fbk,
         }
         self.rev_input_map = {
             9: self.ioc.sample_detected,
@@ -622,6 +630,7 @@ class AuntISARAApp(object):
 
         self.positions = PositionManager(positions, self.app_directory)
         self.timeouts = TimeoutManager()
+        GLib.timeout_add_seconds(60, self.check_lid_timeout)
 
     def sender(self):
         """
@@ -749,6 +758,25 @@ class AuntISARAApp(object):
                 self.ioc.health.put(ErrorType.ERROR)
         else:
             self.ioc.health.put(ErrorType.OK)
+
+    def reset_lid_timeout(self):
+        self.last_opr_time = time.time()
+
+    def check_lid_timeout(self):
+        try:
+            timeout = self.ioc.lid_timeout.get()
+            if not self.ioc.lid_fbk.get():
+                self.reset_lid_timeout()
+            elif not self.is_idle():
+                pass
+            elif self.last_opr_time + timeout < time.time():
+                self.warn('Lid Open for too long without activity! Closing lid ...')
+                self.send_command('closelid', self.ioc.tool_fbk.get())
+                self.reset_lid_timeout()
+        except Exception as err:
+            # Catch every exception as we don't want this method to fail ever
+            logger.exception(err)
+        return True
 
     @staticmethod
     def wait_for_queue(context, queue=None, timeout=5):
@@ -1430,6 +1458,7 @@ class AuntISARAApp(object):
             return
 
         with FlagManager(self.ioc.action, ActionType.MOUNT) as flag_manager:
+            self.reset_lid_timeout()
             ready = self.wait_for_state(StatusType.IDLE, timeout=60)
             configured = self.set_mount_params(port)
 
@@ -1506,6 +1535,7 @@ class AuntISARAApp(object):
 
         # send the command
         with FlagManager(self.ioc.action, ActionType.DISMOUNT) as flag_manager:
+            self.reset_lid_timeout()
             ready = self.wait_for_state(StatusType.IDLE, timeout=60)
             configured = self.set_mount_params(port)
             if not (ready and configured):
@@ -1561,6 +1591,7 @@ class AuntISARAApp(object):
             return
 
         with FlagManager(self.ioc.action, ActionType.PREFETCH) as flag_manager:
+            self.reset_lid_timeout()
             ready = self.wait_for_state(StatusType.IDLE, timeout=60)
             configured = self.set_mount_params(port)
 
@@ -1593,6 +1624,12 @@ class AuntISARAApp(object):
 
         with FlagManager(self.ioc.action, ActionType.ABORTING) as flag_manager:
             self.abort_to_home()
+
+    def is_idle(self) -> bool:
+        """
+        Check if the robot is in idle position
+        """
+        return self.ioc.status.get() == StatusType.IDLE
 
     def is_soaking(self) -> bool:
         """
@@ -2001,3 +2038,6 @@ class AuntISARAApp(object):
 
     def do_tooled_a_fbk(self, pv, value, ioc: AuntISARA):
         self.ioc.next_port.put(value)
+
+    def do_lid_fbk(self, pv, value, ioc: AuntISARA):
+        self.reset_lid_timeout()
