@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import glob
 import json
 import os
@@ -118,10 +120,56 @@ class EnableType(IntEnum):
     DISABLED, ENABLED = range(2)
 
 
-class ActionType(IntEnum):
+def add_flag[T](flag: T, bits: int | T, raw: bool = False) -> T | int:
+    """
+    Add a flag to an IntFlag and return a new flag or integer
+    :param flag: original flag
+    :param bits: new bits to add
+    :param raw: if true convert result to integer
+    """
+    cls = type(flag)
+    out = cls(flag) | cls(bits)
+    if raw:
+        return int(out)
+    return out
+
+
+def del_flag[T](flag: T, bits: int | T, raw: bool = False) -> T | int:
+    """
+    Delete a flag from an IntFlag and return a new flag or integer
+    :param flag: original flag
+    :param bits: new bits to turn off if on
+    :param raw: Whether to convert result to integer
+    """
+    cls = type(flag)
+    out = cls(flag) & ~cls(bits)
+    if raw:
+        return int(out)
+    return out
+
+
+class FlagManager:
+    def __init__(self, pv, flag: IntFlag):
+        self.pv = pv
+        self.flag = flag
+
+    def __enter__(self):
+        self.pv.put(
+            add_flag(self.pv.get(), self.flag)
+        )
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.pv.put(
+            del_flag(self.pv.get(), self.flag)
+        )
+
+
+class ActionType(IntFlag):
+    NONE = 0
     MOUNT = auto()
     DISMOUNT = auto()
     PREFETCH = auto()
+    ABORTING = auto()
 
 
 class ErrorType(IntEnum):
@@ -155,6 +203,7 @@ class AuntISARA(models.Model):
     connected = models.Enum('CONNECTED', choices=ActiveType, default=0, desc="Connection")
     enabled = models.Enum('ENABLED', choices=EnableType, default=1, desc="Control")
     status = models.Enum('STATUS', choices=StatusType, desc="Status")
+    action = models.Enum('ACTION', choices=ActionType, desc="Action")
     health = models.Enum('HEALTH', choices=ErrorType, desc="Health")
     log = models.String('LOG', desc="Sample Operation Message", max_length=1024)
     error = models.String('ERROR', desc="Error Message", max_length=1024)
@@ -571,8 +620,6 @@ class AuntISARAApp(object):
             OutputFlags.HEATER: self.ioc.heater_fbk
         }
 
-        self.mounting = False
-        self.aborted = False
         self.positions = PositionManager(positions, self.app_directory)
         self.timeouts = TimeoutManager()
 
@@ -743,7 +790,7 @@ class AuntISARAApp(object):
             if invert != (current_value in values):
                 break
             time.sleep(0.01)
-            if self.aborted:
+            if self.is_aborting():
                 return False
         else:
             logger.warn(f'Timed-out waiting for {message} after {timeout} seconds!')
@@ -754,7 +801,13 @@ class AuntISARAApp(object):
         message = 'position ' + '|'.join(positions)
         return self.wait_for_value(self.ioc.position_fbk, *positions, timeout=timeout, message=message)
 
-    def wait_above_coord(self, x: float = None, y: float = None, z: float = None, timeout: int =30, **kwargs) -> bool:
+    def wait_above_coord(
+            self,
+            x: float|None = None,
+            y: float|None = None,
+            z: float|None = None,
+            timeout: int =30, **kwargs
+    ) -> bool:
         """
         Wait for the robot to go below a specific coordinate
         :param x: x coordinate or None to ignore this axis
@@ -775,14 +828,20 @@ class AuntISARAApp(object):
             if (x is None or current_x <= x) and (y is None or current_y <= y) and (z is None or current_z <= z):
                 break
             time.sleep(0.01)
-            if self.aborted:
+            if self.is_aborting():
                 return False
         else:
             logger.warn(f'Timed-out waiting above {pos_text} after {timeout} seconds!')
             return False
         return True
 
-    def wait_below_coord(self, x: float = None, y: float = None, z: float = None, timeout: int = 30) -> bool:
+    def wait_below_coord(
+            self,
+            x: float|None = None,
+            y: float|None = None,
+            z: float|None = None,
+            timeout: int = 30
+    ) -> bool:
         """
         Wait for the robot to go above a specific coordinate
         :param x: x coordinate or None to ignore this axis
@@ -802,7 +861,7 @@ class AuntISARAApp(object):
             if (x is None or current_x >= x) and (y is None or current_y >= y) and (z is None or current_z >= z):
                 break
             time.sleep(0.01)
-            if self.aborted:
+            if self.is_aborting():
                 return False
         else:
             logger.warn(f'Timed-out below {pos_text} after {timeout} seconds!')
@@ -995,7 +1054,7 @@ class AuntISARAApp(object):
     def sample_mismatch(self) -> bool:
         """
         Check if the sample mounted state disagrees with the diffractometer state
-        :return: boolelan
+        :return: boolean
         """
         sample_mounted = bool(self.ioc.mounted_fbk.get())
         sample_detected = bool(self.ioc.sample_detected.get())
@@ -1087,7 +1146,7 @@ class AuntISARAApp(object):
         message = 'sample to be picked'
         sample_picked  = self.wait_for_value(self.ioc.tooled_a_fbk,  next_port, timeout=2, message=message)
 
-        if self.aborted:
+        if self.is_aborting():
             logger.error('Aborted!')
             return False
 
@@ -1126,7 +1185,7 @@ class AuntISARAApp(object):
         """
 
         gonio_ready = self.wait_for_value(self.ioc.gonio_ready, 1, message='gonio to be ready')
-        if self.aborted:
+        if self.is_aborting():
             logger.error('Aborted!')
             return False
 
@@ -1147,7 +1206,7 @@ class AuntISARAApp(object):
         :param kwargs:
         """
         soak_ready = self.wait_for_position("SOAK")
-        if self.aborted:
+        if self.is_aborting():
             logger.error('Aborted!')
             return False
 
@@ -1162,7 +1221,7 @@ class AuntISARAApp(object):
         :param kwargs: keyword arguments
         """
         standby = self.wait_for_state(StatusType.STANDBY)
-        if self.aborted:
+        if self.is_aborting():
             logger.error('Aborted!')
             return False
 
@@ -1190,7 +1249,7 @@ class AuntISARAApp(object):
         time.sleep(2)  # stabilization time
         sample_on_gonio = self.wait_for_value(self.ioc.sample_detected, 1, message='sample on gonio')
 
-        if self.aborted:
+        if self.is_aborting():
             logger.error('Aborted!')
             return False
 
@@ -1235,7 +1294,7 @@ class AuntISARAApp(object):
             self.ioc.tooled_b_fbk, cur_port, message='sample to be dismounted', timeout=10
         )
 
-        if self.aborted:
+        if self.is_aborting():
             logger.error('Aborted!')
             return False
 
@@ -1256,7 +1315,7 @@ class AuntISARAApp(object):
 
         approached = self.wait_for_value(self.ioc.approach_fbk, 1, message='arm to approach gonio', timeout=10)
 
-        if self.aborted:
+        if self.is_aborting():
             logger.error('Aborted!')
             return False
 
@@ -1273,7 +1332,7 @@ class AuntISARAApp(object):
         """
         sample_returned = self.wait_for_value(self.ioc.tooled_b_fbk, '', message='sample to be returned', timeout=10)
 
-        if self.aborted:
+        if self.is_aborting():
             logger.error('Aborted!')
             return False
 
@@ -1327,23 +1386,37 @@ class AuntISARAApp(object):
 
         return success
 
+
     @async_operation
     def mount_operation(self):
         """
         Perform Mount operation
         """
-        self.aborted = False
+
         port = self.ioc.next_port.get()
         current = self.ioc.mounted_fbk.get()
         if port == current:
             self.warn(f'Sample Already mounted: {current}')
             return
 
-        ready = self.wait_for_state(StatusType.IDLE, timeout=60)
-        configured = self.set_mount_params(port)
-        if ready and configured:
+        if self.is_mounting():
+            self.warn('Mount operation already in progress! Please wait!')
+            return
+
+        ready = self.wait_for_value(self.ioc.action, ActionType.NONE, timeout=120)
+        if not ready:
+            operations = ', '.join(f.name for f in ActionType(self.ioc.action.get()))
+            self.warn(f'Operations are active: {operations}.')
+            return
+
+        with FlagManager(self.ioc.action, ActionType.MOUNT) as flag_manager:
+            ready = self.wait_for_state(StatusType.IDLE, timeout=60)
+            configured = self.set_mount_params(port)
+
+            if not (ready and configured):
+                return
+
             logger.info(f'Mounting sample ... {port}')
-            self.mounting = True
             start = time.time()
             self.standby_time = time.time() + 2.0
             if current:
@@ -1359,7 +1432,7 @@ class AuntISARAApp(object):
                     cur_port=current,
                     next_port=port,
                 )
-                if self.aborted:
+                if self.is_aborting():
                     self.warn('Mount operation aborted!')
                 elif not success and self.is_soaking():
                     if self.grippers_occupied():
@@ -1381,7 +1454,7 @@ class AuntISARAApp(object):
                     self.check_standby,
                     next_port=port,
                 )
-                if self.aborted:
+                if self.is_aborting():
                     self.warn('Mount operation aborted!')
                 elif not success and self.pin_on_picker():
                     # retry mount operation
@@ -1392,7 +1465,6 @@ class AuntISARAApp(object):
             else:
                 self.warn(f'Mount operation failed - {port}!')
 
-            self.mounting = False
             self.ioc.duration.put(time.time() - start)
 
     @async_operation
@@ -1400,15 +1472,26 @@ class AuntISARAApp(object):
         """
         Perform dismount operation
         """
-        self.aborted = False
         port = self.ioc.mounted_fbk.get()
 
+        if self.is_dismounting():
+            self.warn('Dismount operation already in progress! Please wait!')
+            return
+
+        ready = self.wait_for_value(self.ioc.action, ActionType.NONE, timeout=120)
+        if not ready:
+            operations = ', '.join(f.name for f in ActionType(self.ioc.action.get()))
+            self.warn(f'Operations are active: {operations}.')
+            return
+
         # send the command
-        ready = self.wait_for_state(StatusType.IDLE, timeout=60)
-        configured = self.set_mount_params(port)
-        if ready and configured:
+        with FlagManager(self.ioc.action, ActionType.DISMOUNT) as flag_manager:
+            ready = self.wait_for_state(StatusType.IDLE, timeout=60)
+            configured = self.set_mount_params(port)
+            if not (ready and configured):
+                return
+
             logger.info(f'Dismounting sample ... {port}')
-            self.mounting = True
             start = time.time()
             self.standby_time = time.time() + 2.0
             self.replace_sample()
@@ -1421,7 +1504,7 @@ class AuntISARAApp(object):
                 self.check_standby,
                 cur_port=port,
             )
-            if self.aborted:
+            if self.is_aborting():
                 self.warn('Dismount operation aborted!')
             elif not success and self.pin_on_placer() and self.is_soaking():
                 success = self.replace_sample()
@@ -1434,25 +1517,37 @@ class AuntISARAApp(object):
             else:
                 self.warn(f'Dismount operation failed - {port}!')
             self.ioc.duration.put(time.time() - start)
-            self.mounting = False
 
     @async_operation
     def prefetch_operation(self):
         """
         Perform Prefetching operation
         """
-        self.aborted = False
+
         port = self.ioc.next_port.get()
         current = self.ioc.mounted_fbk.get()
         if port == current:
             self.warn(f'Sample Already mounted: {current}')
             return
 
-        ready = self.wait_for_state(StatusType.IDLE, timeout=60)
-        configured = self.set_mount_params(port)
-        if ready and configured:
+        if self.is_prefetching():
+            self.warn('Prefetch operation already in progress! Please wait!')
+            return
+
+        ready = self.wait_for_value(self.ioc.action, ActionType.NONE, timeout=120)
+        if not ready:
+            operations = ', '.join(f.name for f in ActionType(self.ioc.action.get()))
+            self.warn(f'Operations are active: {operations}.')
+            return
+
+        with FlagManager(self.ioc.action, ActionType.PREFETCH) as flag_manager:
+            ready = self.wait_for_state(StatusType.IDLE, timeout=60)
+            configured = self.set_mount_params(port)
+
+            if not (ready and configured):
+                return
+
             logger.info(f'Prefetching sample ... {port}')
-            self.mounting = True
             start = time.time()
             self.standby_time = time.time() + 2.0
             self.ioc.pick_cmd.put(1)
@@ -1462,19 +1557,22 @@ class AuntISARAApp(object):
                 cur_port=current,
                 next_port=port,
             )
-            if self.aborted:
+            if self.is_aborting():
                 self.warn('Prefetch operation aborted!')
             elif success:
                 self.warn(f'Prefetch succeeded - {port}!')
             else:
                 self.warn(f'Prefetch failed - {port}!')
             self.ioc.duration.put(time.time() - start)
-            self.mounting = False
 
     @async_operation
     def abort_operation(self):
-        self.abort_to_home()
-        self.aborted = True
+        if self.is_aborting():
+            self.warn('Abort operation already in progress! Please wait!')
+            return
+
+        with FlagManager(self.ioc.action, ActionType.ABORTING) as flag_manager:
+            self.abort_to_home()
 
     def is_soaking(self) -> bool:
         """
@@ -1487,6 +1585,41 @@ class AuntISARAApp(object):
         Check if the robot is in home position
         """
         return "HOME" in self.ioc.position_fbk.get()
+
+    def is_mounting(self) -> bool:
+        """
+        Check if the robot is mounting
+        """
+        return bool(ActionType(self.ioc.action.get()) | ActionType.MOUNT)
+
+    def is_dismounting(self) -> bool:
+        """
+        Check if the robot is dismounting
+        """
+        return bool(ActionType(self.ioc.action.get()) | ActionType.DISMOUNT)
+
+    def is_prefetching(self) -> bool:
+        """
+        Check if the robot is picking
+        """
+        return bool(ActionType(self.ioc.action.get()) | ActionType.PREFETCH)
+
+    def is_aborting(self) -> bool:
+        """
+        Check if the robot is aborting
+        """
+        return bool(ActionType(self.ioc.action.get()) | ActionType.ABORTING)
+
+    def action_is_active(self) -> bool:
+        """
+        Check if the robot is in an action
+        """
+        return (
+                self.is_mounting() or
+                self.is_dismounting() or
+                self.is_prefetching() or
+                self.is_aborting()
+        )
 
     def pin_on_placer(self) -> bool:
         """
@@ -1508,13 +1641,12 @@ class AuntISARAApp(object):
 
     # callbacks
     def do_mount_cmd(self, pv, value, ioc):
-        if value and self.require_position('SOAK') and not self.mounting:
+        if value and self.require_position('SOAK'):
             self.mount_operation()
 
     def do_dismount_cmd(self, pv, value, ioc: AuntISARA):
-        if value and self.require_position('SOAK') and not self.mounting:
+        if value and self.require_position('SOAK'):
             self.dismount_operation()
-
 
     def do_prefetch_cmd(self, pv, value, ioc: AuntISARA):
         if value and self.require_position('SOAK'):
