@@ -8,11 +8,11 @@ license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.11,<4.0"
 dependencies = [
-    "devioc (>=2024.1.0,<2026.0.0)",
-    "requests (>=2.32.5,<3.0.0)",
-    "gepics (>=2025.10.3,<2026.0.0)",
-    "parsefire (>=2024.6.0,<2025.0.0)",
-    "pygobject (==3.44.2)"
+    "requests (>=2.32.5)",
+    "gepics (>=2025.10.3)",
+    "parsefire (>=2024.6.0)",
+    "pygobject (==3.44.2)",
+    "devioc (>=2025.6.4)"
 ]
 dynamic = ["version"]
 

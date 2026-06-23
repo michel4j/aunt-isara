@@ -203,7 +203,7 @@ class AuntISARA(models.Model):
     connected = models.Enum('CONNECTED', choices=ActiveType, default=0, desc="Connection")
     enabled = models.Enum('ENABLED', choices=EnableType, default=1, desc="Control")
     status = models.Enum('STATUS', choices=StatusType, desc="Status")
-    action = models.Enum('ACTION', choices=ActionType, desc="Action")
+    action = models.Integer('ACTION', default=0, desc="Action")
     health = models.Enum('HEALTH', choices=ErrorType, desc="Health")
     log = models.String('LOG', desc="Sample Operation Message", max_length=1024)
     error = models.String('ERROR', desc="Error Message", max_length=1024)
@@ -765,7 +765,13 @@ class AuntISARAApp(object):
             return False, f'Timeout waiting for response to command "{context}"'
 
     def wait_for_value(
-        self, variable: Any, *values: Any, timeout: int = 30, invert: bool = False, message: str = None
+        self,
+        variable: Any,
+        *values: Any,
+        timeout: int = 30,
+        invert: bool = False,
+        message: str|None = None,
+        check_abort: bool = True,
     ) -> bool:
         """
         Wait for a variable to reach a specific value
@@ -774,6 +780,7 @@ class AuntISARAApp(object):
         :param timeout: max duration to wait
         :param invert: if True, wait for the variable to not be in values
         :param message: optional message to use for logging
+        :param check_abort: if True,  for abort
         :return: True if successful, False if timed out
         """
 
@@ -785,21 +792,27 @@ class AuntISARAApp(object):
         end_time = time.time() + timeout
         logger.info(f'Waiting for {message} ...')
 
+
+        # check abort if not aborting
+        check_abort = (not self.is_aborting()) and check_abort
+
         while time.time() < end_time:
             current_value = variable.get()
             if invert != (current_value in values):
                 break
             time.sleep(0.01)
-            if self.is_aborting():
+            if check_abort and self.is_aborting():
                 return False
         else:
             logger.warn(f'Timed-out waiting for {message} after {timeout} seconds!')
             return False
         return True
 
-    def wait_for_position(self, *positions, timeout=30):
+    def wait_for_position(self, *positions, timeout=30, check_abort=True):
         message = 'position ' + '|'.join(positions)
-        return self.wait_for_value(self.ioc.position_fbk, *positions, timeout=timeout, message=message)
+        return self.wait_for_value(
+            self.ioc.position_fbk, *positions, timeout=timeout, message=message, check_abort=True
+        )
 
     def wait_above_coord(
             self,
@@ -821,6 +834,9 @@ class AuntISARAApp(object):
         pos = {'x': x, 'y': y, 'z': z}
         pos_text = ', '.join([f'{k}={v}' for k, v in pos.items() if v is not None])
         logger.info(f'Waiting to go below coordinates: {pos_text}')
+
+        check_abort = not self.is_aborting()
+
         while time.time() < end_time:
             current_x = self.ioc.xpos_fbk.get()
             current_y = self.ioc.ypos_fbk.get()
@@ -828,7 +844,7 @@ class AuntISARAApp(object):
             if (x is None or current_x <= x) and (y is None or current_y <= y) and (z is None or current_z <= z):
                 break
             time.sleep(0.01)
-            if self.is_aborting():
+            if check_abort and self.is_aborting():
                 return False
         else:
             logger.warn(f'Timed-out waiting above {pos_text} after {timeout} seconds!')
@@ -854,6 +870,7 @@ class AuntISARAApp(object):
         pos = {'x': x, 'y': y, 'z': z}
         pos_text = ', '.join([f'{k}={v}' for k, v in pos.items() if v is not None])
         logger.info(f'Waiting to go above coordinates: {pos_text}')
+        check_abort = not self.is_aborting()
         while time.time() < end_time:
             current_x = self.ioc.xpos_fbk.get()
             current_y = self.ioc.ypos_fbk.get()
@@ -861,7 +878,7 @@ class AuntISARAApp(object):
             if (x is None or current_x >= x) and (y is None or current_y >= y) and (z is None or current_z >= z):
                 break
             time.sleep(0.01)
-            if self.is_aborting():
+            if check_abort and self.is_aborting():
                 return False
         else:
             logger.warn(f'Timed-out below {pos_text} after {timeout} seconds!')
@@ -869,18 +886,24 @@ class AuntISARAApp(object):
         return True
 
     # aliases for wait_for_value
-    def wait_for_state(self, *states, timeout=30):
+    def wait_for_state(self, *states, timeout=30, check_abort=True):
         state_values = [int(s) for s in states]
         message = 'state ' + '|'.join([state.name for state in states])
-        return self.wait_for_value(self.ioc.status, *state_values, timeout=timeout, message=message)
+        return self.wait_for_value(
+            self.ioc.status, *state_values, timeout=timeout, message=message, check_abort=check_abort
+        )
 
-    def wait_in_state(self, state, timeout=30):
+    def wait_in_state(self, state, timeout=30, check_abort=True):
         message = f'state to leave {state.name}'
-        return self.wait_for_value(self.ioc.status, state, timeout=timeout, invert=True, message=message)
+        return self.wait_for_value(
+            self.ioc.status, state, timeout=timeout, invert=True, message=message, check_abort=check_abort
+        )
 
-    def wait_in_path(self, path, timeout=30):
+    def wait_in_path(self, path, timeout=30, check_abort=True):
         message = f'path {path} to complete'
-        return self.wait_for_value(self.ioc.path_fbk, path, timeout=timeout, invert=True, message=message)
+        return self.wait_for_value(
+            self.ioc.path_fbk, path, timeout=timeout, invert=True, message=message, check_abort=check_abort
+        )
 
     def ready_for_commands(self):
         return self.ready and self.ioc.enabled.get() and self.ioc.connected.get()
@@ -1096,13 +1119,15 @@ class AuntISARAApp(object):
             return True
 
     def abort_to_home(self):
+        logger.info('Aborting to home position...')
         self.send_command('abort')
-        is_idle = self.wait_for_state(StatusType.IDLE)
+        is_idle = self.wait_for_state(StatusType.IDLE, check_abort=False)
         self.send_command('reset')
         time.sleep(2)
         self.send_command('safe', self.ioc.tool_fbk.get())
-        at_home = self.wait_for_position("HOME")
-        is_idle = self.wait_for_state(StatusType.IDLE)
+        at_home = self.wait_for_position("HOME", check_abort=False)
+        is_idle = self.wait_for_state(StatusType.IDLE, check_abort=False)
+        logger.info('Robot is home and idle!')
         return at_home and is_idle
 
     def recover_to_soak(self, sample=False):
@@ -1331,11 +1356,6 @@ class AuntISARAApp(object):
         :param kwargs: keyword arguments
         """
         sample_returned = self.wait_for_value(self.ioc.tooled_b_fbk, '', message='sample to be returned', timeout=10)
-
-        if self.is_aborting():
-            logger.error('Aborted!')
-            return False
-
         failed_return = (
             not sample_returned
         )
@@ -1590,25 +1610,25 @@ class AuntISARAApp(object):
         """
         Check if the robot is mounting
         """
-        return bool(ActionType(self.ioc.action.get()) | ActionType.MOUNT)
+        return ActionType.MOUNT in ActionType(self.ioc.action.get())
 
     def is_dismounting(self) -> bool:
         """
         Check if the robot is dismounting
         """
-        return bool(ActionType(self.ioc.action.get()) | ActionType.DISMOUNT)
+        return ActionType.DISMOUNT in ActionType(self.ioc.action.get())
 
     def is_prefetching(self) -> bool:
         """
         Check if the robot is picking
         """
-        return bool(ActionType(self.ioc.action.get()) | ActionType.PREFETCH)
+        return ActionType.PREFETCH in ActionType(self.ioc.action.get())
 
     def is_aborting(self) -> bool:
         """
         Check if the robot is aborting
         """
-        return bool(ActionType(self.ioc.action.get()) | ActionType.ABORTING)
+        return ActionType.ABORTING in ActionType(self.ioc.action.get())
 
     def action_is_active(self) -> bool:
         """
