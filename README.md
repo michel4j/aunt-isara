@@ -31,7 +31,7 @@ A python based Soft IOC Server for ISARA Automounter
 
 ## Post-Installation Steps
 
-Once the Automounter is running, you must define some positions. Positions are important because some commands can only be run from specified positions. Newer versions of the robot internally enforce positions but this system an additional layer of protections. At a minium, 'SOAK' and 'HOME' positions must be defined. It is recommended to defined various 'DRY_XXX' positions also.
+Once the Automounter is running, you must define some positions. Positions are important because some commands can only be run from specified positions. Newer versions of the robot internally enforce positions but this system provides an additional layer of protections. At a minium, 'SOAK' and 'HOME' positions must be defined. It is recommended to defined various 'DRY_XXX' positions also.
 
 To define a position, manually move the robot to that position, and type in the position name, and tolerance and then click the save button on the operator screen. The tolerance determines how sensitive the robot should be at that position. Positions can be replaced by toggling the "Overwrite Position" to ON before saving the position.
 
