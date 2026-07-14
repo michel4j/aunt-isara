@@ -1,4 +1,3 @@
 include README.md
 include LICENSE
-include deploy/init-template
-include opi/robot.edl
+include deploy/isara.ui
