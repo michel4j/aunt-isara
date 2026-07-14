@@ -1,0 +1,2413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.40.0 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <requires lib="gtkdmplugin" version="0.0"/>
+  <object class="GtkWindow">
+    <property name="can-focus">False</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="border-width">12</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">5</property>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="TextLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="bold">True</property>
+                <property name="font-size">3</property>
+                <property name="text">ISARA Automounter</property>
+                <property name="xalign">0</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="OnOffSwitch">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="off-channel">{robot}:CMD:power</property>
+                <property name="on-channel">{robot}:CMD:power</property>
+                <property name="state-channel">{robot}:STATE:power</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="TextLabel">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="text">{robot}</property>
+            <property name="xalign">0</property>
+            <style>
+              <class name="subtitle"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkNotebook">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="border-width">12</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">6</property>
+                <child>
+                  <!-- n-columns=4 n-rows=4 -->
+                  <object class="GtkGrid">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="row-spacing">6</property>
+                    <property name="column-spacing">6</property>
+                    <property name="row-homogeneous">True</property>
+                    <property name="column-homogeneous">True</property>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="channel">{robot}:CONNECTED</property>
+                        <property name="colors">AG</property>
+                        <property name="font-size">-2</property>
+                        <property name="monospace">True</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATUS</property>
+                        <property name="colors">GYCPOR</property>
+                        <property name="font-size">-2</property>
+                        <property name="monospace">True</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:mode</property>
+                        <property name="colors">RG</property>
+                        <property name="font-size">-2</property>
+                        <property name="monospace">True</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:tool</property>
+                        <property name="colors">OB</property>
+                        <property name="font-size">-2</property>
+                        <property name="monospace">True</property>
+                        <property name="show-units">False</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:path</property>
+                        <property name="colors">Y</property>
+                        <property name="font-size">-3</property>
+                        <property name="monospace">True</property>
+                        <property name="show-units">False</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:speed</property>
+                        <property name="color">rgb(237,212,0)</property>
+                        <property name="colors">Y</property>
+                        <property name="font-size">-2</property>
+                        <property name="monospace">True</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:onDiff</property>
+                        <property name="colors">Y</property>
+                        <property name="font-size">-2</property>
+                        <property name="monospace">True</property>
+                        <property name="show-units">False</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:onToolA</property>
+                        <property name="colors">Y</property>
+                        <property name="font-size">-2</property>
+                        <property name="monospace">True</property>
+                        <property name="show-units">False</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:power</property>
+                        <property name="color">rgb(237,212,0)</property>
+                        <property name="colors">RG</property>
+                        <property name="font-size">-2</property>
+                        <property name="monospace">True</property>
+                        <property name="show-units">False</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:INP:cryoLevel</property>
+                        <property name="colors">Y</property>
+                        <property name="font-size">-2</property>
+                        <property name="monospace">True</property>
+                        <property name="show-units">False</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pos</property>
+                        <property name="color">rgb(237,212,0)</property>
+                        <property name="colors">Y</property>
+                        <property name="font-size">-2</property>
+                        <property name="monospace">True</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:onToolB</property>
+                        <property name="colors">Y</property>
+                        <property name="font-size">-2</property>
+                        <property name="monospace">True</property>
+                        <property name="show-units">False</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:DURATION</property>
+                        <property name="colors">Y</property>
+                        <property name="font-size">-2</property>
+                        <property name="monospace">True</property>
+                        <property name="prec">1</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:error</property>
+                        <property name="colors">GR</property>
+                        <property name="font-size">-2</property>
+                        <property name="monospace">True</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:autofill</property>
+                        <property name="colors">RG</property>
+                        <property name="font-size">-2</property>
+                        <property name="monospace">True</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextPanel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:heater</property>
+                        <property name="colors">RG</property>
+                        <property name="font-size">-2</property>
+                        <property name="monospace">True</property>
+                        <style>
+                          <class name="dark-panel"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <!-- n-columns=3 n-rows=4 -->
+                  <object class="GtkGrid">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="row-homogeneous">True</property>
+                    <property name="column-homogeneous">True</property>
+                    <child>
+                      <object class="Indicator">
+                        <property name="height-request">20</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:INP:emerg</property>
+                        <property name="colors">RA</property>
+                        <property name="label">E-Stop</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Indicator">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:traj</property>
+                        <property name="colors">AO</property>
+                        <property name="label">Busy</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Indicator">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:INP:heartbeat</property>
+                        <property name="colors">YG</property>
+                        <property name="label">Heartbeat</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Indicator">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:INP:colSensor</property>
+                        <property name="colors">RA</property>
+                        <property name="label">Collision</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Indicator">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:INP1.BA</property>
+                        <property name="colors">AC</property>
+                        <property name="label">Lid Open</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Indicator">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:INP:smplOnGonio</property>
+                        <property name="colors">AC</property>
+                        <property name="label">S. Mounted</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Indicator">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:approach</property>
+                        <property name="colors">AY</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Indicator">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:remSpeed</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Indicator">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:INP:gonioRdy</property>
+                        <property name="colors">RG</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Indicator">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:running</property>
+                        <property name="colors">AY</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Indicator">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:drying</property>
+                        <property name="colors">AY</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Indicator">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:CMD:enableAirWipe</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparator">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="Byte">
+                    <property name="height-request">40</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <property name="channel">{robot}:STATE:error</property>
+                    <property name="colors">AY</property>
+                    <property name="columns">3</property>
+                    <property name="count">12</property>
+                    <property name="labels">Robot Error,Emergency Stop,Collision,Wrong Mode,Pin Missing,Sample Mismatch,Awaiting Gonio,Awaiting Sample,Awaiting Puck,Awaiting Fill,Awaiting Lid,Awaiting Soak</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <!-- n-columns=4 n-rows=4 -->
+                  <object class="GtkGrid">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="row-spacing">3</property>
+                    <property name="column-spacing">6</property>
+                    <property name="row-homogeneous">True</property>
+                    <child>
+                      <object class="TextControl">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:onDiff</property>
+                        <property name="editable">False</property>
+                        <property name="xalign">1</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="channel">{robot}:CMD:mount</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:CMD:dismount</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:CMD:soak</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="channel">{robot}:CMD:home</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:CMD:dry</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:CMD:abort</property>
+                        <style>
+                          <class name="bg-red-2"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextEntryMonitor">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="tgt-channel">{robot}:PAR:nextPort</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="channel">{robot}:CMD:prefetch</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:CMD:reset</property>
+                        <style>
+                          <class name="bg-orange-2"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="channel">{robot}:CMD:safe</property>
+                        <style>
+                          <class name="bg-green-2"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:CMD:back</property>
+                        <style>
+                          <class name="bg-blue-4"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:CMD:lid:close</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:CMD:lid:open</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparator">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <!-- n-columns=6 n-rows=6 -->
+                  <object class="GtkGrid">
+                    <property name="width-request">250</property>
+                    <property name="height-request">200</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">center</property>
+                    <property name="row-homogeneous">True</property>
+                    <property name="column-homogeneous">True</property>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.B0</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">1A</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">0</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.B1</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">2A</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">0</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.B2</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">3A</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">0</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.B3</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">4A</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">0</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.B4</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">5A</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">4</property>
+                        <property name="top-attach">0</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.B5</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">1B</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.B6</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">2B</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.B7</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">3B</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.B8</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">4B</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.B9</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">5B</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">4</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.BA</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">6B</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">5</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.BB</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">1C</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">2</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.BC</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">2C</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">2</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.BD</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">3C</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">2</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.BE</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">4C</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">2</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit0.BF</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">5C</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">4</property>
+                        <property name="top-attach">2</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit1.B0</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">1D</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit1.B1</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">2D</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit1.B2</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">3D</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit1.B3</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">4D</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit1.B4</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">5D</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">4</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit1.B5</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">6D</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">5</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit1.B6</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">1E</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">4</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit1.B7</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">2E</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">4</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit1.B8</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">3E</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">4</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit1.B9</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">4E</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">4</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit1.BA</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">5E</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">4</property>
+                        <property name="top-attach">4</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit1.BB</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">1F</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="Shape">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:pucks:bit1.BC</property>
+                        <property name="colors">WC</property>
+                        <property name="filled">True</property>
+                        <property name="label">2F</property>
+                        <property name="labelled">True</property>
+                        <property name="oval">True</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparator">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">7</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Status/Control</property>
+              </object>
+              <packing>
+                <property name="tab-fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">6</property>
+                <child>
+                  <!-- n-columns=4 n-rows=3 -->
+                  <object class="GtkGrid">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="border-width">12</property>
+                    <property name="row-spacing">6</property>
+                    <property name="column-spacing">6</property>
+                    <property name="row-homogeneous">True</property>
+                    <property name="column-homogeneous">True</property>
+                    <child>
+                      <object class="TextLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="text">X-Pos</property>
+                        <property name="xalign">1</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="text">Y-Pos</property>
+                        <property name="xalign">1</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="text">Z-Pos</property>
+                        <property name="xalign">1</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="text">RX-Pos</property>
+                        <property name="xalign">1</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="text">RY-Pos</property>
+                        <property name="xalign">1</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="text">RZ-Pos</property>
+                        <property name="xalign">1</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextMonitor">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:posX</property>
+                        <property name="colors">B</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextMonitor">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:posY</property>
+                        <property name="colors">B</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextMonitor">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:posZ</property>
+                        <property name="colors">B</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextMonitor">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:posRX</property>
+                        <property name="colors">B</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextMonitor">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:posRZ</property>
+                        <property name="colors">B</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextMonitor">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:STATE:posRY</property>
+                        <property name="colors">B</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparator">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <!-- n-columns=3 n-rows=8 -->
+                  <object class="GtkGrid">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="border-width">12</property>
+                    <property name="row-spacing">3</property>
+                    <property name="column-spacing">6</property>
+                    <property name="row-homogeneous">True</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <object class="CommandButton">
+                            <property name="width-request">24</property>
+                            <property name="height-request">24</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <property name="channel">{robot}:CMD:faster</property>
+                            <property name="label">↑</property>
+                            <style>
+                              <class name="tiny"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="CommandButton">
+                            <property name="width-request">24</property>
+                            <property name="height-request">24</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <property name="channel">{robot}:CMD:slower</property>
+                            <property name="label">↓</property>
+                            <style>
+                              <class name="tiny"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="OnOffSwitch">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="off-channel">{robot}:CMD:speed</property>
+                        <property name="on-channel">{robot}:CMD:speed</property>
+                        <property name="state-channel">{robot}:STATE:remSpeed</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="text">Speed Control</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="OnOffSwitch">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="off-channel">{robot}:CMD:autofill</property>
+                        <property name="on-channel">{robot}:CMD:autofill</property>
+                        <property name="state-channel">{robot}:STATE:autofill</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="text">LN2 Mode</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="OnOffSwitch">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="off-channel">{robot}:CMD:enableAirWipe</property>
+                        <property name="on-channel">{robot}:CMD:enableAirWipe</property>
+                        <property name="state-channel">{robot}:CMD:enableAirWipe</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="text">Air Wipe Enable</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="text">Air Wipe Start Delay</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="text">Air Wipe Run Time</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextEntryMonitor">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="fbk-channel">SV1608-3-I20-07:startDelay</property>
+                        <property name="tgt-channel">SV1608-3-I20-07:startDelay</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextEntryMonitor">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="fbk-channel">SV1608-3-I20-07:runtime</property>
+                        <property name="tgt-channel">SV1608-3-I20-07:runtime</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">SV1608-3-I20-07:autoStart</property>
+                        <property name="label">Run Air Wipe</property>
+                        <style>
+                          <class name="bg-blue-4"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="text">Lid Timeout</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">7</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextEntryMonitor">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="fbk-channel">{robot}:PAR:lidTimeout</property>
+                        <property name="tgt-channel">{robot}:PAR:lidTimeout</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">7</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparator">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <!-- n-columns=4 n-rows=3 -->
+                  <object class="GtkGrid">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="border-width">12</property>
+                    <property name="row-spacing">3</property>
+                    <property name="column-spacing">6</property>
+                    <property name="row-homogeneous">True</property>
+                    <property name="column-homogeneous">True</property>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="channel">{robot}:CMD:get</property>
+                        <property name="label">Get</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="channel">{robot}:CMD:put</property>
+                        <property name="label">Put</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextControl">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:PAR:puck</property>
+                        <property name="xalign">1</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextControl">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:PAR:smpl</property>
+                        <property name="xalign">1</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="text">Puck</property>
+                        <property name="xalign">1</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="TextLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="text">Sample</property>
+                        <property name="xalign">1</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="channel">{robot}:CMD:getPut</property>
+                        <property name="label">GetPut</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="channel">{robot}:CMD:pick</property>
+                        <property name="label">Pick</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CommandButton">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="channel">{robot}:CMD:pause</property>
+                        <style>
+                          <class name="bg-purple-2"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="pack-type">end</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <style>
+                  <class name="bg-red-1"/>
+                </style>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Settings</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+                <property name="tab-fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">6</property>
+                <child>
+                  <object class="MessageLog">
+                    <property name="height-request">60</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="channel">{robot}:ERROR</property>
+                    <property name="font-size">-2</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="pack-type">end</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">6</property>
+                    <child>
+                      <!-- n-columns=4 n-rows=3 -->
+                      <object class="GtkGrid">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="border-width">12</property>
+                        <property name="row-spacing">3</property>
+                        <property name="column-spacing">3</property>
+                        <property name="row-homogeneous">True</property>
+                        <property name="column-homogeneous">True</property>
+                        <child>
+                          <object class="TextLabel">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="bold">True</property>
+                            <property name="text">Sample Reset/Enable</property>
+                            <property name="xalign">0</property>
+                          </object>
+                          <packing>
+                            <property name="left-attach">0</property>
+                            <property name="top-attach">0</property>
+                            <property name="width">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="CommandButton">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="channel">{robot}:CMD:setToolA</property>
+                            <style>
+                              <class name="bg-orange-2"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="left-attach">0</property>
+                            <property name="top-attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="CommandButton">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="channel">{robot}:CMD:setToolB</property>
+                            <style>
+                              <class name="bg-orange-2"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="left-attach">1</property>
+                            <property name="top-attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="CommandButton">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="channel">{robot}:CMD:setDiffSmpl</property>
+                            <style>
+                              <class name="bg-orange-2"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="left-attach">0</property>
+                            <property name="top-attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="CommandButton">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="channel">{robot}:CMD:clear</property>
+                            <style>
+                              <class name="bg-red-2"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="left-attach">1</property>
+                            <property name="top-attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="margin-left">12</property>
+                            <property name="margin-start">12</property>
+                            <property name="spacing">6</property>
+                            <child>
+                              <object class="OnOffSwitch">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="halign">center</property>
+                                <property name="valign">center</property>
+                                <property name="off-channel">{robot}:CMD:toolA</property>
+                                <property name="on-channel">{robot}:CMD:toolA</property>
+                                <property name="state-channel">{robot}:CMD:toolA</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="TextLabel">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="text">Toggle Tool A</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left-attach">2</property>
+                            <property name="top-attach">1</property>
+                            <property name="width">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="margin-left">12</property>
+                            <property name="margin-start">12</property>
+                            <property name="spacing">6</property>
+                            <child>
+                              <object class="OnOffSwitch">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="halign">center</property>
+                                <property name="valign">center</property>
+                                <property name="off-channel">{robot}:CMD:toolB</property>
+                                <property name="on-channel">{robot}:CMD:toolB</property>
+                                <property name="state-channel">{robot}:CMD:toolB</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="TextLabel">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="text">Toggle Tool B</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left-attach">2</property>
+                            <property name="top-attach">2</property>
+                            <property name="width">2</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">6</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSeparator">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">7</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <!-- n-columns=5 n-rows=2 -->
+                      <object class="GtkGrid">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="border-width">12</property>
+                        <property name="row-spacing">3</property>
+                        <property name="column-spacing">3</property>
+                        <property name="row-homogeneous">True</property>
+                        <property name="column-homogeneous">True</property>
+                        <child>
+                          <object class="TextControl">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="channel">{robot}:PAR:posName</property>
+                            <property name="xalign">1</property>
+                          </object>
+                          <packing>
+                            <property name="left-attach">0</property>
+                            <property name="top-attach">1</property>
+                            <property name="width">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="TextControl">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="channel">{robot}:PAR:posTol</property>
+                            <property name="xalign">1</property>
+                          </object>
+                          <packing>
+                            <property name="left-attach">2</property>
+                            <property name="top-attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="TextLabel">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="bold">True</property>
+                            <property name="text">Named Positions</property>
+                            <property name="xalign">0</property>
+                          </object>
+                          <packing>
+                            <property name="left-attach">0</property>
+                            <property name="top-attach">0</property>
+                            <property name="width">5</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="CommandButton">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="channel">{robot}:CMD:savePos</property>
+                            <property name="label">Save</property>
+                          </object>
+                          <packing>
+                            <property name="left-attach">3</property>
+                            <property name="top-attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="CheckControl">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="channel">{robot}:PAR:posForce</property>
+                            <property name="label">Overwrite</property>
+                          </object>
+                          <packing>
+                            <property name="left-attach">4</property>
+                            <property name="top-attach">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">8</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSeparator">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">9</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <!-- n-columns=3 n-rows=3 -->
+                      <object class="GtkGrid">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="border-width">12</property>
+                        <property name="row-spacing">6</property>
+                        <property name="column-spacing">6</property>
+                        <property name="row-homogeneous">True</property>
+                        <property name="column-homogeneous">True</property>
+                        <child>
+                          <object class="CommandButton">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="channel">{robot}:CMD:chgTool</property>
+                          </object>
+                          <packing>
+                            <property name="left-attach">2</property>
+                            <property name="top-attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="CommandButton">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="channel">{robot}:CMD:toolCal</property>
+                          </object>
+                          <packing>
+                            <property name="left-attach">0</property>
+                            <property name="top-attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="CommandButton">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="channel">{robot}:CMD:teachGonio</property>
+                          </object>
+                          <packing>
+                            <property name="left-attach">1</property>
+                            <property name="top-attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="CommandButton">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="channel">{robot}:CMD:teachPuck</property>
+                          </object>
+                          <packing>
+                            <property name="left-attach">2</property>
+                            <property name="top-attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="ChoiceMenu">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="channel">{robot}:PAR:tool</property>
+                          </object>
+                          <packing>
+                            <property name="left-attach">0</property>
+                            <property name="top-attach">1</property>
+                            <property name="width">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="TextLabel">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="bold">True</property>
+                            <property name="text">Tools/Calibration</property>
+                            <property name="xalign">0</property>
+                          </object>
+                          <packing>
+                            <property name="left-attach">0</property>
+                            <property name="top-attach">0</property>
+                            <property name="width">3</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">10</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CheckControl">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="valign">end</property>
+                        <property name="border-width">12</property>
+                        <property name="channel">{robot}:ENABLED</property>
+                        <property name="label">Enable Commands</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">11</property>
+                      </packing>
+                    </child>
+                    <style>
+                      <class name="bg-red-1"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Calibration</property>
+              </object>
+              <packing>
+                <property name="position">2</property>
+                <property name="tab-fill">False</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="MessageLog">
+            <property name="height-request">60</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="channel">{robot}:WARNING</property>
+            <property name="font-size">-2</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
