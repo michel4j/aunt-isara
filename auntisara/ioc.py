@@ -1203,10 +1203,12 @@ class AuntISARAApp(object):
             self.wait_for_state(StatusType.IDLE)
             success = self.wait_for_position("SOAK")
             if success and gripper_error:
-                self.send_command("dry", self.ioc.tool_fbk.get())
+                self.warn('Gripper needs more drying!')
+                self.ioc.dry_cmd.put(1)
                 self.wait_for_position("DRY")
                 self.wait_for_state(StatusType.IDLE)
                 success = self.wait_for_position("SOAK")
+            self.send_command('reset')
             self.warn('Recovered automatically!')
         else:
             self.warn('Manual intervention required!')
