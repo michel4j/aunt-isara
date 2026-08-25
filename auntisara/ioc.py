@@ -836,11 +836,39 @@ class AuntISARAApp(object):
             return False
         return True
 
-    def wait_for_position(self, *positions, timeout=30, check_abort=True):
-        message = 'position ' + '|'.join(positions)
-        return self.wait_for_value(
-            self.ioc.position_fbk, *positions, timeout=timeout, message=message, check_abort=True
-        )
+    def wait_for_position(self, *positions, timeout=30, invert=False, check_abort=True):
+        """
+        Wait for a variable to reach a specific value
+        :param positions: values to check
+        :param timeout: max duration to wait
+        :param invert: if True, wait for the variable to not be in values
+        :param check_abort: if True,  for abort
+        :return: True if successful, False if timed out
+        """
+
+        value_str = ' | '.join([str(v) for v in positions])
+        link_str = 'to be' if not invert else 'not to be'
+        message = f'position {link_str} "{value_str}"'
+
+        end_time = time.time() + timeout
+        logger.info(f'Waiting for {message} ...')
+
+        # check abort if not aborting
+        check_abort = (not self.is_aborting()) and check_abort
+        patterns = [re.compile('^' + pos + r'(?:_\w*)?$') for pos in positions]
+
+        while time.time() < end_time:
+            current_value = self.ioc.position_fbk.get()
+            matches = any(p.match(current_value) for p in patterns)
+            if invert != matches:
+                break
+            time.sleep(0.01)
+            if check_abort and self.is_aborting():
+                return False
+        else:
+            logger.warn(f'Timed-out waiting for {message} after {timeout} seconds!')
+            return False
+        return True
 
     def wait_above_coord(
             self,
@@ -947,9 +975,10 @@ class AuntISARAApp(object):
             else:
                 cmd = command
             self.commands.put((command, cmd))
+        time.sleep(0.05) # enough time for send queue to pick any commands (sender sleep is 0.01 sec)
 
     def receive_message(self, message, message_type):
-        logger.debug('{}: <- {}'.format(message_type, message))
+        logger.debug(f'{message_type}: <- {message}')
         if message_type == isara.MessageType.RESPONSE:
             self.responses.put(message)
         elif message_type == isara.MessageType.STATUS:
@@ -967,7 +996,8 @@ class AuntISARAApp(object):
         if not self.positions.is_ready():
             self.warn('No positions have been defined')
             self.ioc.help.put(
-                'Please move the robot manually and save positions named `{}`'.format(' | '.join(allowed)))
+                f'Please move the robot manually and save positions named `{" | ".join(allowed)}`'
+            )
             return False
 
         current = self.ioc.position_fbk.get()
@@ -1170,8 +1200,13 @@ class AuntISARAApp(object):
                 self.ioc.back_cmd.put(1)
             else:
                 self.ioc.soak_cmd.put(1)
-            self.wait_for_position("SOAK")
-            success = self.wait_for_state(StatusType.IDLE)
+            self.wait_for_state(StatusType.IDLE)
+            success = self.wait_for_position("SOAK")
+            if success and gripper_error:
+                self.send_command("dry", self.ioc.tool_fbk.get())
+                self.wait_for_position("DRY")
+                self.wait_for_state(StatusType.IDLE)
+                success = self.wait_for_position("SOAK")
             self.warn('Recovered automatically!')
         else:
             self.warn('Manual intervention required!')
